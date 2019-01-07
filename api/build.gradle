@@ -1,0 +1,90 @@
+buildscript {
+	ext {
+		springBootVersion = '2.1.1.RELEASE'
+		connectorVersion = '8.0.13'
+	}
+	repositories {
+		mavenCentral()
+		mavenLocal()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath("mysql:mysql-connector-java:${connectorVersion}")
+	}
+}
+
+plugins {
+	id 'org.liquibase.gradle' version '2.0.1'
+}
+
+ext {
+//	runList = 'diffMain'
+    testParallel = 1
+//	runList = 'main'
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group = 'api'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+	mavenLocal()
+}
+
+dependencies {
+	implementation('org.springframework.boot:spring-boot-starter-data-jpa')
+	implementation('org.springframework.boot:spring-boot-starter-data-rest')
+	implementation('org.springframework.boot:spring-boot-starter-security')
+	implementation('org.springframework.boot:spring-boot-starter-web')
+
+	compile('org.liquibase:liquibase-core')
+	compile 'org.liquibase.ext:liquibase-hibernate5:3.6'
+	compile 'io.jsonwebtoken:jjwt:0.6.0'
+	compile 'log4j:log4j:1.2.17'
+	compile 'org.reflections:reflections:0.9.11'
+
+
+	//liquibase
+	liquibaseRuntime 'org.liquibase:liquibase-core'
+	liquibaseRuntime 'org.liquibase.ext:liquibase-hibernate5:3.6'
+	liquibaseRuntime 'mysql:mysql-connector-java'
+	liquibaseRuntime 'org.springframework.data:spring-data-jpa'
+	liquibaseRuntime 'org.springframework.boot:spring-boot-starter-security'
+	liquibaseRuntime 'org.springframework:spring-aspects'
+	liquibaseRuntime 'org.yaml:snakeyaml:1.23'
+	liquibaseRuntime sourceSets.main.output
+
+	runtimeOnly('com.h2database:h2')
+	runtimeOnly('mysql:mysql-connector-java')
+	compileOnly('org.projectlombok:lombok')
+	testImplementation('org.springframework.boot:spring-boot-starter-test')
+	testImplementation('org.springframework.security:spring-security-test')
+}
+
+diff.dependsOn build
+diffChangeLog.dependsOn build
+
+liquibase {
+	activities {
+		diffMain {
+			defaultsFile 'src/main/resources/liquibase.properties'
+			changeLogFile 'src/main/resources/' + new Date().format('yyyyMMdd-HHmm') + '.yml'
+		}
+        main {
+            defaultsFile 'src/main/resources/liquibase.properties'
+            changeLogFile 'src/main/resources/db/changelog/liquibase-changelog.yml'
+        }
+        if (project.hasProperty("runList")) {
+            println(project.runList)
+            runList = project.runList
+        }
+		
+//		runList = 'main, diffMain'
+	}
+}
