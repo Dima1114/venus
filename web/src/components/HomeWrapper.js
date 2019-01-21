@@ -23,12 +23,7 @@ class HomeWrapper extends Component {
     }
 
     componentWillMount() {
-        this.props.initBaseUrl('http://localhost:8080');
-
-        // const refreshToken = localStorage.getItem('refreshToken');
-        // if(!!refreshToken){
-        //     this.
-        // }
+        this.props.initBaseUrl('http://localhost:3000');
 
         if (!!this.props.auth.accessToken) {
             $.ajaxSetup({
@@ -54,8 +49,6 @@ class HomeWrapper extends Component {
     refreshCountDown(props){
         if(props.auth.isAuthenticated && !!props.auth.expTime){
             const timeOut = props.auth.expTime * 1000 - new Date().getTime() - 60000;
-            console.log('TIME TO TOKEN UPDATE');
-            console.log(timeOut);
             const refreshTimer = setTimeout(
                 () => this.props.refreshToken(this.props.baseUrl, props.auth.refreshToken), timeOut);
             this.setState({refreshTimer: refreshTimer})
@@ -114,11 +107,9 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    // refreshToken: (baseUrl, token) => dispatch(refreshToken(baseUrl,token)),
     refreshToken: bindActionCreators(refreshToken, dispatch),
     initBaseUrl: bindActionCreators(initBaseUrl, dispatch),
     logout: bindActionCreators(logoutAndRedirect, dispatch),
-    // initBaseUrl: (url) => dispatch(initBaseUrl(url))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeWrapper);

@@ -46,27 +46,18 @@ open class JwtSecurityConfig(private val authenticationProvider: JwtAuthenticati
         }
 
     @Bean
-    open fun jwtLoginProvider(): JwtLoginProvider {
-        val jwtLoginProvider = JwtLoginProvider()
-        jwtLoginProvider.setEncoder(encoder())
-        jwtLoginProvider.setUserDetailsService(userDetailsService)
-        return jwtLoginProvider
-    }
+    open fun jwtLoginProvider(): JwtLoginProvider = JwtLoginProvider(userDetailsService, encoder())
 
     @Bean
-    open fun encoder(): BCryptPasswordEncoder {
-        return BCryptPasswordEncoder()
-    }
+    open fun encoder(): BCryptPasswordEncoder = BCryptPasswordEncoder()
 
     @Bean
-    public override fun authenticationManager(): AuthenticationManager {
-        return ProviderManager(listOf(jwtLoginProvider(), authenticationProvider))
-    }
+    public override fun authenticationManager(): AuthenticationManager = ProviderManager(listOf(jwtLoginProvider(), authenticationProvider))
 
     @Bean
     open fun authenticationTokenFilter(): JwtAuthenticationTokenFilter {
 
-        val pathsToSkip = Arrays.asList(TOKEN_ENTRY_POINT, LOGIN_ENTRY_POINT, ERROR_ENTRY_POINT)
+        val pathsToSkip = Arrays.asList(TOKEN_ENTRY_POINT, LOGIN_ENTRY_POINT, ERROR_ENTRY_POINT, ENTRY_POINT)
         val methodsToSkip = listOf(HttpMethod.OPTIONS.name)
 
         val matcher = SkipPathAndMethodsRequestMatcher(pathsToSkip, methodsToSkip, ENTRY_POINT)
@@ -85,7 +76,7 @@ open class JwtSecurityConfig(private val authenticationProvider: JwtAuthenticati
                 .antMatchers(TOKEN_ENTRY_POINT).permitAll()
                 .antMatchers(LOGIN_ENTRY_POINT).permitAll()
                 .and()
-                .authorizeRequests().anyRequest().authenticated()
+                .authorizeRequests().anyRequest().permitAll()
                 .and()
                 .exceptionHandling()
                 .accessDeniedHandler(errorHandler)
@@ -95,13 +86,14 @@ open class JwtSecurityConfig(private val authenticationProvider: JwtAuthenticati
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                 .and().cors()
-        http
-                .addFilterBefore(authenticationTokenFilter(), UsernamePasswordAuthenticationFilter::class.java)
+//        http
+//                .addFilterBefore(authenticationTokenFilter(), UsernamePasswordAuthenticationFilter::class.java)
 
         http.headers().cacheControl()
         http.requestCache().requestCache(httpSessionRequestCache)
     }
 
+    //not necessary if use proxy in Web requests
     @Bean
     open fun corsConfigurationSource(): CorsConfigurationSource {
         val configuration = CorsConfiguration()
