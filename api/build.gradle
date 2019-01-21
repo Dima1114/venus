@@ -53,6 +53,8 @@ dependencies {
 	compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
 	compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 
+	compile group: 'org.eclipse.jetty', name: 'jetty-client', version: '9.4.14.v20181114'
+
 	compile('org.liquibase:liquibase-core')
 	compile 'org.liquibase.ext:liquibase-hibernate5:3.6'
 	compile 'io.jsonwebtoken:jjwt:0.6.0'
@@ -94,8 +96,6 @@ liquibase {
             println(project.runList)
             runList = project.runList
         }
-		
-//		runList = 'main, diffMain'
 	}
 }
 compileKotlin {
