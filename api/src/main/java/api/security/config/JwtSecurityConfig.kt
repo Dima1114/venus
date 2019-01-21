@@ -32,7 +32,6 @@ import java.util.Collections
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 open class JwtSecurityConfig(private val authenticationProvider: JwtAuthenticationProvider,
                         private val entryPoint: JwtAuthenticationEntryPoint,
                         private val userDetailsService: UserDetailsService,

@@ -33,6 +33,6 @@ class User : BaseEntity() {
     @Enumerated(EnumType.STRING)
     @ElementCollection
     @CollectionTable(name = "User_Role", joinColumns = [(JoinColumn(name = "Usr_Id"))])
-    var roles: MutableSet<Role>? = null
+    var roles: MutableSet<Role> = hashSetOf()
 
 }
