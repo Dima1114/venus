@@ -14,19 +14,19 @@ import java.time.LocalDateTime
 class Task : BaseEntity() {
 
     @Column(name = "Tsk_Title")
-    var title: String? = null
+    var title: String = ""
 
     @Column(name = "Tsk_Comment")
-    var comment: String? = null
+    var comment: String = ""
 
-    @Column(name = "Tsk_Done")
-    var isDone: Boolean? = null
+    @Column(name = "Tsk_Done", columnDefinition = "boolean default false")
+    var isDone: Boolean = false
 
-    @Column(name = "Tsk_Bin")
-    var inBin: Boolean? = null
+    @Column(name = "Tsk_Bin", columnDefinition = "boolean default false")
+    var inBin: Boolean = false
 
     @Column(name = "Tsk_Complete", columnDefinition = "TIMESTAMP")
-    var dateComplete: LocalDateTime? = null
+    var dateComplete: LocalDateTime = LocalDateTime.now()
 
     @ManyToOne
     @NotNull

@@ -16,7 +16,7 @@ open class JwtUserDetailsService(private val userRepository: UserRepository) : U
     override fun loadUserByUsername(username: String): UserDetails {
         val user = userRepository.findByUsername(username)
                 .orElseThrow { UsernameNotFoundException("username : $username does not exist") }
-        user.roles!!.size
+        user.roles.size
         return JwtUserDetails.create(user)
     }
 }

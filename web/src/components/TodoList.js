@@ -33,7 +33,7 @@ class TodoList extends React.Component {
     getTodos(){
         $.ajax({
             type: 'GET',
-            url: 'http://localhost:8080/tasks?projection=info',
+            url: 'http://localhost:8080/tasks?title:eq=task&projection=info',
             dataType: 'json',
         }).then(response => {
             console.log(response);

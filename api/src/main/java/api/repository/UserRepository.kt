@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository
 import java.util.Optional
 
 @RepositoryRestResource
-interface UserRepository : JpaRepository<User, Long> {
+interface UserRepository :  BaseRepository<User> {
 
     fun findByUsername(username: String): Optional<User>
 

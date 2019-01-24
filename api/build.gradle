@@ -55,6 +55,9 @@ dependencies {
 
 	compile group: 'org.eclipse.jetty', name: 'jetty-client', version: '9.4.14.v20181114'
 
+	kapt 'com.querydsl:querydsl-apt:4.2.1:jpa'
+	implementation 'com.querydsl:querydsl-jpa:4.2.1'
+
 	compile('org.liquibase:liquibase-core')
 	compile 'org.liquibase.ext:liquibase-hibernate5:3.6'
 	compile 'io.jsonwebtoken:jjwt:0.6.0'
@@ -73,10 +76,10 @@ dependencies {
 
 	runtimeOnly('com.h2database:h2')
 	runtimeOnly('mysql:mysql-connector-java')
-	compileOnly('org.projectlombok:lombok')
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
 	testImplementation('org.springframework.security:spring-security-test')
 	testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
+	kaptTest "com.querydsl:querydsl-apt:4.2.1:jpa"
 }
 
 diff.dependsOn build
@@ -108,3 +111,11 @@ compileTestKotlin {
         jvmTarget = "1.8"
     }
 }
+//
+//idea {
+//	module {
+//		def kaptMain = file('build/generated/source/kapt/main')
+//		sourceDirs += kaptMain
+//		generatedSourceDirs += kaptMain
+//	}
+//}
