@@ -75,12 +75,13 @@ dependencies {
 	liquibaseRuntime 'org.springframework:spring-aspects'
 	liquibaseRuntime 'org.yaml:snakeyaml:1.23'
 	liquibaseRuntime sourceSets.main.output
-
-	runtimeOnly('com.h2database:h2')
+	
 	runtimeOnly('mysql:mysql-connector-java')
+	
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
 	testImplementation('org.springframework.security:spring-security-test')
 	testImplementation("com.h2database:h2")
+	testImplementation("org.amshove.kluent:kluent:1.37")
 	testCompile "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
 	testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
 	kaptTest "com.querydsl:querydsl-apt:4.2.1:jpa"
