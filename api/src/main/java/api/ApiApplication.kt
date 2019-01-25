@@ -7,8 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 
 //@EnableJpaRepositories
 @SpringBootApplication
-@EnableJpaAuditing
-open class ApiApplication
+class ApiApplication
 
 fun main(args: Array<String>) {
     SpringApplication.run(ApiApplication::class.java, *args)

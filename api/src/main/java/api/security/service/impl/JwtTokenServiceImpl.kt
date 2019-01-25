@@ -95,6 +95,15 @@ class JwtTokenServiceImpl(private val jwtSettings: JwtSettings, private val user
                 .toSet()
     }
 
+    override fun getUserIdFromJWT(token: String): Long {
+        val claims = Jwts.parser()
+                .setSigningKey(jwtSettings.jwtSecret)
+                .parseClaimsJws(token)
+                .body
+
+        return claims.get("userId", Integer::class.java).toLong()
+    }
+
     override fun getUserDetailsFromJWT(token: String): JwtUserDetails {
         val claims = Jwts.parser()
                 .setSigningKey(jwtSettings.jwtSecret)

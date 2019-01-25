@@ -13,6 +13,7 @@ interface JwtTokenService {
     fun getExpTimeFromJWT(token: String): Long
 
     fun getUserRolesFromJWT(token: String): Set<Role>
+    fun getUserIdFromJWT(token: String): Long
 
     fun getUserDetailsFromJWT(token: String): JwtUserDetails
 

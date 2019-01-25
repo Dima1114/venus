@@ -1,17 +1,21 @@
 package api.config
 
+import api.config.auditor.AuditAwareImpl
+import api.entity.User
+import api.repository.UserRepository
 import org.reflections.Reflections
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories
-import org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean
+import org.springframework.data.domain.AuditorAware
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing
 import org.springframework.data.rest.core.config.Projection
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer
-import org.springframework.data.web.config.EnableSpringDataWebSupport
 
 import java.util.stream.Stream
 
 @Configuration
+@EnableJpaAuditing
 class RestConfig : RepositoryRestConfigurer {
 
     override fun configureRepositoryRestConfiguration(config: RepositoryRestConfiguration) {
@@ -25,4 +29,8 @@ class RestConfig : RepositoryRestConfigurer {
                     .forEach { projection -> config.projectionConfiguration.addProjection(projection) }
         }
     }
+
+    @Bean
+    fun auditorProvider(userRepository: UserRepository): AuditorAware<User> =
+            AuditAwareImpl(userRepository)
 }
