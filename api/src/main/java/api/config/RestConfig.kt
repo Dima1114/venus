@@ -12,7 +12,7 @@ import org.springframework.data.web.config.EnableSpringDataWebSupport
 import java.util.stream.Stream
 
 @Configuration
-open class RestConfig : RepositoryRestConfigurer {
+class RestConfig : RepositoryRestConfigurer {
 
     override fun configureRepositoryRestConfiguration(config: RepositoryRestConfiguration) {
         registerRepositoryProjections(config, "api/projection")

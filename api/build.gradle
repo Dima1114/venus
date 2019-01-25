@@ -12,6 +12,7 @@ buildscript {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
 		classpath("mysql:mysql-connector-java:${connectorVersion}")
+		classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlinVersion"
 	}
 }
 
@@ -26,6 +27,7 @@ ext {
 
 apply plugin: 'java'
 apply plugin: 'kotlin-kapt'
+apply plugin: "kotlin-spring"
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'

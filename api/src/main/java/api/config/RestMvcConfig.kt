@@ -21,7 +21,7 @@ import org.springframework.data.web.config.EnableSpringDataWebSupport
 @EnableSpringDataWebSupport
 @EnableJpaRepositories(basePackages = ["api.repository"],
         repositoryFactoryBeanClass = JpaRepositoryFactoryBean::class)
-open class RestMvcConfig(context: ApplicationContext,
+class RestMvcConfig(context: ApplicationContext,
                     @Qualifier("mvcConversionService") conversionService: ObjectFactory<ConversionService>)
     : RepositoryRestMvcConfiguration(context, conversionService) {
 
@@ -37,7 +37,7 @@ open class RestMvcConfig(context: ApplicationContext,
     }
 
     @Bean
-    open fun querydslMethodArgumentResolver(): ApiQuerydslMethodArgumentResolver {
+    fun querydslMethodArgumentResolver(): ApiQuerydslMethodArgumentResolver {
         val factory = querydslBindingsFactory()
         val predicateBuilder = QuerydslPredicateBuilder(defaultConversionService(),
                 factory.entityPathResolver)
@@ -46,6 +46,6 @@ open class RestMvcConfig(context: ApplicationContext,
     }
 
     @Bean
-    open fun querydslBindingsFactory(): ApiQuerydslBindingsFactory =
+    fun querydslBindingsFactory(): ApiQuerydslBindingsFactory =
             ApiQuerydslBindingsFactory(SimpleEntityPathResolver.INSTANCE)
 }

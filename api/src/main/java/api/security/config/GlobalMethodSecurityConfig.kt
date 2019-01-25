@@ -11,7 +11,7 @@ import org.springframework.security.config.annotation.method.configuration.Globa
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
-open class GlobalMethodSecurityConfig : GlobalMethodSecurityConfiguration() {
+class GlobalMethodSecurityConfig : GlobalMethodSecurityConfiguration() {
     public override fun customMethodSecurityMetadataSource(): MethodSecurityMetadataSource {
         return SecuredAnnotationSecurityMetadataSource(RoleSecuredAnnotationMetadataExtractor())
     }

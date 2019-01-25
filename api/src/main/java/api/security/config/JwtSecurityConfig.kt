@@ -32,7 +32,7 @@ import java.util.Collections
 
 @Configuration
 @EnableWebSecurity
-open class JwtSecurityConfig(private val authenticationProvider: JwtAuthenticationProvider,
+class JwtSecurityConfig(private val authenticationProvider: JwtAuthenticationProvider,
                         private val entryPoint: JwtAuthenticationEntryPoint,
                         private val userDetailsService: UserDetailsService,
                         private val errorHandler: ErrorHandler) : WebSecurityConfigurerAdapter() {
@@ -45,16 +45,16 @@ open class JwtSecurityConfig(private val authenticationProvider: JwtAuthenticati
         }
 
     @Bean
-    open fun jwtLoginProvider(): JwtLoginProvider = JwtLoginProvider(userDetailsService, encoder())
+    fun jwtLoginProvider(): JwtLoginProvider = JwtLoginProvider(userDetailsService, encoder())
 
     @Bean
-    open fun encoder(): BCryptPasswordEncoder = BCryptPasswordEncoder()
+    fun encoder(): BCryptPasswordEncoder = BCryptPasswordEncoder()
 
     @Bean
     public override fun authenticationManager(): AuthenticationManager = ProviderManager(listOf(jwtLoginProvider(), authenticationProvider))
 
     @Bean
-    open fun authenticationTokenFilter(): JwtAuthenticationTokenFilter {
+    fun authenticationTokenFilter(): JwtAuthenticationTokenFilter {
 
         val pathsToSkip = Arrays.asList(TOKEN_ENTRY_POINT, LOGIN_ENTRY_POINT, ERROR_ENTRY_POINT, ENTRY_POINT)
         val methodsToSkip = listOf(HttpMethod.OPTIONS.name)
@@ -94,7 +94,7 @@ open class JwtSecurityConfig(private val authenticationProvider: JwtAuthenticati
 
     //not necessary if use proxy in Web requests
     @Bean
-    open fun corsConfigurationSource(): CorsConfigurationSource {
+    fun corsConfigurationSource(): CorsConfigurationSource {
         val configuration = CorsConfiguration()
         configuration.allowedOrigins = ImmutableList.of("*")
         configuration.allowedMethods = ImmutableList.of("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")

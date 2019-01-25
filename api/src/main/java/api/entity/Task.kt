@@ -13,20 +13,20 @@ import java.time.LocalDateTime
         AttributeOverride(name = "dateAdded", column = Column(name = "Tsk_Date_Added", columnDefinition = "TIMESTAMP")))
 class Task : BaseEntity() {
 
-    @Column(name = "Tsk_Title")
+    @Column(name = "Tsk_Title", nullable = false)
     var title: String = ""
 
-    @Column(name = "Tsk_Comment")
+    @Column(name = "Tsk_Comment", columnDefinition = "VARCHAR(255) default ''")
     var comment: String = ""
 
-    @Column(name = "Tsk_Done", columnDefinition = "boolean default false")
+    @Column(name = "Tsk_Done", columnDefinition = "BIT default false")
     var isDone: Boolean = false
 
-    @Column(name = "Tsk_Bin", columnDefinition = "boolean default false")
+    @Column(name = "Tsk_Bin", columnDefinition = "BIT default false")
     var inBin: Boolean = false
 
     @Column(name = "Tsk_Complete", columnDefinition = "TIMESTAMP")
-    var dateComplete: LocalDateTime = LocalDateTime.now()
+    var dateComplete: LocalDateTime? = null
 
     @ManyToOne
     @NotNull
