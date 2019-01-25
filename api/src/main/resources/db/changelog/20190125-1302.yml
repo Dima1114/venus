@@ -34,4 +34,26 @@ databaseChangeLog:
         columnDataType: varchar(255)
         columnName: Tsk_Title
         tableName: Task
-
+- changeSet:
+      id: 1548415324732-3
+      author: dumetski (generated)
+      changes:
+          - addColumn:
+                columns:
+                    - column:
+                          constraints:
+                              nullable: false
+                          name: Tsk_Type
+                          type: integer
+                tableName: Task
+- changeSet:
+    id: 1548424984944-3
+    author: dumetski (generated)
+    changes:
+      - addColumn:
+          columns:
+            - column:
+                defaultValueNumeric: 0
+                name: Usr_Age
+                type: SMALLINT
+          tableName: User

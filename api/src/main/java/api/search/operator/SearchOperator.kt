@@ -11,151 +11,101 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-enum class SearchOperator private constructor(val operator: String,
-                                              val predicate: (booleanBuilder: BooleanBuilder,
-                                                              pathBuilder: PathBuilder<*>,
-                                                              propertyPath: String,
-                                                              values: MutableList<String>,
-                                                              fieldType: Class<*>) -> Unit) {
+enum class SearchOperator(val operator: String,
+                          val predicate: (booleanBuilder: BooleanBuilder,
+                                          pathBuilder: PathBuilder<*>,
+                                          propertyPath: String,
+                                          values: MutableList<String>,
+                                          fieldType: Class<*>) -> Unit) {
 
-    EQUAL("eq", { booleanBuilder, pathBuilder, propertyPath, value, fieldType ->
-        val conversionService = DefaultConversionService()
-        if (conversionService.canConvert(stringClass, fieldType)) {
-            val typedValue = conversionService.convert(value[0], fieldType)
-            booleanBuilder.and(pathBuilder.get(propertyPath).eq(typedValue))
-        } else {
-            booleanBuilder.and(pathBuilder.get(propertyPath).eq(fieldType))
+    EQUAL("eq", { booleanBuilder, pathBuilder, propertyPath, value, _ ->
+        booleanBuilder.and(pathBuilder.get(propertyPath).eq(value[0]))
+    }),
+    GT("gt", { booleanBuilder, pathBuilder, propertyPath, value, fieldType ->
+        value.forEach {
+            when(fieldType) {
+                longClass, integerClass -> booleanBuilder.and(pathBuilder.getNumber(propertyPath, longClass).gt(it.toLong()))
+                doubleClass, floatClass -> booleanBuilder.and(pathBuilder.getNumber(propertyPath, doubleClass).gt(it.toDouble()))
+            }
         }
     }),
-
-    GT("gt", { booleanBuilder, pathBuilder, propertyPath, value, fieldType ->
-        val conversionService = DefaultConversionService()
+    LT("lt", { booleanBuilder, pathBuilder, propertyPath, value, fieldType ->
         value.forEach {
             when(fieldType){
-                longClass, integerClass -> {
-                    val typedValue = conversionService.convert(it, longClass)
-                    booleanBuilder.and(pathBuilder.getNumber(propertyPath, longClass).gt(typedValue))}
-                doubleClass, floatClass -> {
-                    val typedValue = conversionService.convert(it, doubleClass)
-                    booleanBuilder.and(pathBuilder.getNumber(propertyPath, doubleClass).gt(typedValue))
-                }
+                longClass, integerClass -> booleanBuilder.and(pathBuilder.getNumber(propertyPath, longClass).lt(it.toLong()))
+                doubleClass, floatClass -> booleanBuilder.and(pathBuilder.getNumber(propertyPath, doubleClass).lt(it.toDouble()))
             }
         }
     }),
-
-    LT("lt", { booleanBuilder, pathBuilder, propertyPath, value, fieldType ->
-        val conversionService = DefaultConversionService()
-        value.forEach {
-            if (fieldType == longClass || fieldType == integerClass) {
-                val typedValue = conversionService.convert(it, longClass)
-                booleanBuilder.and(pathBuilder.getNumber(propertyPath, longClass).lt(typedValue))
-            } else if (fieldType == doubleClass || fieldType == floatClass) {
-                val typedValue = conversionService.convert(it, doubleClass)
-                booleanBuilder.and(pathBuilder.getNumber(propertyPath, doubleClass).lt(typedValue))
-            }
-        }
-    }),
-
     GOE("goe", { booleanBuilder, pathBuilder, propertyPath, value, fieldType ->
-        val conversionService = DefaultConversionService()
-        for (item in value) {
-            if (fieldType == Long::class.java || fieldType == integerClass) {
-                val typedValue = conversionService.convert(item, Long::class.java)
-                booleanBuilder.and(pathBuilder.getNumber(propertyPath, Long::class.java).goe(typedValue))
-            } else if (fieldType == doubleClass || fieldType == floatClass) {
-                val typedValue = conversionService.convert(item, doubleClass)
-                booleanBuilder.and(pathBuilder.getNumber(propertyPath, doubleClass).goe(typedValue))
+        value.forEach {
+            when(fieldType){
+                longClass, integerClass -> booleanBuilder.and(pathBuilder.getNumber(propertyPath, longClass).goe(it.toLong()))
+                doubleClass, floatClass -> booleanBuilder.and(pathBuilder.getNumber(propertyPath, doubleClass).goe(it.toDouble()))
             }
         }
     }),
-
     LOE("loe", { booleanBuilder, pathBuilder, propertyPath, value, fieldType ->
-        val conversionService = DefaultConversionService()
-        for (item in value) {
-            if (fieldType == Long::class.java || fieldType == integerClass) {
-                val typedValue = conversionService.convert(item, Long::class.java)
-                booleanBuilder.and(pathBuilder.getNumber(propertyPath, Long::class.java).loe(typedValue))
-            } else if (fieldType == doubleClass || fieldType == floatClass) {
-                val typedValue = conversionService.convert(item, doubleClass)
-                booleanBuilder.and(pathBuilder.getNumber(propertyPath, doubleClass).loe(typedValue))
+        value.forEach {
+            when(fieldType){
+                longClass, integerClass -> booleanBuilder.and(pathBuilder.getNumber(propertyPath, longClass).loe(it.toLong()))
+                doubleClass, floatClass -> booleanBuilder.and(pathBuilder.getNumber(propertyPath, doubleClass).loe(it.toDouble()))
             }
         }
     }),
-
-    CONTAINS("contains", { booleanBuilder, pathBuilder, propertyPath, value, fieldType ->
-        for (item in value) {
-            booleanBuilder.and(pathBuilder.getString(propertyPath).containsIgnoreCase(item))
-        }
+    CONTAINS("contains", { booleanBuilder, pathBuilder, propertyPath, value, _ ->
+        value.forEach { booleanBuilder.and(pathBuilder.getString(propertyPath).containsIgnoreCase(it)) }
     }),
-    STARTS_WITH("startsWith", { booleanBuilder, pathBuilder, propertyPath, value, fieldType -> booleanBuilder.and(pathBuilder.getString(propertyPath).startsWith(value.get(0) as String)) }
+    STARTS_WITH("startsWith", { booleanBuilder, pathBuilder, propertyPath, value, _ -> booleanBuilder.and(pathBuilder.getString(propertyPath).startsWith(value[0])) }
 
     ),
-    IS_NULL("isNull", { booleanBuilder, pathBuilder, propertyPath, value, fieldType ->
+    IS_NULL("isNull", { booleanBuilder, pathBuilder, propertyPath, value, _ ->
         value.add("")
         booleanBuilder.and(pathBuilder.get(propertyPath).isNull)
     }),
-    IS_NOT_NULL("isNotNull", { booleanBuilder, pathBuilder, propertyPath, value, fieldType ->
-        value.add("")
+    IS_NOT_NULL("isNotNull", { booleanBuilder, pathBuilder, propertyPath, value, _ ->
+        value.add("")//WTF!? I don`t know
         booleanBuilder.and(pathBuilder.get(propertyPath).isNotNull)
     }),
     DATE_LESS_OR_EQUAL("dloe", { booleanBuilder, pathBuilder, propertyPath, value, fieldType ->
-        if (fieldType == localDateClass) {
-            booleanBuilder.and(pathBuilder.getDate(propertyPath, localDateClass)
-                    .loe(LocalDate.parse(value.get(0))))
-        } else if (fieldType == LocalDateTime::class.java) {
-            booleanBuilder.and(pathBuilder.getDate(propertyPath, LocalDateTime::class.java)
-                    .loe(LocalDateTime.parse(value.get(0), DateTimeFormatter.ISO_LOCAL_DATE)))
+        when(fieldType){
+            localDateClass -> booleanBuilder.and(pathBuilder.getDate(propertyPath, localDateClass).loe(LocalDate.parse(value[0])))
+            localDateTimeClass -> booleanBuilder.and(pathBuilder.getDate(propertyPath, localDateTimeClass).loe(LocalDateTime.parse(value[0], DateTimeFormatter.ISO_LOCAL_DATE)))
         }
     }),
     DATE_GREATER_OR_EQUAL("dgoe", { booleanBuilder, pathBuilder, propertyPath, value, fieldType ->
-        if (fieldType == localDateClass) {
-            booleanBuilder.and(pathBuilder.getDate(propertyPath, localDateClass)
-                    .goe(LocalDate.parse(value.get(0))))
-        } else if (fieldType == LocalDateTime::class.java) {
-            booleanBuilder.and(pathBuilder.getDate(propertyPath, LocalDateTime::class.java)
-                    .goe(LocalDateTime.parse(value.get(0), DateTimeFormatter.ISO_LOCAL_DATE)))
+        when(fieldType){
+            localDateClass -> booleanBuilder.and(pathBuilder.getDate(propertyPath, localDateClass).goe(LocalDate.parse(value[0])))
+            localDateTimeClass -> booleanBuilder.and(pathBuilder.getDate(propertyPath, localDateTimeClass).goe(LocalDateTime.parse(value[0], DateTimeFormatter.ISO_LOCAL_DATE)))
         }
     }),
     DATE_EQUAL("deq", { booleanBuilder, pathBuilder, propertyPath, value, fieldType ->
-        if (fieldType == localDateClass) {
-            booleanBuilder.and(pathBuilder.getDate(propertyPath, localDateClass)
-                    .eq(LocalDate.parse(value.get(0))))
-        } else if (fieldType == LocalDateTime::class.java) {
-            booleanBuilder.and(pathBuilder.getDate(propertyPath, LocalDateTime::class.java)
-                    .eq(LocalDateTime.parse(value.get(0))))
+        when(fieldType){
+            localDateClass -> booleanBuilder.and(pathBuilder.getDate(propertyPath, localDateClass).eq(LocalDate.parse(value[0])))
+            localDateTimeClass -> booleanBuilder.and(pathBuilder.getDate(propertyPath, localDateTimeClass).eq(LocalDateTime.parse(value[0], DateTimeFormatter.ISO_LOCAL_DATE)))
         }
     }),
-    IN("in", { booleanBuilder, pathBuilder, propertyPath, value, fieldType ->
-//        if (fieldType.isEnum) {
-//            booleanBuilder
-//                    .and(pathBuilder.get(propertyPath)
-//                            .`in`(*value
-//                                    .map{ enum ->  read(fieldType.asSubclass(Enum::class.java), enum ) }
-//                                    .toTypedArray()
-//                            )
-//                    )
-//        } else if (Long::class.java.isAssignableFrom(fieldType)) {
-//            booleanBuilder
-//                    .and(pathBuilder.get(propertyPath)
-//                            .`in`(*value.stream()
-//                                    .map<Long>(Function<String, Long> { java.lang.Long.valueOf(it) })
-//                                    .toArray()
-//                            )
-//                    )
-//        } else {
-//            booleanBuilder.and(pathBuilder.get(propertyPath).`in`(value))
-//        }
+    IN("in", { booleanBuilder, pathBuilder, propertyPath, values, fieldType ->
+        when {
+            fieldType.isEnum -> {
+                val conversionService = DefaultConversionService()
+                booleanBuilder.and(pathBuilder.get(propertyPath).`in`(
+                        *values.map{conversionService.convert(it, fieldType)}.toTypedArray()))
+            }
+            fieldType == longClass -> booleanBuilder.and(pathBuilder.get(propertyPath).`in`(*values.map{ it.toLong() }.toTypedArray()))
+            else -> booleanBuilder.and(pathBuilder.get(propertyPath).`in`(*values.toTypedArray()))
+        }
     });
 
     companion object {
 
-        val stringClass = String::class.java
         val longClass = Long::class.java
         val integerClass = Integer::class.java
         val doubleClass = Double::class.java
         val floatClass = Float::class.java
         val localDateClass = LocalDate::class.java
-        
+        val localDateTimeClass = LocalDateTime::class.java
+
         fun handle(bindings: QuerydslBindings, pathBuilder: PathBuilder<*>, propertyPath: String, path: String,
                    map: MultiValueMap<String, String>, fieldType: Class<*>) {
 
@@ -182,10 +132,4 @@ enum class SearchOperator private constructor(val operator: String,
             }
         }
     }
-
-
-}
-
-fun <T : Enum<T>> read(type: Class<T>, value: String): T {
-    return java.lang.Enum.valueOf(type, value)
 }

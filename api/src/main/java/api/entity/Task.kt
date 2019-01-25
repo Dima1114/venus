@@ -33,4 +33,8 @@ class Task : BaseEntity() {
     @CreatedBy
     @JoinColumn(name = "Tsk_Usr_Id", nullable = false)
     var userAdded: User? = null
+
+    @Enumerated
+    @Column(name = "Tsk_Type", nullable = false)
+    var type: TaskType = TaskType.NORMAL
 }

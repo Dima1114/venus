@@ -35,4 +35,7 @@ class User : BaseEntity() {
     @CollectionTable(name = "User_Role", joinColumns = [(JoinColumn(name = "Usr_Id"))])
     var roles: MutableSet<Role> = hashSetOf()
 
+    @Column(name = "Usr_Age", columnDefinition = "SMALLINT default 0")
+    var age : Int = 0
+
 }

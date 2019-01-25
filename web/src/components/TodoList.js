@@ -33,7 +33,20 @@ class TodoList extends React.Component {
     getTodos(){
         $.ajax({
             type: 'GET',
-            url: 'http://localhost:8080/tasks?title:eq=task&projection=info',
+            url: 'http://localhost:8080/tasks?type:in=URGENT&type:in=NORMAL&projection=info',
+            dataType: 'json',
+        }).then(response => {
+            console.log(response);
+        }).catch(error => {
+            const message = error.responseJSON || error.responseText || error;
+            console.log(message);
+        })
+    }
+
+    getUsers(){
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:8080/users?email:isNotNull',
             dataType: 'json',
         }).then(response => {
             console.log(response);
@@ -54,6 +67,8 @@ class TodoList extends React.Component {
                               onClick={this.onclick.bind(this)}/>
                 <RaisedButton label={'get todos'}
                               onClick={this.getTodos.bind(this)}/>
+                <RaisedButton label={'get users'}
+                              onClick={this.getUsers.bind(this)}/>
                 {!!this.props.list ? this.props.list.map((el, i) => <p key={'el_' + i}>{el.text}</p>) : null}
 
                 <Link to={'/'}>

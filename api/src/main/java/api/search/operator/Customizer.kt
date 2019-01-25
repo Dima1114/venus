@@ -26,12 +26,12 @@ fun customizeQuery(params: MultiValueMap<String, String>, type: TypeInformation<
         var propertyName: String? = null
 
         while (pp.hasNext()) {
-            propertyName = (if (propertyName != null) "$propertyName." else "") + pp.segment
+            propertyName = propertyName?.let{"$it." + pp.segment} ?: pp.segment
             pp = pp.next()!!
         }
 
         val rootBuilder = PathBuilder(root.type, root.metadata)
-        val builder = propertyName?.let{ PathBuilder(pp.owningType.type, rootBuilder.get(propertyName).toString()) } ?: rootBuilder
+        val builder = propertyName?.let{ PathBuilder(pp.owningType.type, rootBuilder.get(it).toString()) } ?: rootBuilder
 
         SearchOperator.handle(bindings, builder, pp.segment, propertyPath, criteria, pp.type)
     }
