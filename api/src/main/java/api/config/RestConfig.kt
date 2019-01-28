@@ -12,8 +12,6 @@ import org.springframework.data.rest.core.config.Projection
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer
 
-import java.util.stream.Stream
-
 @Configuration
 @EnableJpaAuditing
 class RestConfig : RepositoryRestConfigurer {
@@ -23,7 +21,7 @@ class RestConfig : RepositoryRestConfigurer {
     }
 
     private fun registerRepositoryProjections(config: RepositoryRestConfiguration, vararg packages: String) {
-        Stream.of(*packages).forEach { packageName ->
+        packages.forEach { packageName ->
             val reflections = Reflections(packageName)
             reflections.getTypesAnnotatedWith(Projection::class.java)
                     .forEach { projection -> config.projectionConfiguration.addProjection(projection) }

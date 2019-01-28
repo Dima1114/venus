@@ -125,7 +125,6 @@ enum class SearchOperator(val operator: String,
             // Apply criteria for path
             fieldSearchCriteria.value?.let {
                 bindings.bind(pathBuilder.get(propertyPath)).`as`(alias).all { _, _ -> Optional.of(it) }
-
             }
         }
     }
