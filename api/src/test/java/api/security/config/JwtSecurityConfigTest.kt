@@ -17,7 +17,6 @@ import org.mockito.Mock
 import org.mockito.Spy
 import org.mockito.junit.MockitoJUnitRunner
 import org.springframework.security.authentication.ProviderManager
-import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.test.util.ReflectionTestUtils
@@ -40,9 +39,6 @@ class JwtSecurityConfigTest {
 
     @Mock
     lateinit var errorHandler: ErrorHandler
-
-    @Mock
-    lateinit var httpSecurity: HttpSecurity
 
     @Test
     fun `jwtLoginProvider is configured`(){
@@ -86,6 +82,5 @@ class JwtSecurityConfigTest {
         //then
         result `should be instance of` JwtAuthenticationTokenFilter::class
         matcher `should be instance of` SkipPathAndMethodsRequestMatcher::class
-
     }
 }
