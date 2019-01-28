@@ -82,7 +82,7 @@ class TodoList extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    auth: state.loginReducer,
+    auth: state.authReducer,
     baseUrl: state.initBaseUrl.baseUrl
 });
 

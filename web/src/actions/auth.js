@@ -60,9 +60,7 @@ export function refreshToken(baseUrl, token) {
             type: 'POST',
             url: baseUrl + '/auth/token',
             contentType: 'application/json',
-            headers: {
-                "X-Auth": 'Bearer ' + token
-            }
+            headers: {"X-Auth": "Bearer " + token}
         }).then(response => {
             dispatch(refreshTokenSuccess(response))
         }).catch(error => {

@@ -79,7 +79,7 @@ class LoginComponent extends Component {
 
 const mapStateToProps = state => ({
     baseUrl: state.initBaseUrl.baseUrl,
-    auth: state.loginReducer
+    auth: state.authReducer
 });
 
 const mapDispatchToProps = dispatch => ({

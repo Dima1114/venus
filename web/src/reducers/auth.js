@@ -20,7 +20,7 @@ const initState = {
     globalError: null
 };
 
-export const loginReducer = createReducer(initState, {
+export const authReducer = createReducer(initState, {
 
     [LOGIN_REQUEST]: (state) => {
         return Object.assign({}, state, {
