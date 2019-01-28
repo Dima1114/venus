@@ -1,9 +1,11 @@
-package api.config.auditor
+package api.config
 
 import api.config.RestMvcConfig
 import api.search.ApiQuerydslBindingsFactory
 import api.search.ApiQuerydslMethodArgumentResolver
 import com.nhaarman.mockito_kotlin.spy
+import com.nhaarman.mockito_kotlin.times
+import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import org.amshove.kluent.`should be instance of`
 import org.amshove.kluent.any
@@ -12,6 +14,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
+import org.mockito.Mockito
 import org.mockito.Spy
 import org.mockito.junit.MockitoJUnitRunner
 import org.springframework.beans.factory.ListableBeanFactory
@@ -46,6 +49,20 @@ class RestMvcConfigTest {
         whenever(context.getBeanNamesForType(any(), any(), any())).thenReturn(arrayOf())
         ReflectionTestUtils.setField(testSubject, "applicationContext", context)
 
+    }
+
+    @Test
+    fun `repo request argument resolver is configured`(){
+
+        //given
+        val spyTestSubject = Mockito.spy(testSubject)
+
+        //when
+        val result = spyTestSubject.repoRequestArgumentResolver()
+
+        //then
+        verify(spyTestSubject, times(1)).querydslMethodArgumentResolver()
+        result `should be instance of` ApiQuerydslMethodArgumentResolver::class
     }
 
     @Test

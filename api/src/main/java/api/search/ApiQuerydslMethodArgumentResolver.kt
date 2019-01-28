@@ -42,6 +42,7 @@ class ApiQuerydslMethodArgumentResolver(private val repositories: Repositories,
         factory.customize(map, type, bindings)
         val predicate = predicateBuilder.getPredicate(type, map, bindings) ?: BooleanBuilder()
 
+        @Suppress("UNCHECKED_CAST")
         return QuerydslRepositoryInvokerAdapter(invoker, repository as QuerydslPredicateExecutor<Any>, predicate)
     }
 

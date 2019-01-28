@@ -11,10 +11,10 @@ class JwtUserDetails : UserDetails {
     private var username: String? = null
     private var password: String? = null
     private var isEnabled: Boolean = false
-    private var roles: Set<Role>? = null
+    private var roles: Set<Role> = mutableSetOf()
     private var refreshToken: String? = null
 
-    override fun getAuthorities(): Collection<GrantedAuthority>? = roles
+    override fun getAuthorities(): Collection<GrantedAuthority> = roles
 
     override fun getPassword(): String? = password
 
@@ -50,7 +50,7 @@ class JwtUserDetails : UserDetails {
         return this
     }
 
-    fun setAuthorities(roles: Set<Role>?): JwtUserDetails {
+    fun setAuthorities(roles: Set<Role>): JwtUserDetails {
         this.roles = roles
         return this
     }
@@ -73,5 +73,14 @@ class JwtUserDetails : UserDetails {
                     .setPassword(user.password)
                     .setRefreshToken(user.refreshToken)
         }
+    }
+}
+
+fun JwtUserDetails.getUser(): User {
+    return User().apply {
+        id = getId()
+        username = getUsername()
+        isEnabled = isEnabled()
+        roles = authorities.map { it as Role }.toMutableSet()
     }
 }

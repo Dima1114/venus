@@ -19,7 +19,7 @@ class TodoList extends React.Component {
     onclick() {
         $.ajax({
             type: 'GET',
-            url: 'http://localhost:8080/rest/hello',
+            url: this.props.baseUrl + '/rest/hello',
             dataType: 'json',
         }).then(response => {
             console.log(response);
@@ -33,7 +33,7 @@ class TodoList extends React.Component {
     getTodos(){
         $.ajax({
             type: 'GET',
-            url: 'http://localhost:8080/tasks?type:in=URGENT&type:in=NORMAL&projection=info',
+            url:  this.props.baseUrl +  '/tasks?type:in=URGENT&type:in=NORMAL&projection=info',
             dataType: 'json',
         }).then(response => {
             console.log(response);
@@ -46,7 +46,7 @@ class TodoList extends React.Component {
     getUsers(){
         $.ajax({
             type: 'GET',
-            url: 'http://localhost:8080/users?email:isNotNull',
+            url: this.props.baseUrl + '/users?email:isNotNull',
             dataType: 'json',
         }).then(response => {
             console.log(response);
@@ -83,6 +83,7 @@ class TodoList extends React.Component {
 
 const mapStateToProps = state => ({
     auth: state.loginReducer,
+    baseUrl: state.initBaseUrl.baseUrl
 });
 
 const mapDispatchToProps = dispatch => ({

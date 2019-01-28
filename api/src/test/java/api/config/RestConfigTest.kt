@@ -1,10 +1,9 @@
-package api.config.auditor
+package api.config
 
-import api.config.RestConfig
+import api.config.auditor.AuditAwareImpl
 import api.entity.TestEntity
 import api.projection.TestProjection
 import api.repository.UserRepository
-import com.nhaarman.mockito_kotlin.spy
 import com.nhaarman.mockito_kotlin.whenever
 import org.amshove.kluent.`should be equal to`
 import org.amshove.kluent.`should be instance of`
@@ -14,8 +13,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
-import org.reflections.Reflections
-import org.springframework.data.rest.core.config.Projection
 import org.springframework.data.rest.core.config.ProjectionDefinitionConfiguration
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration
 

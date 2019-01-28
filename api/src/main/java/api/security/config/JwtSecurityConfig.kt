@@ -56,7 +56,7 @@ class JwtSecurityConfig(private val authenticationProvider: JwtAuthenticationPro
     @Bean
     fun authenticationTokenFilter(): JwtAuthenticationTokenFilter {
 
-        val pathsToSkip = Arrays.asList(TOKEN_ENTRY_POINT, LOGIN_ENTRY_POINT, ERROR_ENTRY_POINT, ENTRY_POINT)
+        val pathsToSkip = Arrays.asList(TOKEN_ENTRY_POINT, LOGIN_ENTRY_POINT)
         val methodsToSkip = listOf(HttpMethod.OPTIONS.name)
 
         val matcher = SkipPathAndMethodsRequestMatcher(pathsToSkip, methodsToSkip, ENTRY_POINT)
@@ -80,41 +80,41 @@ class JwtSecurityConfig(private val authenticationProvider: JwtAuthenticationPro
                 .exceptionHandling()
                 .accessDeniedHandler(errorHandler)
                 .authenticationEntryPoint(entryPoint)
-                .and()
-                .formLogin()
+//                .and()
+//                .formLogin()
+//                .failureHandler(errorHandler)
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                 .and().cors()
-//        http
-//                .addFilterBefore(authenticationTokenFilter(), UsernamePasswordAuthenticationFilter::class.java)
+        http
+                .addFilterBefore(authenticationTokenFilter(), UsernamePasswordAuthenticationFilter::class.java)
 
         http.headers().cacheControl()
         http.requestCache().requestCache(httpSessionRequestCache)
     }
 
     //not necessary if use proxy in Web requests
-    @Bean
-    fun corsConfigurationSource(): CorsConfigurationSource {
-        val configuration = CorsConfiguration()
-        configuration.allowedOrigins = ImmutableList.of("*")
-        configuration.allowedMethods = ImmutableList.of("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
-        // setAllowCredentials(true) is important, otherwise:
-        // The value of the 'Access-Control-Allow-Origin' header in the response must not be the wildcard '*'
-        // when the request's credentials mode is 'include'.
-        configuration.allowCredentials = true
-        // setAllowedHeaders is important! Without it, OPTIONS preflight request
-        // will fail with 403 Invalid CORS request
-        configuration.allowedHeaders = ImmutableList.of("X-Auth", "Cache-Control", "Content-Type", "X-Requested-With")
-        val source = UrlBasedCorsConfigurationSource()
-        source.registerCorsConfiguration("/**", configuration)
-        return source
-    }
+//    @Bean
+//    fun corsConfigurationSource(): CorsConfigurationSource {
+//        val configuration = CorsConfiguration()
+//        configuration.allowedOrigins = ImmutableList.of("*")
+//        configuration.allowedMethods = ImmutableList.of("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
+//        // setAllowCredentials(true) is important, otherwise:
+//        // The value of the 'Access-Control-Allow-Origin' header in the response must not be the wildcard '*'
+//        // when the request's credentials mode is 'include'.
+//        configuration.allowCredentials = true
+//        // setAllowedHeaders is important! Without it, OPTIONS preflight request
+//        // will fail with 403 Invalid CORS request
+//        configuration.allowedHeaders = ImmutableList.of("X-Auth", "Cache-Control", "Content-Type", "X-Requested-With")
+//        val source = UrlBasedCorsConfigurationSource()
+//        source.registerCorsConfiguration("/**", configuration)
+//        return source
+//    }
 
     companion object {
 
         const val TOKEN_ENTRY_POINT = "/auth/token"
         const val LOGIN_ENTRY_POINT = "/auth/login"
-        const val ERROR_ENTRY_POINT = "/error"
         const val ENTRY_POINT = "/**"
         const val TOKEN_HEADER = "X-Auth"
     }
