@@ -15,5 +15,5 @@ fun extract(request: HttpServletRequest): String {
         throw JwtAuthenticationException("Token is missing")
     }
 
-    return header.substring(PREFIX.length + 1)
+    return header.substring(PREFIX.length)
 }

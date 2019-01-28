@@ -53,6 +53,7 @@ class JwtTokenServiceImpl(private val jwtSettings: JwtSettings, private val user
         val claims = Jwts.claims()
         claims["uid"] = uid
         claims["userId"] = (userDetails as JwtUserDetails).getId()
+        claims["username"] = userDetails.username
 
         val now = Date()
         val expiryDate = Date(now.time + jwtSettings.jwtRefreshExpirationInMs)

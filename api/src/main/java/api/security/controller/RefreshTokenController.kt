@@ -15,13 +15,11 @@ import javax.servlet.http.HttpServletRequest
 class RefreshTokenController(private val tokenService: JwtTokenService, private val userDetailsService: UserDetailsService) {
 
     @PostMapping
-    fun refreshToken(@RequestBody refreshTokenMap: Map<String, String>, request: HttpServletRequest): LoginResponse {
+    fun refreshToken(request: HttpServletRequest): LoginResponse {
 
-        var refreshToken = refreshTokenMap["refreshToken"] ?: ""
+        var refreshToken = extract(request)
         tokenService.verifyToken(refreshToken)
-
-        var accessToken = extract(request)
-        val username = tokenService.getUsernameFromJWT(accessToken)
+        val username = tokenService.getUsernameFromJWT(refreshToken)
         val userDetails = userDetailsService.loadUserByUsername(username) as JwtUserDetails
         val dataBaseRefreshToken = userDetails.getRefreshToken()
 
@@ -30,7 +28,7 @@ class RefreshTokenController(private val tokenService: JwtTokenService, private 
         }
 
         refreshToken = tokenService.generateRefreshToken(userDetails)
-        accessToken = tokenService.generateAccessToken(userDetails)
+        val accessToken = tokenService.generateAccessToken(userDetails)
         tokenService.updateRefreshToken(username, refreshToken)
 
         return LoginResponse(accessToken, refreshToken)

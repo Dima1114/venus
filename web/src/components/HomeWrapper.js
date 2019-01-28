@@ -12,6 +12,8 @@ import {initBaseUrl} from "../actions";
 import {logoutAndRedirect, refreshToken} from "../actions/auth";
 import {bindActionCreators} from "redux";
 
+const baseUrl = 'http://localhost:3000';
+
 class HomeWrapper extends Component {
 
     constructor(props) {
@@ -23,7 +25,8 @@ class HomeWrapper extends Component {
     }
 
     componentWillMount() {
-        this.props.initBaseUrl('http://localhost:3000');
+        this.props.initBaseUrl(baseUrl);
+        this.refreshTokenOnReload(baseUrl);
 
         if (!!this.props.auth.accessToken) {
             $.ajaxSetup({
@@ -43,6 +46,13 @@ class HomeWrapper extends Component {
                     "X-Auth": 'Bearer ' + nextProps.auth.accessToken
                 }
             })
+        }
+    }
+
+    refreshTokenOnReload(baseUrl){
+        const refreshToken = localStorage.getItem('refreshToken');
+        if(!this.props.auth.isAuthenticated && !!refreshToken){
+            this.props.refreshToken(baseUrl, refreshToken)
         }
     }
 
