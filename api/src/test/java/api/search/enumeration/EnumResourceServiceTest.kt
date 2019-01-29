@@ -2,8 +2,11 @@ package api.search.enumeration
 
 import org.amshove.kluent.`should be equal to`
 import org.amshove.kluent.`should contain`
+import org.atteo.evo.inflector.English
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.mockito.junit.MockitoJUnitRunner
 
 class EnumResourceServiceTest{
 
@@ -11,24 +14,36 @@ class EnumResourceServiceTest{
 
     @Before
     fun setUp(){
-        enumResourceService = EnumResourceServiceImpl()
+        enumResourceService = EnumResourceServiceImpl("api/search")
     }
 
     @Test
     fun `should find and return enum list by name`(){
 
         //when
-        val result = enumResourceService.getEnumResource("testEnums")
+        val result = enumResourceService.getEnumResource("testEnum")
 
         //then
         result.size `should be equal to` 7
-        result `should contain` Pair("name", "GET")
-        result `should contain` Pair("name", "POST")
-        result `should contain` Pair("name", "HEAD")
-        result `should contain` Pair("name", "PUT")
-        result `should contain` Pair("name", "PATCH")
-        result `should contain` Pair("name", "DELETE")
-        result `should contain` Pair("name", "OPTION")
+        result `should contain` mapOf("name" to "GET")
+        result `should contain` mapOf("name" to "POST")
+        result `should contain` mapOf("name" to "HEAD")
+        result `should contain` mapOf("name" to "PUT")
+        result `should contain` mapOf("name" to "PATCH")
+        result `should contain` mapOf("name" to "DELETE")
+        result `should contain` mapOf("name" to "OPTION")
+    }
+
+    @Test
+    fun `should find and return enum list by name from particular package`(){
+
+        //when
+        val result = enumResourceService.getEnumResource("testEnum", "api/entity")
+
+        //then
+        result.size `should be equal to` 2
+        result `should contain` Pair("name", "JAVA")
+        result `should contain` Pair("name", "KOTLIN")
     }
 }
 

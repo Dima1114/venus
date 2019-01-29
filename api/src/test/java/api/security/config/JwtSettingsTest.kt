@@ -1,6 +1,6 @@
 package api.security.config
 
-import org.amshove.kluent.`should not be`
+import org.amshove.kluent.`should be`
 import org.junit.Test
 
 class JwtSettingsTest {
@@ -11,8 +11,8 @@ class JwtSettingsTest {
     fun `settings should be taken from properties`(){
 
         //then
-        testSubject.jwtSecret `should not be` "security"
-        testSubject.jwtExpirationInMs `should not be` 3600000
-        testSubject.jwtRefreshExpirationInMs `should not be` 432000000
+        testSubject.jwtSecret `should be` "security"
+        testSubject.jwtExpirationInMs `should be` 3600000
+        testSubject.jwtRefreshExpirationInMs `should be` 432000000
     }
 }

@@ -1,3 +1,9 @@
 package api.search.enumeration
 
-annotation class EnumResource
+import api.entity.Role
+import java.lang.annotation.Inherited
+
+@Target(AnnotationTarget.CLASS)
+@Inherited
+@MustBeDocumented
+annotation class EnumResource(vararg val secured: Role = [])
