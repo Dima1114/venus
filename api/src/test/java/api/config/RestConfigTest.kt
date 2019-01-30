@@ -22,9 +22,6 @@ class RestConfigTest {
     lateinit var testSubject: RestConfig
 
     @Mock
-    lateinit var userRepository: UserRepository
-
-    @Mock
     lateinit var config: RepositoryRestConfiguration
 
     @Before
@@ -52,7 +49,7 @@ class RestConfigTest {
     fun `auditor provider is configured`(){
 
         //when
-        val result = testSubject.auditorProvider(userRepository)
+        val result = testSubject.auditorProvider()
         //then
         result `should be instance of` AuditAwareImpl::class
     }

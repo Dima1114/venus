@@ -29,6 +29,5 @@ class RestConfig : RepositoryRestConfigurer {
     }
 
     @Bean
-    fun auditorProvider(userRepository: UserRepository): AuditorAware<User> =
-            AuditAwareImpl(userRepository)
+    fun auditorProvider(): AuditorAware<User> = AuditAwareImpl()
 }
