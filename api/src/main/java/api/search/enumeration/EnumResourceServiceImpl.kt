@@ -39,6 +39,6 @@ class EnumResourceServiceImpl(@Value("\${reflection.enum.root-path}") private va
         val authorities = getUserFromContext()?.roles ?: return false
         val securedBy = clazz.getAnnotation(EnumResource::class.java).secured.toList()
 
-        return !Collections.disjoint(authorities, securedBy)
+        return securedBy.isEmpty() || !Collections.disjoint(authorities, securedBy)
     }
 }
