@@ -56,6 +56,19 @@ class TodoList extends React.Component {
         })
     }
 
+    getEnums(){
+        $.ajax({
+            type: 'GET',
+            url: this.props.baseUrl + '/api/enums/taskType2',
+            dataType: 'json',
+        }).then(response => {
+            console.log(response);
+        }).catch(error => {
+            const message = error.responseJSON || error.responseText || error;
+            console.log(message);
+        })
+    }
+
     render() {
         return (
             <div className={'app-body'}>
@@ -69,6 +82,8 @@ class TodoList extends React.Component {
                               onClick={this.getTodos.bind(this)}/>
                 <RaisedButton label={'get users'}
                               onClick={this.getUsers.bind(this)}/>
+                <RaisedButton label={'get enums'}
+                              onClick={this.getEnums.bind(this)}/>
                 {!!this.props.list ? this.props.list.map((el, i) => <p key={'el_' + i}>{el.text}</p>) : null}
 
                 <Link to={'/'}>

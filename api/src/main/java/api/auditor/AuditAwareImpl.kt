@@ -1,4 +1,4 @@
-package api.config.auditor
+package api.auditor
 
 import api.entity.User
 import api.service.getUserFromContext

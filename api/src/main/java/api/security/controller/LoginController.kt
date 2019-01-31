@@ -39,7 +39,7 @@ class LoginController(private val jwtTokenService: JwtTokenService,
             )
         } catch (ex: Exception) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(ErrorResponse(HttpStatus.UNAUTHORIZED, ex.message, Date()))
+                    .body(ErrorResponse(HttpStatus.UNAUTHORIZED, ex.message))
         }
 
         SecurityContextHolder.getContext().authentication = authentication

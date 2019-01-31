@@ -59,6 +59,7 @@ class HomeWrapper extends Component {
     refreshCountDown(props){
         if(props.auth.isAuthenticated && !!props.auth.expTime){
             const timeOut = props.auth.expTime * 1000 - new Date().getTime() - 60000;
+            console.log(timeOut);
             const refreshTimer = setTimeout(
                 () => this.props.refreshToken(this.props.baseUrl, props.auth.refreshToken), timeOut);
             this.setState({refreshTimer: refreshTimer})

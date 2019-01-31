@@ -1,7 +1,14 @@
 package api.security.model
 
 import org.springframework.http.HttpStatus
+import java.time.LocalDateTime
 
-import java.util.Date
+class ErrorResponse(val status: HttpStatus, val message: String?){
 
-class ErrorResponse(val status: HttpStatus, val message: String?, val timestamp: Date)
+    val errorCode = status.value()
+    val timestamp = LocalDateTime.now()
+
+    constructor(exception: Exception?) :
+            this(HttpStatus.INTERNAL_SERVER_ERROR, exception?.message)
+
+}

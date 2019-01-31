@@ -1,8 +1,7 @@
 package api.config
 
-import api.config.auditor.AuditAwareImpl
+import api.auditor.AuditAwareImpl
 import api.entity.User
-import api.repository.UserRepository
 import org.reflections.Reflections
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

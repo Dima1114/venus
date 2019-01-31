@@ -30,7 +30,7 @@ class ErrorHandler : AccessDeniedHandler, AuthenticationFailureHandler {
         response.contentType = MediaType.APPLICATION_JSON_VALUE
 
         ObjectMapper().writeValue(response.writer,
-                ErrorResponse(HttpStatus.UNAUTHORIZED, e.message, Date()))
+                ErrorResponse(HttpStatus.UNAUTHORIZED, e.message))
     }
 
     @Throws(IOException::class, ServletException::class)

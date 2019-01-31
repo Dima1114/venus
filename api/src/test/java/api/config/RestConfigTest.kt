@@ -1,9 +1,8 @@
 package api.config
 
-import api.config.auditor.AuditAwareImpl
+import api.auditor.AuditAwareImpl
 import api.entity.TestEntity
 import api.projection.TestProjection
-import api.repository.UserRepository
 import com.nhaarman.mockito_kotlin.whenever
 import org.amshove.kluent.`should be equal to`
 import org.amshove.kluent.`should be instance of`

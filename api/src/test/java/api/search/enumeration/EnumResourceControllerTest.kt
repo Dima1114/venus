@@ -1,5 +1,8 @@
 package api.search.enumeration
 
+import api.exception.ResourceNotFoundException
+import api.handler.RestResponseEntityExceptionHandler
+import api.security.exceptions.JwtAuthenticationException
 import com.nhaarman.mockito_kotlin.whenever
 import org.junit.Before
 import org.junit.Test
@@ -31,6 +34,7 @@ class EnumResourceControllerTest {
 
         mvc = MockMvcBuilders
                 .standaloneSetup(testSubject)
+                .setControllerAdvice(RestResponseEntityExceptionHandler())
                 .build()
     }
 
@@ -39,7 +43,7 @@ class EnumResourceControllerTest {
 
         //given
         whenever(enumResourceService.getEnumResource("testEnum"))
-                .thenReturn(TestEnum.values().map { mapOf("name" to it.name) }.toList())
+                .thenReturn(TestEnum.values().map { EnumValue(it.name) }.toList())
 
         //when
         val result = this.mvc.perform(get("/api/enums/testEnum").accept(MediaType.APPLICATION_JSON))
@@ -48,5 +52,30 @@ class EnumResourceControllerTest {
         result.andExpect(status().isOk)
                 .andExpect(jsonPath("$.content").exists())
                 .andExpect(jsonPath("$.content.length()").value(7))
+    }
+
+    @Test(expected = Exception::class)
+    fun `should throw not authorized exception`() {
+
+        //given
+        whenever(enumResourceService.getEnumResource("testEnum2"))
+                .thenThrow(JwtAuthenticationException("Not authorized"))
+
+        //when
+        this.mvc.perform(get("/api/enums/testEnum2").accept(MediaType.APPLICATION_JSON))
+    }
+
+    @Test
+    fun `should throw not found exception`() {
+
+        //given
+        whenever(enumResourceService.getEnumResource("testEnum3"))
+                .thenThrow(ResourceNotFoundException("Requested resource not found"))
+
+        //when
+        val result = this.mvc.perform(get("/api/enums/testEnum3").accept(MediaType.APPLICATION_JSON))
+
+        //then
+        result.andExpect(status().isNotFound)
     }
 }

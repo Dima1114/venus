@@ -2,6 +2,8 @@ package api.search.enumeration
 
 import api.entity.Role
 import api.security.exceptions.JwtAuthenticationException
+import api.security.model.JwtAuthenticationToken
+import api.security.model.JwtUserDetails
 import org.amshove.kluent.`should be equal to`
 import org.amshove.kluent.`should contain`
 import org.atteo.evo.inflector.English
@@ -9,6 +11,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.junit.MockitoJUnitRunner
+import org.springframework.security.core.context.SecurityContextHolder
 
 class EnumResourceServiceTest{
 
@@ -54,6 +57,40 @@ class EnumResourceServiceTest{
         //when
         enumResourceService.getEnumResource("testEnum2")
     }
+
+    @Test(expected = JwtAuthenticationException::class)
+    fun `should forbid access to secured enum list because of lack of authorities`(){
+
+        //given
+        setUpSecurityContextHolder(Role.ROLE_WRITE)
+
+        //when
+        enumResourceService.getEnumResource("testEnum2")
+    }
+
+    @Test
+    fun `should return enum list secured with role`(){
+
+        //given
+        setUpSecurityContextHolder(Role.ROLE_WRITE, Role.ROLE_READ)
+
+        //when
+        val result = enumResourceService.getEnumResource("testEnum2")
+
+        //then
+        result.size `should be equal to` 2
+        result `should contain` mapOf("name" to "GET")
+        result `should contain` mapOf("name" to "POST")
+    }
+
+    private fun setUpSecurityContextHolder(vararg roles: Role){
+        val userDetails = JwtUserDetails().apply {
+            username = "user"
+            setAuthorities(roles.toSet())
+        }
+        SecurityContextHolder.getContext().authentication =
+                JwtAuthenticationToken(userDetails, null, null, null)
+    }
 }
 
 @EnumResource
@@ -63,5 +100,5 @@ enum class TestEnum{
 
 @EnumResource(secured = [Role.ROLE_READ])
 enum class TestEnum2{
-    GET, POST, HEAD, PUT, PATCH, DELETE, OPTION
+    GET, POST
 }
