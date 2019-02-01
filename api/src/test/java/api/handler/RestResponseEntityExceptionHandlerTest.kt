@@ -1,5 +1,7 @@
 package api.handler
 
+import api.exception.ResourceNotFoundException
+import api.security.model.ErrorResponse
 import org.amshove.kluent.`should be equal to`
 import org.amshove.kluent.shouldEqual
 import org.junit.Test
@@ -27,8 +29,18 @@ class RestResponseEntityExceptionHandlerTest {
 
         //then
         result.statusCode shouldEqual HttpStatus.BAD_REQUEST
-
         @Suppress("UNCHECKED_CAST")
-        val errorsList = (result.body as Map<String, List<Any>>)["errors"]!!.size `should be equal to` 2
+        (result.body as Map<String, List<Any>>)["errors"]!!.size `should be equal to` 2
+    }
+
+    @Test
+    fun `should return not found status`() {
+
+        //when
+        val result = testSubject.handleNotFoundException(ResourceNotFoundException("Not found"), ServletWebRequest(MockHttpServletRequest()))
+
+        //then
+        result.statusCode shouldEqual HttpStatus.NOT_FOUND
+        (result.body as ErrorResponse).message!! `should be equal to` "Not found"
     }
 }

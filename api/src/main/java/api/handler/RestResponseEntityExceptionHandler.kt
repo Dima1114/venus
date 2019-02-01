@@ -30,7 +30,7 @@ class RestResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(ResourceNotFoundException::class)
-    fun errorNotFoundHandle(exception: ResourceNotFoundException, request: WebRequest): ResponseEntity<Any> {
+    fun handleNotFoundException(exception: ResourceNotFoundException, request: WebRequest): ResponseEntity<Any> {
         val errorResponse = ErrorResponse(HttpStatus.NOT_FOUND, exception.message)
         return ResponseEntity(errorResponse, errorResponse.status)
     }
