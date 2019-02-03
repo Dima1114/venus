@@ -43,7 +43,7 @@ class EnumResourceServiceTest{
     fun `should find and return enum list by name from particular package`(){
 
         //when
-        val result = enumResourceService.getEnumResource("testEnum", "api/entity")
+        val result = enumResourceService.getEnumResource("testEnum", "api/data")
 
         //then
         result.size `should be equal to` 2

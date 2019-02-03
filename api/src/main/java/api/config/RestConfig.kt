@@ -7,12 +7,16 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.domain.AuditorAware
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories
+import org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean
 import org.springframework.data.rest.core.config.Projection
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer
 
 @Configuration
 @EnableJpaAuditing
+@EnableJpaRepositories(basePackages = ["api.repository"],
+        repositoryFactoryBeanClass = JpaRepositoryFactoryBean::class)
 class RestConfig : RepositoryRestConfigurer {
 
     override fun configureRepositoryRestConfiguration(config: RepositoryRestConfiguration) {

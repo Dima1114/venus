@@ -2,9 +2,8 @@ package api.search
 
 import com.querydsl.core.BooleanBuilder
 import org.springframework.core.MethodParameter
-import org.springframework.data.querydsl.QuerydslRepositoryInvokerAdapter
 import org.springframework.data.querydsl.QuerydslPredicateExecutor
-import org.springframework.data.querydsl.binding.QuerydslBindings
+import org.springframework.data.querydsl.QuerydslRepositoryInvokerAdapter
 import org.springframework.data.querydsl.binding.QuerydslPredicate
 import org.springframework.data.querydsl.binding.QuerydslPredicateBuilder
 import org.springframework.data.repository.support.Repositories
@@ -15,7 +14,6 @@ import org.springframework.data.rest.webmvc.config.RootResourceInformationHandle
 import org.springframework.data.util.ClassTypeInformation
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
-import java.util.*
 
 class ApiQuerydslMethodArgumentResolver(private val repositories: Repositories,
                                         private val predicateBuilder: QuerydslPredicateBuilder,
@@ -35,7 +33,7 @@ class ApiQuerydslMethodArgumentResolver(private val repositories: Repositories,
         }
 
         val type = ClassTypeInformation.from(domainType)
-        val bindings = QuerydslBindings()
+        val bindings = factory.createBindingsFor(type)
         val map = toMultiValueMap(parameters)
 
         //handle custom search

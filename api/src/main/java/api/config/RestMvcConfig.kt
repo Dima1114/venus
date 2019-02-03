@@ -8,8 +8,6 @@ import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.convert.ConversionService
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories
-import org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean
 import org.springframework.data.querydsl.QuerydslUtils
 import org.springframework.data.querydsl.SimpleEntityPathResolver
 import org.springframework.data.querydsl.binding.QuerydslPredicateBuilder
@@ -19,8 +17,6 @@ import org.springframework.data.web.config.EnableSpringDataWebSupport
 
 @Configuration
 @EnableSpringDataWebSupport
-@EnableJpaRepositories(basePackages = ["api.repository"],
-        repositoryFactoryBeanClass = JpaRepositoryFactoryBean::class)
 class RestMvcConfig(context: ApplicationContext,
                     @Qualifier("mvcConversionService") conversionService: ObjectFactory<ConversionService>)
     : RepositoryRestMvcConfiguration(context, conversionService) {
