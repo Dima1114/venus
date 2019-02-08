@@ -1,6 +1,6 @@
 package api.entity
 
-import java.time.LocalDate
+import java.time.LocalDateTime
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
@@ -12,7 +12,7 @@ class TestEntity2(
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         var id: Long? = null,
         var num: Int = 0,
-        val date: LocalDate? = null,
+        val date: LocalDateTime? = null,
 //        @OneToOne(cascade = [CascadeType.ALL])
 //        val parent: TestEntity? = null,
         val type: TestEnum = TestEnum.KOTLIN)

@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPat
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
@@ -42,9 +43,9 @@ class SearchOperatorTest : AbstractTestMvcIntegration() {
         val testEntity3 = TestEntity(date = LocalDate.now().plusDays(2), name = "test_third", float = 3.5F)
         val testEntity4 = TestEntity(date = LocalDate.now().plusDays(3), name = "fourth")
 
-        val child1 = TestEntity2(date = LocalDate.now().minusDays(1), type = TestEnum.JAVA)
-        val child2 = TestEntity2(date = LocalDate.now().minusDays(2), num = 2)
-        val child3 = TestEntity2(date = LocalDate.now().plusDays(3), num = 3)
+        val child1 = TestEntity2(date = LocalDateTime.now().minusDays(1), type = TestEnum.JAVA)
+        val child2 = TestEntity2(date = LocalDateTime.now().minusDays(2), num = 2)
+        val child3 = TestEntity2(date = LocalDateTime.now().plusDays(3), num = 3)
 //        val child4 = TestEntity2(parent = testEntity4, date = LocalDate.now().plusDays(4), num = 4)
     }
 
@@ -288,6 +289,81 @@ class SearchOperatorTest : AbstractTestMvcIntegration() {
                 .andExpect(jsonPath("$._embedded.testEntities[?(@.name == '${testEntity.name}')]").exists())
                 .andExpect(jsonPath("$._embedded.testEntities[?(@.name == '${testEntity2.name}')]").exists())
                 .andExpect(jsonPath("$._embedded.testEntities[?(@.name == '${testEntity3.name}')]").exists())
+    }
+
+    @Test
+    fun `test dloe operator`() {
+
+        //given
+        val date = LocalDate.now().plusDays(1)
+        val dateTime = LocalDateTime.now().minusDays(2)
+
+        //when
+        var result = performGet("/testEntities?date:dloe=$date")
+        //then
+        result
+                .andExpect(status().isOk)
+                .andExpect(jsonPath("$.page.totalElements").value(1))
+                .andExpect(jsonPath("$._embedded.testEntities[?(@.name == '${testEntity2.name}')]").exists())
+
+//        when
+        result = performGet("/testEntities?child.date:dloe=$dateTime")
+        //then
+        result
+//                .andDo(print())
+                .andExpect(status().isOk)
+                .andExpect(jsonPath("$.page.totalElements").value(1))
+                .andExpect(jsonPath("$._embedded.testEntities[?(@.name == '${testEntity2.name}')]").exists())
+    }
+
+    @Test
+    fun `test dgoe operator`() {
+
+        //given
+        val date = LocalDate.now().plusDays(3)
+        val dateTime = LocalDateTime.now()
+
+        //when
+        var result = performGet("/testEntities?date:dgoe=$date")
+        //then
+        result
+                .andExpect(status().isOk)
+                .andExpect(jsonPath("$.page.totalElements").value(1))
+                .andExpect(jsonPath("$._embedded.testEntities[?(@.name == '${testEntity4.name}')]").exists())
+
+//        when
+        result = performGet("/testEntities?child.date:dgoe=$dateTime")
+        //then
+        result
+//                .andDo(print())
+                .andExpect(status().isOk)
+                .andExpect(jsonPath("$.page.totalElements").value(1))
+                .andExpect(jsonPath("$._embedded.testEntities[?(@.name == '${testEntity3.name}')]").exists())
+    }
+
+    @Test
+    fun `test deq operator`() {
+
+        //given
+        val date = LocalDate.now().plusDays(3)
+        val dateTime = testEntity.child!!.date
+
+        //when
+        var result = performGet("/testEntities?date:deq=$date")
+        //then
+        result
+                .andExpect(status().isOk)
+                .andExpect(jsonPath("$.page.totalElements").value(1))
+                .andExpect(jsonPath("$._embedded.testEntities[?(@.name == '${testEntity4.name}')]").exists())
+
+//        when
+        result = performGet("/testEntities?child.date:deq=$dateTime")
+        //then
+        result
+//                .andDo(print())
+                .andExpect(status().isOk)
+                .andExpect(jsonPath("$.page.totalElements").value(1))
+                .andExpect(jsonPath("$._embedded.testEntities[?(@.name == '${testEntity.name}')]").exists())
     }
 
     @Test

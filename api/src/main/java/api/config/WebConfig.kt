@@ -1,8 +1,12 @@
 package api.config
 
+import api.converter.LocalDateCustomConverter
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
+import org.springframework.format.FormatterRegistry
+
+
 
 //@Configuration
 //class WebConfig : WebMvcConfigurer {
@@ -15,5 +19,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 //                .maxAge(3600)
 //                .allowCredentials(true)
 //                .exposedHeaders("Location")
+//    }
+//
+//    override fun addFormatters(registry: FormatterRegistry) {
+//        registry.addConverter(LocalDateCustomConverter())
+//        registry.javaClass
 //    }
 //}

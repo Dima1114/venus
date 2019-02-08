@@ -1,5 +1,7 @@
 package api.config
 
+import api.converter.LocalDateCustomConverter
+import api.converter.LocalDateTimeCustomConverter
 import api.search.ApiQuerydslBindingsFactory
 import api.search.ApiQuerydslMethodArgumentResolver
 import org.springframework.beans.factory.ObjectFactory
@@ -14,6 +16,7 @@ import org.springframework.data.querydsl.binding.QuerydslPredicateBuilder
 import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration
 import org.springframework.data.rest.webmvc.config.RootResourceInformationHandlerMethodArgumentResolver
 import org.springframework.data.web.config.EnableSpringDataWebSupport
+import org.springframework.format.support.DefaultFormattingConversionService
 
 @Configuration
 @EnableSpringDataWebSupport
@@ -42,6 +45,17 @@ class RestMvcConfig(context: ApplicationContext,
     }
 
     @Bean
+    @Qualifier
+    override fun defaultConversionService(): DefaultFormattingConversionService {
+        val conversionService =  super.defaultConversionService()
+        conversionService.addConverter(LocalDateCustomConverter())
+        conversionService.addConverter(LocalDateTimeCustomConverter())
+
+        return conversionService
+    }
+
+    @Bean
     fun querydslBindingsFactory(): ApiQuerydslBindingsFactory =
             ApiQuerydslBindingsFactory(SimpleEntityPathResolver.INSTANCE)
+
 }

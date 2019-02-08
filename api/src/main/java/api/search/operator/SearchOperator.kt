@@ -1,6 +1,9 @@
 package api.search.operator
 
+import api.converter.LocalDateCustomConverter
+import api.converter.LocalDateTimeCustomConverter
 import com.querydsl.core.BooleanBuilder
+import com.querydsl.core.types.dsl.DatePath
 import com.querydsl.core.types.dsl.PathBuilder
 import org.springframework.core.convert.support.DefaultConversionService
 import org.springframework.data.querydsl.binding.QuerydslBindings
@@ -55,22 +58,26 @@ enum class SearchOperator(val operator: String,
     }),
     DATE_LESS_OR_EQUAL("dloe", { booleanBuilder, pathBuilder, propertyPath, value, fieldType ->
         when (fieldType) {
-            localDateClass -> booleanBuilder.and(pathBuilder.getDate(propertyPath, localDateClass).loe(LocalDate.parse(value[0])))
-            localDateTimeClass -> booleanBuilder.and(pathBuilder.getDate(propertyPath, localDateTimeClass).loe(LocalDateTime.parse(value[0], DateTimeFormatter.ISO_LOCAL_DATE)))
+            localDateClass ->
+                booleanBuilder.and(pathBuilder.getDate(propertyPath, localDateClass).loe(localDateParser.convert(value[0])))
+            localDateTimeClass ->
+                booleanBuilder.and(pathBuilder.getDate(propertyPath, localDateTimeClass).loe(localDateTimeParser.convert(value[0])))
         }
     }),
     DATE_GREATER_OR_EQUAL("dgoe", { booleanBuilder, pathBuilder, propertyPath, value, fieldType ->
         when (fieldType) {
             localDateClass ->
-                booleanBuilder.and(pathBuilder.getDate<LocalDate>(propertyPath, localDateClass).goe(LocalDate.parse(value[0])))
+                booleanBuilder.and(pathBuilder.getDate<LocalDate>(propertyPath, localDateClass).goe(localDateParser.convert(value[0])))
             localDateTimeClass ->
-                booleanBuilder.and(pathBuilder.getDate<LocalDateTime>(propertyPath, localDateTimeClass).goe(LocalDateTime.parse(value[0], DateTimeFormatter.ISO_LOCAL_DATE)))
+                booleanBuilder.and(pathBuilder.getDate<LocalDateTime>(propertyPath, localDateTimeClass).goe(localDateTimeParser.convert(value[0])))
         }
     }),
     DATE_EQUAL("deq", { booleanBuilder, pathBuilder, propertyPath, value, fieldType ->
         when (fieldType) {
-            localDateClass -> booleanBuilder.and(pathBuilder.getDate(propertyPath, localDateClass).eq(LocalDate.parse(value[0])))
-            localDateTimeClass -> booleanBuilder.and(pathBuilder.getDate(propertyPath, localDateTimeClass).eq(LocalDateTime.parse(value[0], DateTimeFormatter.ISO_LOCAL_DATE)))
+            localDateClass ->
+                booleanBuilder.and(pathBuilder.getDate(propertyPath, localDateClass).eq(localDateParser.convert(value[0])))
+            localDateTimeClass ->
+                booleanBuilder.and(pathBuilder.getDate(propertyPath, localDateTimeClass).eq(localDateTimeParser.convert(value[0])))
         }
     }),
     IN("in", { booleanBuilder, pathBuilder, propertyPath, values, fieldType ->
@@ -97,6 +104,9 @@ enum class SearchOperator(val operator: String,
         val longs = listOf(longClass, Long::class.java, integerClass, Int::class.java)
         val doubles = listOf(doubleClass, Double::class.java, floatClass, Float::class.java)
 
+        val localDateParser = LocalDateCustomConverter()
+        val localDateTimeParser = LocalDateTimeCustomConverter()
+
         fun handle(bindings: QuerydslBindings, pathBuilder: PathBuilder<*>, propertyPath: String, path: String,
                    map: MultiValueMap<String, String>, fieldType: Class<*>) {
 
@@ -120,6 +130,6 @@ enum class SearchOperator(val operator: String,
     }
 }
 
-fun clearNullable(list: MutableList<String>){
-    if(list.filterNotNull().isEmpty()) list.clear()
+fun clearNullable(list: MutableList<String>) {
+    if (list.filterNotNull().isEmpty()) list.clear()
 }
