@@ -1,5 +1,6 @@
 package api.security.authorize
 
+import api.security.exceptions.JwtAuthenticationException
 import api.security.model.JwtAuthenticationToken
 import api.security.service.JwtTokenService
 import org.springframework.security.authentication.AuthenticationProvider
@@ -14,8 +15,8 @@ class JwtAuthenticationProvider(private val jwtTokenService: JwtTokenService) : 
     override fun authenticate(authentication: Authentication): Authentication {
         val jwtAuthenticationToken = authentication as JwtAuthenticationToken
 
-        val token = jwtAuthenticationToken.token
-        jwtTokenService.verifyToken(token!!)
+        val token = jwtAuthenticationToken.token ?: throw JwtAuthenticationException("token is missing")
+        jwtTokenService.verifyToken(token)
 
         val userDetails = jwtTokenService.getUserDetailsFromJWT(token)
 

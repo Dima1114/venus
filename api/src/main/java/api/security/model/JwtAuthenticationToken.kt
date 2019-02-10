@@ -7,13 +7,12 @@ class JwtAuthenticationToken : UsernamePasswordAuthenticationToken {
 
     var token: String? = null
 
-    constructor(token: String) : super(null, null) {
+    constructor(token: String?) : super(null, null) {
         isAuthenticated = false
         this.token = token
     }
 
     constructor(principal: Any?, credentials: Any?, authorities: Collection<GrantedAuthority>?, token: String?) : super(principal, credentials, authorities) {
         this.token = token
-        //        setAuthenticated(true);
     }
 }
