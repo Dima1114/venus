@@ -6,11 +6,9 @@ import api.security.model.JwtAuthenticationToken
 import api.security.model.JwtUserDetails
 import org.amshove.kluent.`should be equal to`
 import org.amshove.kluent.`should contain`
-import org.atteo.evo.inflector.English
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.junit.MockitoJUnitRunner
 import org.springframework.security.core.context.SecurityContextHolder
 
 class EnumResourceServiceTest{
@@ -22,33 +20,44 @@ class EnumResourceServiceTest{
         enumResourceService = EnumResourceServiceImpl("api/search")
     }
 
+    @After
+    fun clear(){
+        SecurityContextHolder.getContext().authentication = null
+    }
+
     @Test
     fun `should find and return enum list by name`(){
+
+        //given
+        setUpSecurityContextHolder(Role.ROLE_READ)
 
         //when
         val result = enumResourceService.getEnumResource("testEnum")
 
         //then
         result.size `should be equal to` 7
-        result `should contain` mapOf("name" to "GET")
-        result `should contain` mapOf("name" to "POST")
-        result `should contain` mapOf("name" to "HEAD")
-        result `should contain` mapOf("name" to "PUT")
-        result `should contain` mapOf("name" to "PATCH")
-        result `should contain` mapOf("name" to "DELETE")
-        result `should contain` mapOf("name" to "OPTION")
+        result `should contain` EnumValue("GET")
+        result `should contain` EnumValue("POST")
+        result `should contain` EnumValue("HEAD")
+        result `should contain` EnumValue("PUT")
+        result `should contain` EnumValue("PATCH")
+        result `should contain` EnumValue("DELETE")
+        result `should contain` EnumValue("OPTION")
     }
 
     @Test
     fun `should find and return enum list by name from particular package`(){
 
+        //given
+        setUpSecurityContextHolder(Role.ROLE_READ)
+
         //when
-        val result = enumResourceService.getEnumResource("testEnum", "api/data")
+        val result = enumResourceService.getEnumResource("testEnum", "api/entity")
 
         //then
         result.size `should be equal to` 2
-        result `should contain` Pair("name", "JAVA")
-        result `should contain` Pair("name", "KOTLIN")
+        result `should contain` EnumValue("JAVA")
+        result `should contain` EnumValue("KOTLIN")
     }
 
     @Test(expected = JwtAuthenticationException::class)
@@ -79,8 +88,8 @@ class EnumResourceServiceTest{
 
         //then
         result.size `should be equal to` 2
-        result `should contain` mapOf("name" to "GET")
-        result `should contain` mapOf("name" to "POST")
+        result `should contain` EnumValue("GET")
+        result `should contain` EnumValue("POST")
     }
 
     private fun setUpSecurityContextHolder(vararg roles: Role){

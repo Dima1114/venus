@@ -73,8 +73,8 @@ class RestMvcConfig(val context: ApplicationContext,
         val resolver = super.pageableResolver()
         resolver.setPageParameterName(repositoryRestConfiguration().pageParamName)
         resolver.setSizeParameterName(repositoryRestConfiguration().limitParamName)
-        resolver.setFallbackPageable(PageRequest.of(0, 5000))
-        resolver.setMaxPageSize(5000)
+        resolver.setFallbackPageable(PageRequest.of(0, repositoryRestConfiguration().maxPageSize))
+        resolver.setMaxPageSize(repositoryRestConfiguration().maxPageSize)
 
         return resolver
     }

@@ -1,18 +1,21 @@
 package api.security.config
 
-import org.amshove.kluent.`should be`
+import api.integration.AbstractTestMvcIntegration
+import org.amshove.kluent.`should equal`
 import org.junit.Test
+import org.springframework.beans.factory.annotation.Autowired
 
-class JwtSettingsTest {
+class JwtSettingsTest : AbstractTestMvcIntegration() {
 
-    private val testSubject = JwtSettings()
+    @Autowired
+    lateinit var testSubject: JwtSettings
 
     @Test
     fun `settings should be taken from properties`(){
 
         //then
-        testSubject.jwtSecret `should be` "security"
-        testSubject.jwtExpirationInMs `should be` 3600000
-        testSubject.jwtRefreshExpirationInMs `should be` 432000000
+        testSubject.jwtSecret `should equal`  "security"
+        testSubject.jwtExpirationInMs `should equal` 3600000
+        testSubject.jwtRefreshExpirationInMs `should equal` 432000000
     }
 }

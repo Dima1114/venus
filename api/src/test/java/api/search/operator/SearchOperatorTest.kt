@@ -11,23 +11,16 @@ import org.amshove.kluent.`should be`
 import org.amshove.kluent.`should not be`
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
-import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.ResultActions
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
 import java.time.LocalDateTime
 
-@RunWith(SpringRunner::class)
-@SpringBootTest
-@Transactional
 class SearchOperatorTest : AbstractTestMvcIntegration() {
 
     @Autowired
@@ -54,7 +47,6 @@ class SearchOperatorTest : AbstractTestMvcIntegration() {
         testEntity.apply { child = child1 }
         testEntity2.apply { child = child2 }
         testEntity3.apply { child = child3 }
-//        testEntity4.apply { child = child4 }
 
         testEntityRepository.saveAll(mutableListOf(testEntity, testEntity2, testEntity3, testEntity4))
     }
@@ -394,7 +386,6 @@ class SearchOperatorTest : AbstractTestMvcIntegration() {
         result = performGet("/testEntities?sort=child.num,asc")
         //then
         result
-                .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isOk)
                 .andExpect(jsonPath("$.page.totalElements").value(4))
                 .andExpect(jsonPath("$._embedded.testEntities[0].name").value(testEntity4.name))
@@ -409,7 +400,6 @@ class SearchOperatorTest : AbstractTestMvcIntegration() {
         var result = performGet("/testEntities?size=2&page=1&sort=id,asc")
         //then
         result
-                .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isOk)
                 .andExpect(jsonPath("$.page.totalElements").value(4))
                 .andExpect(jsonPath("$.page.size").value(2))
@@ -422,7 +412,6 @@ class SearchOperatorTest : AbstractTestMvcIntegration() {
         result = performGet("/testEntities?size=3&page=0&sort=id,asc")
         //then
         result
-                .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isOk)
                 .andExpect(jsonPath("$.page.totalElements").value(4))
                 .andExpect(jsonPath("$.page.size").value(3))
@@ -431,6 +420,24 @@ class SearchOperatorTest : AbstractTestMvcIntegration() {
                 .andExpect(jsonPath("$._embedded.testEntities[?(@.name == '${testEntity.name}')]").exists())
                 .andExpect(jsonPath("$._embedded.testEntities[?(@.name == '${testEntity2.name}')]").exists())
                 .andExpect(jsonPath("$._embedded.testEntities[?(@.name == '${testEntity3.name}')]").exists())
+    }
+
+    @Test
+    fun `test all in one page operator`() {
+        //when
+        val result = performGet("/testEntities?sort=id,asc")
+        //then
+        result
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isOk)
+                .andExpect(jsonPath("$.page.totalElements").value(4))
+                .andExpect(jsonPath("$.page.size").value(1000))
+                .andExpect(jsonPath("$.page.totalPages").value(1))
+                .andExpect(jsonPath("$.page.number").value(0))
+                .andExpect(jsonPath("$._embedded.testEntities[?(@.name == '${testEntity.name}')]").exists())
+                .andExpect(jsonPath("$._embedded.testEntities[?(@.name == '${testEntity2.name}')]").exists())
+                .andExpect(jsonPath("$._embedded.testEntities[?(@.name == '${testEntity3.name}')]").exists())
+                .andExpect(jsonPath("$._embedded.testEntities[?(@.name == '${testEntity4.name}')]").exists())
     }
 
     private fun performGet(query: String) : ResultActions {
