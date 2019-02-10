@@ -3,14 +3,12 @@ package api.search.operator
 import api.converter.LocalDateCustomConverter
 import api.converter.LocalDateTimeCustomConverter
 import com.querydsl.core.BooleanBuilder
-import com.querydsl.core.types.dsl.DatePath
 import com.querydsl.core.types.dsl.PathBuilder
 import org.springframework.core.convert.support.DefaultConversionService
 import org.springframework.data.querydsl.binding.QuerydslBindings
 import org.springframework.util.MultiValueMap
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 enum class SearchOperator(val operator: String,

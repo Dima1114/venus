@@ -359,6 +359,46 @@ class SearchOperatorTest : AbstractTestMvcIntegration() {
     }
 
     @Test
+    fun `test in operator`() {
+
+        //when
+        var result = performGet("/testEntities?name:in=test_first&name:in=test_second")
+        //then
+        result
+                .andExpect(status().isOk)
+                .andExpect(jsonPath("$.page.totalElements").value(2))
+                .andExpect(jsonPath("$._embedded.testEntities[?(@.name == '${testEntity.name}')]").exists())
+                .andExpect(jsonPath("$._embedded.testEntities[?(@.name == '${testEntity2.name}')]").exists())
+
+//        when
+        result = performGet("/testEntities?id:in=${testEntity.id}&id:in=${testEntity2.id}")
+        //then
+        result
+                .andExpect(status().isOk)
+                .andExpect(jsonPath("$.page.totalElements").value(2))
+                .andExpect(jsonPath("$._embedded.testEntities[?(@.name == '${testEntity.name}')]").exists())
+                .andExpect(jsonPath("$._embedded.testEntities[?(@.name == '${testEntity2.name}')]").exists())
+
+        //when
+        result = performGet("/testEntities?child.type:in=JAVA")
+        //then
+        result
+                .andExpect(status().isOk)
+                .andExpect(jsonPath("$.page.totalElements").value(1))
+                .andExpect(jsonPath("$._embedded.testEntities[?(@.name == '${testEntity.name}')]").exists())
+
+        //when
+        result = performGet("/testEntities?child.type:in=JAVA&child.type:in=KOTLIN")
+        //then
+        result
+                .andExpect(status().isOk)
+                .andExpect(jsonPath("$.page.totalElements").value(3))
+                .andExpect(jsonPath("$._embedded.testEntities[?(@.name == '${testEntity.name}')]").exists())
+                .andExpect(jsonPath("$._embedded.testEntities[?(@.name == '${testEntity2.name}')]").exists())
+                .andExpect(jsonPath("$._embedded.testEntities[?(@.name == '${testEntity3.name}')]").exists())
+    }
+
+    @Test
     fun `test sort operator`() {
         //when
         var result = performGet("/testEntities?sort=date,desc")
