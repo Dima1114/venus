@@ -370,14 +370,24 @@ class SearchOperatorTest : AbstractTestMvcIntegration() {
                 .andExpect(jsonPath("$._embedded.testEntities[?(@.name == '${testEntity.name}')]").exists())
                 .andExpect(jsonPath("$._embedded.testEntities[?(@.name == '${testEntity2.name}')]").exists())
 
-//        when
-        result = performGet("/testEntities?id:in=${testEntity.id}&id:in=${testEntity2.id}")
+        //when
+        result = performGet("/testEntities?float:in=1.5&float:in=2.5")
         //then
         result
                 .andExpect(status().isOk)
                 .andExpect(jsonPath("$.page.totalElements").value(2))
                 .andExpect(jsonPath("$._embedded.testEntities[?(@.name == '${testEntity.name}')]").exists())
                 .andExpect(jsonPath("$._embedded.testEntities[?(@.name == '${testEntity2.name}')]").exists())
+
+
+        //when
+        result = performGet("/testEntities?child.num:in=2&child.num:in=3")
+        //then
+        result
+                .andExpect(status().isOk)
+                .andExpect(jsonPath("$.page.totalElements").value(2))
+                .andExpect(jsonPath("$._embedded.testEntities[?(@.name == '${testEntity2.name}')]").exists())
+                .andExpect(jsonPath("$._embedded.testEntities[?(@.name == '${testEntity3.name}')]").exists())
 
         //when
         result = performGet("/testEntities?child.type:in=JAVA")

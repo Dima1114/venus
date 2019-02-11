@@ -85,7 +85,10 @@ enum class SearchOperator(val operator: String,
                 booleanBuilder.and(pathBuilder.get(propertyPath).`in`(
                         *values.map { conversionService.convert(it, fieldType) }.toTypedArray()))
             }
+            fieldType in ints -> booleanBuilder.and(pathBuilder.get(propertyPath).`in`(*values.map { it.toInt() }.toTypedArray()))
             fieldType in longs -> booleanBuilder.and(pathBuilder.get(propertyPath).`in`(*values.map { it.toLong() }.toTypedArray()))
+            fieldType in floats -> booleanBuilder.and(pathBuilder.get(propertyPath).`in`(*values.map { it.toFloat() }.toTypedArray()))
+            fieldType in doubles -> booleanBuilder.and(pathBuilder.get(propertyPath).`in`(*values.map { it.toDouble() }.toTypedArray()))
             else -> booleanBuilder.and(pathBuilder.get(propertyPath).`in`(*values.toTypedArray()))
         }
     });
@@ -100,7 +103,9 @@ enum class SearchOperator(val operator: String,
         val localDateTimeClass = LocalDateTime::class.java
 
         val longs = listOf(longClass, Long::class.java, integerClass, Int::class.java)
+        val ints = listOf(integerClass, Int::class.java)
         val doubles = listOf(doubleClass, Double::class.java, floatClass, Float::class.java)
+        val floats = listOf(floatClass, Float::class.java)
 
         val localDateParser = LocalDateCustomConverter()
         val localDateTimeParser = LocalDateTimeCustomConverter()
