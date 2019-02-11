@@ -26,7 +26,7 @@ class JwtLoginProvider(private val userDetailsService: UserDetailsService,
             throw BadCredentialsException("User is banned. You can`t login")
         }
 
-        return UsernamePasswordAuthenticationToken(userDetails, password, userDetails.authorities)
+        return UsernamePasswordAuthenticationToken(userDetails, null, userDetails.authorities)
     }
 
     override fun supports(authentication: Class<*>): Boolean {

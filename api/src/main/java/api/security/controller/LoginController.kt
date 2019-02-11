@@ -1,9 +1,6 @@
 package api.security.controller
 
-import api.security.exceptions.ErrorHandler
-import api.security.exceptions.JwtAuthenticationException
 import api.security.model.ErrorResponse
-import api.security.model.JwtAuthenticationToken
 import api.security.model.LoginRequest
 import api.security.model.LoginResponse
 import api.security.service.JwtTokenService
@@ -19,15 +16,12 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-import javax.servlet.http.HttpServletResponse
 import javax.validation.Valid
-import java.time.LocalDateTime
-import java.util.Date
 
 @RestController
-@RequestMapping("auth/login")
+@RequestMapping("/auth/login")
 class LoginController(private val jwtTokenService: JwtTokenService,
-                      private val authenticationManager: AuthenticationManager, private val errorHandler: ErrorHandler) {
+                      private val authenticationManager: AuthenticationManager) {
 
     @PostMapping
     fun login(@Valid @RequestBody loginRequest: LoginRequest): ResponseEntity<*> {

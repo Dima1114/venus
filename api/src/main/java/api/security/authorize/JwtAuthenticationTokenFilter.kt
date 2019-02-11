@@ -25,9 +25,9 @@ class JwtAuthenticationTokenFilter(matcher: RequestMatcher, private val errorHan
     }
 
     @Throws(IOException::class, ServletException::class)
-    override fun successfulAuthentication(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain?, authResult: Authentication) {
+    override fun successfulAuthentication(request: HttpServletRequest, response: HttpServletResponse, chain: FilterChain, authResult: Authentication) {
         super.successfulAuthentication(request, response, chain, authResult)
-        chain!!.doFilter(request, response)
+        chain.doFilter(request, response)
     }
 
     @Throws(IOException::class, ServletException::class)
