@@ -121,8 +121,11 @@ enum class SearchOperator(val operator: String,
                     .forEach { (key, value) ->
 
                         values().firstOrNull { it.operator == getEntityOperator(key) }
-                                ?.predicate?.invoke(fieldSearchCriteria, pathBuilder, propertyPath, value, fieldType)
-                        clearNullable(value)
+                                ?.let {
+                                    it.predicate.invoke(fieldSearchCriteria, pathBuilder, propertyPath, value, fieldType)
+                                    clearNullable(value) }
+                                ?: bindings.bind(pathBuilder.get(propertyPath)).withDefaultBinding()
+
 //                        bindings.bind(pathBuilder.get(propertyPath)).withDefaultBinding()
                     }
             // Apply criteria for path

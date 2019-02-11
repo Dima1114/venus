@@ -334,6 +334,23 @@ class SearchOperatorTest : AbstractTestMvcIntegration() {
     }
 
     @Test
+    fun `test dgoe and dloe operator`() {
+
+        //given
+        val dateFrom = LocalDate.now().plusDays(1)
+        val dateTo = LocalDate.now().plusDays(2)
+
+        //when
+        val result = performGet("/testEntities?date:dgoe=$dateFrom&date:dloe=$dateTo")
+        //then
+        result
+                .andExpect(status().isOk)
+                .andExpect(jsonPath("$.page.totalElements").value(2))
+                .andExpect(jsonPath("$._embedded.testEntities[?(@.name == '${testEntity2.name}')]").exists())
+                .andExpect(jsonPath("$._embedded.testEntities[?(@.name == '${testEntity3.name}')]").exists())
+    }
+
+    @Test
     fun `test deq operator`() {
 
         //given

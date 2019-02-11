@@ -89,7 +89,7 @@ class LoginControllerTest {
                 .andExpect(jsonPath("$.message").value("wrong password"))
     }
 
-    fun performLoginRequest() : ResultActions =
+    private fun performLoginRequest() : ResultActions =
             mvc.perform(post("/auth/login")
                 .content("""{"username":"user","password":"qwerty"}""")
                 .contentType(MediaType.APPLICATION_JSON))

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletRequest
 
 @RestController
-@RequestMapping("auth/token")
+@RequestMapping("/auth/token")
 class RefreshTokenController(private val tokenService: JwtTokenService, private val userDetailsService: UserDetailsService) {
 
     @PostMapping
