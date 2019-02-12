@@ -3,9 +3,7 @@ package api.security.controller
 import api.entity.Role
 import api.security.model.JwtUserDetails
 import api.security.service.JwtTokenService
-import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.doNothing
-import com.nhaarman.mockito_kotlin.whenever
+import com.nhaarman.mockito_kotlin.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -66,6 +64,7 @@ class LoginControllerTest {
         val result = performLoginRequest()
 
         //then
+        verify(jwtTokenService, times(1)).updateRefreshToken("user", "refreshToken")
         result
                 .andExpect(status().isOk)
                 .andExpect(jsonPath("$.accessToken").value("accessToken"))

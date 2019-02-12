@@ -2,7 +2,9 @@ package api.security.controller
 
 import api.security.model.JwtUserDetails
 import api.security.service.JwtTokenService
-import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.doNothing
+import com.nhaarman.mockito_kotlin.times
+import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import org.junit.Before
 import org.junit.Test
@@ -11,7 +13,6 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import org.springframework.http.MediaType
-import org.springframework.mock.web.MockHttpServletRequest
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.ResultActions
@@ -36,6 +37,12 @@ class RefreshTokenControllerTest {
     @Before
     fun setUp() {
         mvc = MockMvcBuilders.standaloneSetup(testSubject).build()
+
+        whenever(tokenService.verifyToken(token)).thenReturn(true)
+        whenever(tokenService.getUsernameFromJWT(token)).thenReturn(username)
+        whenever(tokenService.generateAccessToken(userDetails)).thenReturn("accessToken")
+        whenever(tokenService.generateRefreshToken(userDetails)).thenReturn(token)
+        doNothing().whenever(tokenService).updateRefreshToken("user", token)
     }
 
     companion object {
@@ -52,20 +59,29 @@ class RefreshTokenControllerTest {
     fun `refreshed successfully`(){
 
         //given
-        whenever(tokenService.verifyToken(token)).thenReturn(true)
-        whenever(tokenService.getUsernameFromJWT(token)).thenReturn(username)
-        whenever(tokenService.generateAccessToken(userDetails)).thenReturn("accessToken")
-        whenever(tokenService.generateAccessToken(userDetails)).thenReturn("accessToken")
         whenever(userDetailsService.loadUserByUsername(username)).thenReturn(userDetails)
 
         //when
         val result =  performRefresh()
 
         //then
+        verify(tokenService, times(1)).updateRefreshToken("user", token)
         result
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk)
-                .andExpect(MockMvcResultMatchers.jsonPath("$").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("accessToken").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("refreshToken").exists())
+    }
+
+    @Test(expected = Exception::class)
+    fun `refresh fail`(){
+
+        //given
+        whenever(userDetailsService.loadUserByUsername(username))
+                .thenReturn(userDetails.apply { setRefreshToken("error") })
+
+        //when
+        performRefresh()
     }
 
     private fun performRefresh() : ResultActions =

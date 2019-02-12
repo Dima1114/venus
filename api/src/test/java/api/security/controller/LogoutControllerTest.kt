@@ -4,6 +4,8 @@ import api.security.exceptions.JwtAuthenticationException
 import api.security.model.JwtAuthenticationToken
 import api.service.UserService
 import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.times
+import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import org.junit.Before
 import org.junit.Test
@@ -29,7 +31,7 @@ class LogoutControllerTest {
     @Mock
     lateinit var userService: UserService
 
-    lateinit var mvc: MockMvc
+    private lateinit var mvc: MockMvc
 
     @Before
     fun setUp() {
@@ -48,6 +50,7 @@ class LogoutControllerTest {
         val result =  performLogout()
 
         //then
+        verify(userService, times(1)).dropRefreshToken(any())
         result
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk)
