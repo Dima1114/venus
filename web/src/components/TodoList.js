@@ -59,7 +59,7 @@ class TodoList extends React.Component {
     getEnums(){
         $.ajax({
             type: 'GET',
-            url: this.props.baseUrl + '/api/enums/taskType2',
+            url: this.props.baseUrl + '/api/enums/taskType',
             dataType: 'json',
         }).then(response => {
             console.log(response);

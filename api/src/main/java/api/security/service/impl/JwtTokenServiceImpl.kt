@@ -1,20 +1,18 @@
-package api.security.service
+package api.security.service.impl
 
 import api.entity.Role
-import api.entity.User
 import api.repository.UserRepository
 import api.security.config.JwtSettings
 import api.security.exceptions.JwtAuthenticationException
 import api.security.model.JwtUserDetails
+import api.security.service.JwtTokenService
 import io.jsonwebtoken.*
 import org.apache.log4j.Logger
-import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Component
 
 import java.util.Date
 import java.util.UUID
-import java.util.stream.Collectors
 
 @Component
 class JwtTokenServiceImpl(private val jwtSettings: JwtSettings, private val userRepository: UserRepository) : JwtTokenService {

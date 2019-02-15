@@ -1,4 +1,4 @@
-package api.security.service
+package api.security.service.impl
 
 import api.repository.UserRepository
 import api.security.model.JwtUserDetails
