@@ -19,7 +19,7 @@ class JwtTokenServiceImpl(private val jwtSettings: JwtSettings, private val user
 
     override fun updateRefreshToken(username: String, refreshToken: String) {
         val user = userRepository.findByUsername(username)
-                .orElseThrow { ArithmeticException("User not found") }
+                .orElseThrow { JwtAuthenticationException("User not found") }
 
         user.refreshToken = refreshToken
         userRepository.save(user)
@@ -119,20 +119,14 @@ class JwtTokenServiceImpl(private val jwtSettings: JwtSettings, private val user
     override fun verifyToken(authToken: String): Boolean {
         try {
             Jwts.parser().setSigningKey(jwtSettings.jwtSecret).parseClaimsJws(authToken)
-        } catch (ex: SignatureException) {
-            logger.error("Invalid JWT signature")
-            throw JwtAuthenticationException(ex.message)
-        } catch (ex: MalformedJwtException) {
-            logger.error("Invalid JWT signature")
+        } catch (ex: JwtException) {
+            logger.error(ex.message)
             throw JwtAuthenticationException(ex.message)
         } catch (ex: ExpiredJwtException) {
-            logger.error("Invalid JWT signature")
-            throw JwtAuthenticationException(ex.message)
-        } catch (ex: UnsupportedJwtException) {
-            logger.error("Invalid JWT signature")
+            logger.error(ex.message)
             throw JwtAuthenticationException(ex.message)
         } catch (ex: IllegalArgumentException) {
-            logger.error("Invalid JWT signature")
+            logger.error(ex.message)
             throw JwtAuthenticationException(ex.message)
         }
 
