@@ -6,11 +6,11 @@ import api.security.model.getUser
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 
-fun getUserFromContext() : User? {
-    return SecurityContextHolder.getContext()
-            ?.authentication
-            ?.let { it as UsernamePasswordAuthenticationToken }
-            ?.principal
-            ?.let{ it as JwtUserDetails }
-            ?.getUser()
+fun getUserFromContext(): User? {
+    val auth = SecurityContextHolder.getContext()?.authentication ?: return null
+
+    return auth.let { it as UsernamePasswordAuthenticationToken }
+            .principal
+            .let { it as JwtUserDetails }
+            .getUser()
 }
