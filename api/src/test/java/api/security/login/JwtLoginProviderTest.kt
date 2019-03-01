@@ -30,6 +30,7 @@ class JwtLoginProviderTest {
 
     @Before
     fun setUp(){
+        userDetails.isEnabled = true
         whenever(userDetailsService.loadUserByUsername("user")).thenReturn(userDetails)
     }
 
