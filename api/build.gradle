@@ -51,12 +51,16 @@ dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-data-rest')
 	implementation('org.springframework.boot:spring-boot-starter-security')
 	implementation('org.springframework.boot:spring-boot-starter-web')
-
+	implementation("io.github.microutils:kotlin-logging:1.6.10")
+	
 	//jsm
 	implementation("org.springframework.boot:spring-boot-starter-activemq")
 	compile("org.apache.activemq:activemq-broker")
 
-	compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    //email
+    implementation('org.springframework.boot:spring-boot-starter-mail')
+    
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 	compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
 	compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 

@@ -12,9 +12,9 @@ import org.springframework.jms.support.converter.MappingJackson2MessageConverter
 import javax.jms.ConnectionFactory
 
 @RunWith(MockitoJUnitRunner::class)
-class JmsConfigTest {
+class CommonConfigTest {
 
-    val testSubject = JmsConfig()
+    val testSubject = CommonConfig()
 
     @Mock
     lateinit var configurer: DefaultJmsListenerContainerFactoryConfigurer
