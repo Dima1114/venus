@@ -1,6 +1,8 @@
 package api.config
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.nhaarman.mockito_kotlin.*
+import org.amshove.kluent.`should be equal to`
 import org.amshove.kluent.`should be instance of`
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -43,5 +45,18 @@ class CommonConfigTest {
 
         //then
         result `should be instance of` MappingJackson2MessageConverter::class
+    }
+
+    @Test
+    fun `should config object mapper`(){
+
+        //when
+        val result = testSubject.objectMapper()
+
+        //then
+        result `should be instance of` ObjectMapper::class
+        result.registeredModuleIds.size `should be equal to` 2
+        result.registeredModuleIds.contains("com.fasterxml.jackson.datatype.jdk8.Jdk8Module") `should be equal to` true
+        result.registeredModuleIds.contains("com.fasterxml.jackson.module.kotlin.KotlinModule") `should be equal to` true
     }
 }
