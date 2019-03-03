@@ -2,6 +2,10 @@
   text-align: center;
 }
 
+.flower > div{
+  font-family: Indie Flower, serif !important;
+  font-size: 20px !important;
+}
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 20vmin;
@@ -13,7 +17,7 @@
 }
 
 .App-header {
-  background-color: #1c1f29;
+  background-color: #dcf6ff;
   min-height: 20vh;
   display: flex;
   flex-direction: row;

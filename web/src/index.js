@@ -4,6 +4,13 @@ import './index.css';
 import * as serviceWorker from './serviceWorker';
 import configureStore from "./store";
 import Root from "./components/Root";
+import WebFont from 'webfontloader';
+
+WebFont.load({
+    google: {
+        families: ['Indie Flower:400,300,500:latin']
+    }
+});
 
 const store = configureStore();
 ReactDOM.render(

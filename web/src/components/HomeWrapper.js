@@ -1,16 +1,17 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux'
 import '../App.css';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import $ from "jquery";
 import logo from "../logo.svg";
 import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom";
 import LoginComponent from "./LoginComponent";
 import TodoList from "../components/TodoList";
-import {RaisedButton} from "material-ui";
 import {initBaseUrl} from "../actions";
 import {logoutAndRedirect, refreshToken} from "../actions/auth";
 import {bindActionCreators} from "redux";
+import ProtectedRoute from "../elements/ProtectedRoute";
+import {SimpleLink} from "../elements/styledElements";
+import DrawButton from "../elements/DrawButton";
 
 const baseUrl = 'http://localhost:3000';
 
@@ -49,15 +50,15 @@ class HomeWrapper extends Component {
         }
     }
 
-    refreshTokenOnReload(baseUrl){
+    refreshTokenOnReload(baseUrl) {
         const refreshToken = localStorage.getItem('refreshToken');
-        if(!this.props.auth.isAuthenticated && !!refreshToken){
+        if (!this.props.auth.isAuthenticated && !!refreshToken) {
             this.props.refreshToken(baseUrl, refreshToken)
         }
     }
 
-    refreshCountDown(props){
-        if(props.auth.isAuthenticated && !!props.auth.expTime){
+    refreshCountDown(props) {
+        if (props.auth.isAuthenticated && !!props.auth.expTime) {
             const timeOut = props.auth.expTime * 1000 - new Date().getTime() - 60000;
             console.log(timeOut);
             const refreshTimer = setTimeout(
@@ -66,8 +67,8 @@ class HomeWrapper extends Component {
         }
     }
 
-    clearRefreshCountDown(props){
-        if(props.auth.isAuthenticated === false){
+    clearRefreshCountDown(props) {
+        if (props.auth.isAuthenticated === false) {
             clearTimeout(this.state.refreshTimer);
             this.setState({refreshTimer: null})
         }
@@ -75,38 +76,38 @@ class HomeWrapper extends Component {
 
     render() {
         return (
-            <MuiThemeProvider>
-                <Router>
-                    <div>
-                        <div className="App-header">
-                            <img src={logo} className="App-logo" alt="logo"/>
-                            <div className={'App-nav'}>
-                                <Link to={'/login'}>
-                                    <RaisedButton label={'Login'}/>
-                                </Link>
-                                <span style={{marginLeft: 10}}/>
-                                <Link to={'/todo'}>
-                                    <RaisedButton label={'Todo'}/>
-                                </Link>
-                                {this.props.auth.isAuthenticated ?
-                                    <div>
-                                        <span style={{marginLeft: 10}}/>
-                                        <RaisedButton label={'Logout'}
-                                                      onClick={() => this.props.logout(this.props.baseUrl)}/>
-                                    </div>
-                                    : null}
+            <Router>
+                <div className={"wrapper"}>
+                    <div className="App-header">
+                        <img src={logo} className="App-logo" alt="logo"/>
+                        <div className={'App-nav'}>
 
-                            </div>
+                            {this.props.auth.isAuthenticated ?
+                                <DrawButton id={'logout'}
+                                            onClick={() => this.props.logout(this.props.baseUrl)}>Logout and go</DrawButton>
+                                :
+                                <SimpleLink to={'/login'}>
+                                    <DrawButton id={'login'}>Login</DrawButton>
+                                </SimpleLink>}
+
+                            <span style={{marginLeft: 10}}/>
+
+                            {this.props.auth.isAuthenticated ?
+                                <SimpleLink to={'/todo'}>
+                                    <DrawButton id={'todo'}>Todo</DrawButton>
+                                </SimpleLink>
+                                : null}
 
                         </div>
 
-                        <Switch>
-                            <Route exact path={'/login'} component={LoginComponent}/>
-                            <Route path={'/todo'} component={TodoList}/>
-                        </Switch>
                     </div>
-                </Router>
-            </MuiThemeProvider>
+
+                    <Switch>
+                        <Route exact path={'/login'} component={LoginComponent}/>
+                        <ProtectedRoute path={'/todo'} component={TodoList}/>
+                    </Switch>
+                </div>
+            </Router>
         );
     }
 }
