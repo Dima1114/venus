@@ -1,20 +1,18 @@
 package api.security.config
 
 
-import api.security.*
+import api.security.JwtAuthenticationEntryPoint
 import api.security.authorize.JwtAuthenticationProvider
 import api.security.authorize.JwtAuthenticationTokenFilter
 import api.security.authorize.JwtSuccessHandler
 import api.security.authorize.SkipPathAndMethodsRequestMatcher
 import api.security.exceptions.ErrorHandler
 import api.security.login.JwtLoginProvider
-import com.google.common.collect.ImmutableList
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.ProviderManager
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
@@ -23,12 +21,7 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache
-import org.springframework.web.cors.CorsConfiguration
-import org.springframework.web.cors.CorsConfigurationSource
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource
-
-import java.util.Arrays
-import java.util.Collections
+import java.util.*
 
 @Configuration
 @EnableWebSecurity
@@ -81,7 +74,7 @@ class JwtSecurityConfig(private val authenticationProvider: JwtAuthenticationPro
                 .accessDeniedHandler(errorHandler)
                 .authenticationEntryPoint(entryPoint)
                 .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().cors()
         http
                 .addFilterBefore(authenticationTokenFilter(), UsernamePasswordAuthenticationFilter::class.java)

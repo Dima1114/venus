@@ -1,7 +1,9 @@
 .App {
   text-align: center;
 }
-
+.login-form > div {
+  width: 100%
+}
 .flower > div{
   font-family: Indie Flower, serif !important;
 }
@@ -32,6 +34,12 @@ body > div{
 
 .app-body {
   min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.error-body{
   display: flex;
   flex-direction: column;
   align-items: center;

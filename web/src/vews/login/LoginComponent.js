@@ -4,7 +4,7 @@ import '../../App.css';
 import {addTodo} from "../../actions";
 import {login} from "../../actions/auth";
 import {validate} from "../../utils/validation";
-import loginSvg from "../../svg/login2.svg";
+import loginSvg from "../../svg/login.svg";
 import Vivus from "vivus";
 import DrawnButton from "../../elements/DrawnButton";
 import DrawnTextField from "../../elements/DrawnTextField";
@@ -38,18 +38,17 @@ class LoginComponent extends Component {
 
     render() {
 
-        if(this.props.auth.isAuthenticated === true){
-            return <Redirect to={'/'} />;
+        if (this.props.auth.isAuthenticated === true) {
+            return <Redirect to={'/'}/>;
         }
 
         return (
-            <div className={'app-body flower'}>
-                <div>
+            <div className={'app-body  login-form flower'}>
+                <div style={{width: 582}}>
                     <div style={{
                         display: 'flex',
                         flexDirection: 'column',
                         marginBottom: 20,
-                        width: 582,
                         height: 402,
                         position: 'relative'
                     }}>
@@ -84,11 +83,12 @@ class LoginComponent extends Component {
                         <DrawnButton id={'login-button'}
                                      onClick={() => this.onclick()}>Submit</DrawnButton>
                     </div>
+                    {
+                        !!this.props.auth.globalError ?
+                            <Error id={'errors'} style={{clear:'right'}} error={this.props.auth.globalError}/> : null
+                    }
                 </div>
-                {
-                    !!this.props.auth.globalError ?
-                        <Error id={'errors'} error = {this.props.auth.globalError} /> : null
-                }
+
 
             </div>
         )

@@ -1,8 +1,14 @@
 import {createMuiTheme} from '@material-ui/core/styles';
+import red from '@material-ui/core/colors/red';
 
 export default createMuiTheme({
     fontFamily: 'Indie Flower',
     fontSize: 20,
+    palette: {
+        error: {
+            main: red[500]
+        },
+    },
     typography: {
         useNextVariants: true,
         fontFamily: 'Indie Flower'
