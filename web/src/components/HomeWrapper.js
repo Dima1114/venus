@@ -77,25 +77,16 @@ class HomeWrapper extends Component {
             <div className={"wrapper"}>
                 <div className="App-header">
                     <img src={logo} className="App-logo" alt="logo"/>
-                    <div className={'App-nav'}>
-
-                        {this.props.auth.isAuthenticated ?
+                    {this.props.auth.isAuthenticated ?
+                        <div className={'App-nav'}>
                             <SimpleLink to={'/todo'}>
                                 <DrawnButton id={'todo'}>Todo</DrawnButton>
                             </SimpleLink>
-                            : null}
-
-                        <span style={{marginLeft: 10}}/>
-
-                        {this.props.auth.isAuthenticated ?
+                            <span style={{marginLeft: 10}}/>
                             <DrawnButton id={'logout'}
                                          onClick={() => this.props.logout(this.props.baseUrl)}>Logout</DrawnButton>
-                            :
-                            <SimpleLink to={'/login'}>
-                                <DrawnButton id={'login'}>Login</DrawnButton>
-                            </SimpleLink>}
-                    </div>
-
+                        </div>
+                        : null}
                 </div>
 
                 <Switch>

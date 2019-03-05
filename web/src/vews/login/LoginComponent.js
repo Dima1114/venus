@@ -4,11 +4,12 @@ import '../../App.css';
 import {addTodo} from "../../actions";
 import {login} from "../../actions/auth";
 import {validate} from "../../utils/validation";
-import loginSvg from "../../svg/login.svg";
+import loginSvg from "../../svg/login2.svg";
 import Vivus from "vivus";
 import DrawnButton from "../../elements/DrawnButton";
 import DrawnTextField from "../../elements/DrawnTextField";
 import {Redirect} from "react-router-dom";
+import Error from "../error/Error";
 
 class LoginComponent extends Component {
 
@@ -86,7 +87,7 @@ class LoginComponent extends Component {
                 </div>
                 {
                     !!this.props.auth.globalError ?
-                        <div style={{color: '#f44336'}}>{this.props.auth.globalError}</div> : null
+                        <Error id={'errors'} error = {this.props.auth.globalError} /> : null
                 }
 
             </div>
