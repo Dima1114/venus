@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux'
-import '../App.css';
-import {addTodo} from "../actions";
-import {RaisedButton} from "material-ui";
-import TextField from '@material-ui/core/TextField';
-import {login} from "../actions/auth";
-import {validate} from "../utils/validation";
-import loginSvg from "../svg/login.svg";
+import '../../App.css';
+import {addTodo} from "../../actions";
+import {login} from "../../actions/auth";
+import {validate} from "../../utils/validation";
+import loginSvg from "../../svg/login.svg";
 import Vivus from "vivus";
+import DrawnButton from "../../elements/DrawnButton";
+import DrawnTextField from "../../elements/DrawnTextField";
+import {Redirect} from "react-router-dom";
 
 class LoginComponent extends Component {
 
@@ -35,17 +36,10 @@ class LoginComponent extends Component {
     }
 
     render() {
-        /*<ReactVivus
-            id="foo"
-            option={{
-                file: loginSvg,
-                animTimingFunction: 'LINEAR',
-                type: 'oneByOne',
-                onReady: console.log
-            }}
-            style={{display: 'flex'}}
-            callback={console.log}
-        />*/
+
+        if(this.props.auth.isAuthenticated === true){
+            return <Redirect to={'/'} />;
+        }
 
         return (
             <div className={'app-body flower'}>
@@ -61,24 +55,23 @@ class LoginComponent extends Component {
                         <div id={'my-svg'} style={{width: 582, height: 402, position: 'absolute'}}/>
                         <div style={{width: 300, margin: '0 auto'}}>
                             <div style={{marginTop: 100, marginLeft: 30}}>
-                                <TextField
+                                <DrawnTextField
+                                    id={'username'}
                                     label={'Username'}
                                     fullWidth={true}
                                     value={this.state.username}
-                                    classes={{label:'flower'}}
-                                    InputProps={{disableUnderline: true}}
                                     error={!!validate('username', this.props.auth.errors)}
                                     helperText={validate('username', this.props.auth.errors)}
                                     onChange={(event) => this.setState({username: event.target.value})}
                                 />
                             </div>
                             <div style={{marginTop: 60, marginLeft: 30}}>
-                                <TextField
+                                <DrawnTextField
+                                    id={'password'}
                                     label={'Password'}
                                     fullWidth={true}
                                     value={this.state.password}
                                     type="password"
-                                    InputProps={{disableUnderline: true}}
                                     error={!!validate('password', this.props.auth.errors)}
                                     helperText={validate('password', this.props.auth.errors)}
                                     onChange={(event) => this.setState({password: event.target.value})}
@@ -87,10 +80,9 @@ class LoginComponent extends Component {
                         </div>
                     </div>
                     <div style={{float: 'right'}}>
-                        <RaisedButton label={'Login'}
-                                      onClick={() => this.onclick()}/>
+                        <DrawnButton id={'login-button'}
+                                     onClick={() => this.onclick()}>Submit</DrawnButton>
                     </div>
-                    <div >hello world</div>
                 </div>
                 {
                     !!this.props.auth.globalError ?

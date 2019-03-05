@@ -4,7 +4,10 @@
 
 .flower > div{
   font-family: Indie Flower, serif !important;
-  font-size: 20px !important;
+}
+
+body > div{
+  font-family: Indie Flower, serif !important;
 }
 .App-logo {
   animation: App-logo-spin infinite 20s linear;

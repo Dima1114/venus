@@ -1,9 +1,10 @@
 import React from 'react';
 import {connect} from 'react-redux'
-import {addTodo} from "../actions";
-import {RaisedButton, TextField} from "material-ui";
+import {addTodo} from "../../actions";
 import $ from "jquery";
-import {Link} from "react-router-dom";
+import DrawnButton from "../../elements/DrawnButton";
+import DrawnTextField from "../../elements/DrawnTextField";
+import {SimpleLink} from "../../elements/styledElements";
 
 
 class TodoList extends React.Component {
@@ -30,10 +31,10 @@ class TodoList extends React.Component {
 
     }
 
-    getTodos(){
+    getTodos() {
         $.ajax({
             type: 'GET',
-            url:  this.props.baseUrl + '/tasks',
+            url: this.props.baseUrl + '/tasks',
             dataType: 'json',
         }).then(response => {
             console.log(response);
@@ -43,7 +44,7 @@ class TodoList extends React.Component {
         })
     }
 
-    getUsers(){
+    getUsers() {
         $.ajax({
             type: 'GET',
             url: this.props.baseUrl + '/users?email:isNotNull',
@@ -56,7 +57,7 @@ class TodoList extends React.Component {
         })
     }
 
-    getEnums(){
+    getEnums() {
         $.ajax({
             type: 'GET',
             url: this.props.baseUrl + '/api/enums/taskType',
@@ -72,23 +73,24 @@ class TodoList extends React.Component {
     render() {
         return (
             <div className={'app-body'}>
-                <TextField hintText={'new task'}
-                           value={this.state.task}
-                           onChange={(e, val) => this.setState({task: val})}
+                <DrawnTextField id={'new'}
+                                label={'new task'}
+                                value={this.state.task}
+                                onChange={e => this.setState({task: e.target.value})}
                 />
-                <RaisedButton label={'Add'}
-                              onClick={this.onclick.bind(this)}/>
-                <RaisedButton label={'get todos'}
-                              onClick={this.getTodos.bind(this)}/>
-                <RaisedButton label={'get users'}
-                              onClick={this.getUsers.bind(this)}/>
-                <RaisedButton label={'get enums'}
-                              onClick={this.getEnums.bind(this)}/>
+                <DrawnButton id={'Add'}
+                             onClick={this.onclick.bind(this)}>Add</DrawnButton>
+                <DrawnButton id={'todos'}
+                             onClick={this.getTodos.bind(this)}>get todos</DrawnButton>
+                <DrawnButton id={'users'}
+                             onClick={this.getUsers.bind(this)}>get users</DrawnButton>
+                <DrawnButton id={'enums'}
+                             onClick={this.getEnums.bind(this)}>get enums</DrawnButton>
                 {!!this.props.list ? this.props.list.map((el, i) => <p key={'el_' + i}>{el.text}</p>) : null}
 
-                <Link to={'/'}>
-                    <RaisedButton label={'To Main'}/>
-                </Link>
+                <SimpleLink to={'/'}>
+                    <DrawnButton id={'tomain'}>To Main</DrawnButton>
+                </SimpleLink>
             </div>
         )
     }

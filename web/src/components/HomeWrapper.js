@@ -3,15 +3,16 @@ import {connect} from 'react-redux'
 import '../App.css';
 import $ from "jquery";
 import logo from "../logo.svg";
-import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom";
-import LoginComponent from "./LoginComponent";
-import TodoList from "../components/TodoList";
+import {Route, Switch, withRouter} from "react-router-dom";
+import LoginComponent from "../vews/login/LoginComponent";
+import TodoList from "../vews/todo/TodoList";
 import {initBaseUrl} from "../actions";
 import {logoutAndRedirect, refreshToken} from "../actions/auth";
 import {bindActionCreators} from "redux";
 import ProtectedRoute from "../elements/ProtectedRoute";
 import {SimpleLink} from "../elements/styledElements";
-import DrawButton from "../elements/DrawButton";
+import DrawnButton from "../elements/DrawnButton";
+import Home from "../vews/home/Home";
 
 const baseUrl = 'http://localhost:3000';
 
@@ -28,23 +29,20 @@ class HomeWrapper extends Component {
     componentWillMount() {
         this.props.initBaseUrl(baseUrl);
         this.refreshTokenOnReload(baseUrl);
-
-        if (!!this.props.auth.accessToken) {
-            $.ajaxSetup({
-                headers: {
-                    "X-Auth": this.props.auth.accessToken
-                }
-            })
-        }
+        this.setUp(this.props);
     }
 
     componentWillReceiveProps(nextProps, nextContent) {
         this.refreshCountDown(nextProps);
         this.clearRefreshCountDown(nextProps);
-        if (!!nextProps.auth.accessToken) {
+        this.setUp(nextProps);
+    }
+
+    setUp(props) {
+        if (!!props.auth.accessToken) {
             $.ajaxSetup({
                 headers: {
-                    "X-Auth": 'Bearer ' + nextProps.auth.accessToken
+                    "X-Auth": 'Bearer ' + props.auth.accessToken
                 }
             })
         }
@@ -53,7 +51,7 @@ class HomeWrapper extends Component {
     refreshTokenOnReload(baseUrl) {
         const refreshToken = localStorage.getItem('refreshToken');
         if (!this.props.auth.isAuthenticated && !!refreshToken) {
-            this.props.refreshToken(baseUrl, refreshToken)
+            this.props.refreshToken(baseUrl, refreshToken);
         }
     }
 
@@ -63,51 +61,49 @@ class HomeWrapper extends Component {
             console.log(timeOut);
             const refreshTimer = setTimeout(
                 () => this.props.refreshToken(this.props.baseUrl, props.auth.refreshToken), timeOut);
-            this.setState({refreshTimer: refreshTimer})
+            this.setState({refreshTimer: refreshTimer});
         }
     }
 
     clearRefreshCountDown(props) {
         if (props.auth.isAuthenticated === false) {
             clearTimeout(this.state.refreshTimer);
-            this.setState({refreshTimer: null})
+            this.setState({refreshTimer: null});
         }
     }
 
     render() {
         return (
-            <Router>
-                <div className={"wrapper"}>
-                    <div className="App-header">
-                        <img src={logo} className="App-logo" alt="logo"/>
-                        <div className={'App-nav'}>
+            <div className={"wrapper"}>
+                <div className="App-header">
+                    <img src={logo} className="App-logo" alt="logo"/>
+                    <div className={'App-nav'}>
 
-                            {this.props.auth.isAuthenticated ?
-                                <DrawButton id={'logout'}
-                                            onClick={() => this.props.logout(this.props.baseUrl)}>Logout and go</DrawButton>
-                                :
-                                <SimpleLink to={'/login'}>
-                                    <DrawButton id={'login'}>Login</DrawButton>
-                                </SimpleLink>}
+                        {this.props.auth.isAuthenticated ?
+                            <SimpleLink to={'/todo'}>
+                                <DrawnButton id={'todo'}>Todo</DrawnButton>
+                            </SimpleLink>
+                            : null}
 
-                            <span style={{marginLeft: 10}}/>
+                        <span style={{marginLeft: 10}}/>
 
-                            {this.props.auth.isAuthenticated ?
-                                <SimpleLink to={'/todo'}>
-                                    <DrawButton id={'todo'}>Todo</DrawButton>
-                                </SimpleLink>
-                                : null}
-
-                        </div>
-
+                        {this.props.auth.isAuthenticated ?
+                            <DrawnButton id={'logout'}
+                                         onClick={() => this.props.logout(this.props.baseUrl)}>Logout</DrawnButton>
+                            :
+                            <SimpleLink to={'/login'}>
+                                <DrawnButton id={'login'}>Login</DrawnButton>
+                            </SimpleLink>}
                     </div>
 
-                    <Switch>
-                        <Route exact path={'/login'} component={LoginComponent}/>
-                        <ProtectedRoute path={'/todo'} component={TodoList}/>
-                    </Switch>
                 </div>
-            </Router>
+
+                <Switch>
+                    <Route exact path={'/login'} component={LoginComponent}/>
+                    <ProtectedRoute path={'/todo'} component={TodoList}/>
+                    <ProtectedRoute path={'/'} component={Home}/>
+                </Switch>
+            </div>
         );
     }
 }
@@ -124,4 +120,4 @@ const mapDispatchToProps = (dispatch) => ({
     logout: bindActionCreators(logoutAndRedirect, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeWrapper);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(HomeWrapper));
