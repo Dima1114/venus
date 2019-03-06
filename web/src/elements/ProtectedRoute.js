@@ -7,7 +7,6 @@ class ProtectedRoute extends Component {
 
     render() {
         const {component: Component, ...other} = this.props;
-        console.log(this.props.auth.isAuthenticated);
         return (
             <Route {...other} render={(props) => (
                 this.props.auth.isAuthenticated === true
@@ -20,7 +19,7 @@ class ProtectedRoute extends Component {
 }
 
 const mapStateToProps = state => ({
-    auth: state.authReducer
+    auth: state.auth
 });
 
 const mapDispatchToProps = () => ({});

@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux'
 import '../../App.css';
-import {addTodo} from "../../actions";
 import {login} from "../../actions/auth";
 import {validate} from "../../utils/validation";
 import loginSvg from "../../svg/login.svg";
@@ -24,16 +23,11 @@ class LoginComponent extends Component {
     }
 
     componentDidMount() {
-        new Vivus('my-svg', {duration: 100, file: loginSvg}, () => this.myCallback());
+        new Vivus('my-svg', {duration: 100, file: loginSvg}, () => {});
     }
 
     onclick() {
-        console.log('login send');
-        this.props.login(this.props.baseUrl, this.state.username, this.state.password);
-    }
-
-    myCallback() {
-        console.log("vivus")
+        this.props.login(this.state.username, this.state.password);
     }
 
     render() {
@@ -98,12 +92,11 @@ class LoginComponent extends Component {
 
 const mapStateToProps = state => ({
     baseUrl: state.initBaseUrl.baseUrl,
-    auth: state.authReducer
+    auth: state.auth
 });
 
 const mapDispatchToProps = dispatch => ({
-    onTodoClick: text => dispatch(addTodo(text)),
-    login: (url, u, p) => dispatch(login(url, u, p))
+    login: (u, p) => dispatch(login(u, p))
 
 });
 

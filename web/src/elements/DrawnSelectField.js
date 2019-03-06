@@ -5,10 +5,24 @@ import Vivus from "vivus";
 import {connect} from "react-redux";
 import TextField from "@material-ui/core/TextField";
 import Typing from "react-typing-animation";
+import {bindActionCreators} from "redux";
+import {getEntityListAll} from "../actions/core";
 
 const muiTheme = getMuiTheme(DefaultTheme);
 
 class DrawnSelectField extends Component {
+
+    constructor(props){
+        super(props);
+
+        this.state={
+            children: null
+        }
+    }
+
+    componentWillMount() {
+        this.props.getEntityListAll(this.props.baseUrl, )
+    }
 
     componentDidMount() {
         new Vivus(this.props.id, {duration: 100}, () => {
@@ -16,24 +30,12 @@ class DrawnSelectField extends Component {
     }
 
     render() {
-        const {id, inputProps, inputLabelProps, helperTextProps, helperText, ...props} = this.props;
+        const {id, helperText, ...props} = this.props;
         return (
             <div style={{position: 'relative'}}>
                 <TextField {...props}
                            select
                            helperText={!!helperText ? <Typing speed={10} hideCursor={true}>{helperText}</Typing> : null}
-                           InputProps={{
-                               ...inputProps,
-                               disableUnderline: true,
-                               inputProps: {
-                                   style: {height: 25, fontFamily: muiTheme.typography.fontFamily, fontWeight: 600}
-                               }
-                           }}
-                           InputLabelProps={{...inputLabelProps, style: {fontFamily: muiTheme.typography.fontFamily}}}
-                           FormHelperTextProps={{
-                               ...helperTextProps,
-                               style: {fontFamily: muiTheme.typography.fontFamily, paddingTop: 12, fontSize: 15}
-                           }}
                 >
                     {this.state.children}
                 </TextField>
@@ -61,8 +63,12 @@ const svg = (id) => (
     </svg>
 );
 
-const mapStateToProps = () => ({});
-const mapDispatchToProps = () => ({});
+const mapStateToProps = (state) => ({
+    baseUrl: state.initBaseUrl.baseUrl
+});
+const mapDispatchToProps = (dispatch) => ({
+    getEntityListAll: bindActionCreators(getEntityListAll, dispatch)
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(DrawnSelectField);
 

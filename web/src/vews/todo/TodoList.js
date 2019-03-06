@@ -5,6 +5,8 @@ import $ from "jquery";
 import DrawnButton from "../../elements/DrawnButton";
 import DrawnTextField from "../../elements/DrawnTextField";
 import {SimpleLink} from "../../elements/styledElements";
+import {bindActionCreators} from "redux";
+import {getEntityListAll} from "../../actions/core";
 
 
 class TodoList extends React.Component {
@@ -20,7 +22,7 @@ class TodoList extends React.Component {
     onclick() {
         $.ajax({
             type: 'GET',
-            url: this.props.baseUrl + '/rest/hello',
+            url: '/rest/hello',
             dataType: 'json',
         }).then(response => {
             console.log(response);
@@ -32,16 +34,7 @@ class TodoList extends React.Component {
     }
 
     getTodos() {
-        $.ajax({
-            type: 'GET',
-            url: this.props.baseUrl + '/tasks',
-            dataType: 'json',
-        }).then(response => {
-            console.log(response);
-        }).catch(error => {
-            const message = error.responseJSON || error.responseText || error;
-            console.log(message);
-        })
+        this.props.getEntityListAll('todos', 'tasks')
     }
 
     getUsers() {
@@ -105,7 +98,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    onTodoClick: text => dispatch(addTodo(text))
+    onTodoClick: text => dispatch(addTodo(text)),
+    getEntityListAll: bindActionCreators(getEntityListAll, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoList);

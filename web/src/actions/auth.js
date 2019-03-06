@@ -7,12 +7,12 @@ export const REFRESH_TOKEN_SUCCESS = 'REFRESH_TOKEN_SUCCESS';
 export const REFRESH_TOKEN_FAIL = 'REFRESH_TOKEN_FAIL';
 export const LOGOUT_USER = 'LOGOUT_USER';
 
-export function login(baseUrl, username, password) {
+export function login(username, password) {
     return function (dispatch) {
         dispatch(loginRequest());
         $.ajax({
             type: 'POST',
-            url: baseUrl + '/auth/login',
+            url: '/auth/login',
             contentType: 'application/json',
             data: JSON.stringify({
                 username: username,
@@ -54,11 +54,11 @@ export function loginFail(payload) {
     }
 }
 
-export function refreshToken(baseUrl, token) {
+export function refreshToken(token) {
     return function (dispatch) {
         $.ajax({
             type: 'POST',
-            url: baseUrl + '/auth/token',
+            url: '/auth/token',
             contentType: 'application/json',
             headers: {"X-Auth": "Bearer " + token}
         }).then(response => {
@@ -91,11 +91,11 @@ export function refreshTokenFail(payload) {
     }
 }
 
-export function logoutAndRedirect(baseUrl) {
+export function logoutAndRedirect() {
     return (dispatch) => {
         return $.ajax({
             type: 'GET',
-            url: baseUrl + '/auth/logout',
+            url: '/auth/logout',
             dataType: 'json',
         })
             .then(function () {

@@ -41,6 +41,9 @@ class App extends Component {
     setUp(props) {
         if (!!props.auth.accessToken) {
             $.ajaxSetup({
+                beforeSend: (xhr, options) => {
+                    options.url = this.props.baseUrl + options.url;
+                },
                 headers: {
                     "X-Auth": 'Bearer ' + props.auth.accessToken
                 }
@@ -51,16 +54,15 @@ class App extends Component {
     refreshTokenOnReload(baseUrl) {
         const refreshToken = localStorage.getItem('refreshToken');
         if (!this.props.auth.isAuthenticated && !!refreshToken) {
-            this.props.refreshToken(baseUrl, refreshToken);
+            this.props.refreshToken(refreshToken);
         }
     }
 
     refreshCountDown(props) {
         if (props.auth.isAuthenticated && !!props.auth.expTime) {
             const timeOut = props.auth.expTime * 1000 - new Date().getTime() - 60000;
-            console.log(timeOut);
             const refreshTimer = setTimeout(
-                () => this.props.refreshToken(this.props.baseUrl, props.auth.refreshToken), timeOut);
+                () => this.props.refreshToken(props.auth.refreshToken), timeOut);
             this.setState({refreshTimer: refreshTimer});
         }
     }
@@ -88,7 +90,7 @@ class App extends Component {
                             </SimpleLink>
                             <span style={{marginLeft: 10}}/>
                             <DrawnButton id={'logout'}
-                                         onClick={() => this.props.logout(this.props.baseUrl)}>Logout</DrawnButton>
+                                         onClick={() => this.props.logout()}>Logout</DrawnButton>
                         </div>
                         : null}
                 </div>
@@ -104,9 +106,8 @@ class App extends Component {
 }
 
 const mapStateToProps = state => ({
-    auth: state.authReducer,
+    auth: state.auth,
     baseUrl: state.initBaseUrl.baseUrl,
-
 });
 
 const mapDispatchToProps = (dispatch) => ({
