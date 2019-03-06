@@ -73,6 +73,7 @@ class TodoList extends React.Component {
     render() {
         return (
             <div className={'app-body'}>
+
                 <DrawnTextField id={'new'}
                                 label={'new task'}
                                 value={this.state.task}

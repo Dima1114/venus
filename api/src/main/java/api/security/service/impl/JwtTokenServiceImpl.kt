@@ -1,6 +1,7 @@
 package api.security.service.impl
 
 import api.entity.Role
+import api.entity.User
 import api.repository.UserRepository
 import api.security.config.JwtSettings
 import api.security.exceptions.JwtAuthenticationException
@@ -18,7 +19,7 @@ import java.util.UUID
 class JwtTokenServiceImpl(private val jwtSettings: JwtSettings, private val userRepository: UserRepository) : JwtTokenService {
 
     override fun updateRefreshToken(username: String, refreshToken: String) {
-        val user = userRepository.findByUsername(username)
+        val user: User = userRepository.findByUsername(username)
                 .orElseThrow { JwtAuthenticationException("User not found") }
 
         user.refreshToken = refreshToken
@@ -88,7 +89,8 @@ class JwtTokenServiceImpl(private val jwtSettings: JwtSettings, private val user
                 .parseClaimsJws(token)
                 .body
 
-        return claims.get("roles", List::class.java)
+        val roles = claims.get("roles", List::class.java) ?: listOf<String>()
+        return roles
                 .asSequence()
                 .map { role -> Role.valueOf(role as String) }
                 .toSet()

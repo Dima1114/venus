@@ -49,7 +49,7 @@ class JwtSecurityConfig(private val authenticationProvider: JwtAuthenticationPro
     @Bean
     fun authenticationTokenFilter(): JwtAuthenticationTokenFilter {
 
-        val pathsToSkip = Arrays.asList(TOKEN_ENTRY_POINT, LOGIN_ENTRY_POINT)
+        val pathsToSkip = Arrays.asList(LOGIN_ENTRY_POINT)
         val methodsToSkip = listOf(HttpMethod.OPTIONS.name)
 
         val matcher = SkipPathAndMethodsRequestMatcher(pathsToSkip, methodsToSkip, ENTRY_POINT)

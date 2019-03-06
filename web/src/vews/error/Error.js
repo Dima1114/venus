@@ -2,11 +2,12 @@ import React from 'react';
 import {connect} from 'react-redux'
 import {addTodo} from "../../actions";
 import Vivus from "vivus";
+import Typing from "react-typing-animation";
 import getMuiTheme from "material-ui/styles/getMuiTheme";
 import DefaultTheme from "../../themeDefault";
 
 const muiTheme = getMuiTheme(DefaultTheme);
-const color =muiTheme.palette.error.main;
+const color = muiTheme.palette.error.main;
 
 class Error extends React.Component {
 
@@ -19,7 +20,9 @@ class Error extends React.Component {
         const {style, id, error} = this.props;
         return (
             <div className={'error-body'} style={{...style, position: 'relative', width: '100%', padding: '10px 10px'}}>
-                <p style={{padding: '0 20px', fontWeight: 600, color: color}}>{error}</p>
+                <Typing speed={10} hideCursor={true}>
+                    <p style={{padding: '0 20px', fontWeight: 600, color: color}}>{error}</p>
+                </Typing>
                 {svg(id)}
             </div>
         )

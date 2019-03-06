@@ -8,7 +8,7 @@ import Typing from "react-typing-animation";
 
 const muiTheme = getMuiTheme(DefaultTheme);
 
-class DrawnTextField extends Component {
+class DrawnSelectField extends Component {
 
     componentDidMount() {
         new Vivus(this.props.id, {duration: 100}, () => {
@@ -20,6 +20,7 @@ class DrawnTextField extends Component {
         return (
             <div style={{position: 'relative'}}>
                 <TextField {...props}
+                           select
                            helperText={!!helperText ? <Typing speed={10} hideCursor={true}>{helperText}</Typing> : null}
                            InputProps={{
                                ...inputProps,
@@ -33,7 +34,9 @@ class DrawnTextField extends Component {
                                ...helperTextProps,
                                style: {fontFamily: muiTheme.typography.fontFamily, paddingTop: 12, fontSize: 15}
                            }}
-                />
+                >
+                    {this.state.children}
+                </TextField>
                 {svg(id)}
             </div>
         )
@@ -61,6 +64,6 @@ const svg = (id) => (
 const mapStateToProps = () => ({});
 const mapDispatchToProps = () => ({});
 
-export default connect(mapStateToProps, mapDispatchToProps)(DrawnTextField);
+export default connect(mapStateToProps, mapDispatchToProps)(DrawnSelectField);
 
 

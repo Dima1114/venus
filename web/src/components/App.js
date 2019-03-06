@@ -16,7 +16,7 @@ import Home from "../vews/home/Home";
 
 const baseUrl = 'http://localhost:3000';
 
-class HomeWrapper extends Component {
+class App extends Component {
 
     constructor(props) {
         super(props);
@@ -79,6 +79,10 @@ class HomeWrapper extends Component {
                     <img src={logo} className="App-logo" alt="logo"/>
                     {this.props.auth.isAuthenticated ?
                         <div className={'App-nav'}>
+                            <SimpleLink to={'/'}>
+                                <DrawnButton id={'home'}>home</DrawnButton>
+                            </SimpleLink>
+                            <span style={{marginLeft: 10}}/>
                             <SimpleLink to={'/todo'}>
                                 <DrawnButton id={'todo'}>Todo</DrawnButton>
                             </SimpleLink>
@@ -111,4 +115,4 @@ const mapDispatchToProps = (dispatch) => ({
     logout: bindActionCreators(logoutAndRedirect, dispatch),
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(HomeWrapper));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
