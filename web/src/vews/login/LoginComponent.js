@@ -9,6 +9,7 @@ import DrawnButton from "../../elements/DrawnButton";
 import DrawnTextField from "../../elements/DrawnTextField";
 import {Redirect} from "react-router-dom";
 import Error from "../error/Error";
+import Overlay from "../overlay/Overlay";
 
 class LoginComponent extends Component {
 
@@ -23,7 +24,10 @@ class LoginComponent extends Component {
     }
 
     componentDidMount() {
-        new Vivus('my-svg', {duration: 100, file: loginSvg}, () => {});
+        if (this.props.auth.isAuthenticating === false && this.props.auth.isAuthenticated === false) {
+            new Vivus('my-svg', {duration: 100, file: loginSvg}, () => {
+            });
+        }
     }
 
     onclick() {
@@ -34,6 +38,13 @@ class LoginComponent extends Component {
 
         if (this.props.auth.isAuthenticated === true) {
             return <Redirect to={'/'}/>;
+        }
+
+        if (this.props.auth.isAuthenticating === true) {
+            return (
+                <div className={'app-body  login-form flower'}>
+                    <Overlay/>
+                </div>)
         }
 
         return (
@@ -79,7 +90,7 @@ class LoginComponent extends Component {
                     </div>
                     {
                         !!this.props.auth.globalError ?
-                            <Error id={'errors'} style={{clear:'right'}} error={this.props.auth.globalError}/> : null
+                            <Error id={'errors'} style={{clear: 'right'}} error={this.props.auth.globalError}/> : null
                     }
                 </div>
 

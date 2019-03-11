@@ -3,6 +3,7 @@ import $ from 'jquery'
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAIL = 'LOGIN_FAIL';
+export const REFRESH_TOKEN_REQUEST = 'REFRESH_TOKEN_REQUEST';
 export const REFRESH_TOKEN_SUCCESS = 'REFRESH_TOKEN_SUCCESS';
 export const REFRESH_TOKEN_FAIL = 'REFRESH_TOKEN_FAIL';
 export const LOGOUT_USER = 'LOGOUT_USER';
@@ -56,6 +57,7 @@ export function loginFail(payload) {
 
 export function refreshToken(token) {
     return function (dispatch) {
+        dispatch(refreshTokenRequest());
         $.ajax({
             type: 'POST',
             url: '/auth/token',
@@ -66,6 +68,12 @@ export function refreshToken(token) {
         }).catch(error => {
             dispatch(refreshTokenFail(error))
         })
+    }
+}
+
+export function refreshTokenRequest() {
+    return {
+        type: REFRESH_TOKEN_REQUEST
     }
 }
 

@@ -18,7 +18,29 @@ body > div > div{
   animation: App-logo-spin infinite 20s linear;
   height: 20vmin;
 }
-
+.overlay{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 10vmin;
+  max-width: 150px;
+}
+.main-gear{
+  animation: App-logo-spin infinite 3s linear;
+  padding: 0;
+  margin-right: -15px;
+  margin-top: 30px;
+  max-width: 75px;
+  max-height: 75px;
+}
+.secondary-gear{
+  animation: App-logo-spin-reverse infinite 3s linear;
+  padding: 0;
+  margin-bottom: 30px;
+  max-width: 75px;
+  max-height: 75px;
+}
 .App-nav {
   display: flex;
   padding-bottom: 1vh;
@@ -43,8 +65,8 @@ body > div > div{
   justify-content: center;
 }
 .filter-body{
-  margin: 5px 5px;
-  min-height: 20vh;
+  padding: 20px 20px;
+  /*min-height: 20vh;*/
   display: flex;
   flex-direction: row;
   align-items: flex-start;
@@ -67,5 +89,13 @@ body > div > div{
   }
   to {
     transform: rotate(360deg);
+  }
+}
+@keyframes App-logo-spin-reverse {
+  from {
+    transform: rotate(-32deg);
+  }
+  to {
+    transform: rotate(-392deg);
   }
 }

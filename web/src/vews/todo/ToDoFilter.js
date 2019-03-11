@@ -6,21 +6,21 @@ import Typing from "react-typing-animation";
 import Vivus from "vivus";
 import {muiTheme} from "../../themeDefault";
 
-const color = muiTheme.palette.error.main;
+const color = muiTheme.palette.primary.main;
 
 class ToDoFilter extends React.Component {
 
     componentDidMount() {
-        new Vivus(this.props.id, {duration: 50}, () => {
-        });
+        new Vivus(this.props.id, {duration: 50}, () => {});
     }
 
     render() {
         return (
             <div style={{position: 'relative'}}>
+                {svg(this.props.id)}
                 <div>
                     <Typing speed={10} hideCursor={true}>
-                        <h3 style={{margin: '20px 0 0 0', fontWeight: 600}}>Todo Filter</h3>
+                        <h2 style={{margin: '20px', fontWeight: 600}}>Todo Filter</h2>
                     </Typing>
                 </div>
                 <div className={'filter-body'}>
@@ -36,7 +36,6 @@ class ToDoFilter extends React.Component {
                     <span style={{marginRight: 20}}/>
                     <DrawnDatePicker id={'date-after'} label={'Date to'}/>
                 </div>
-                {svg(this.props.id)}
             </div>
         )
     }
@@ -45,8 +44,8 @@ class ToDoFilter extends React.Component {
 const svg = (id) => (
     <svg
         id={id}
-        style={{position: 'absolute'}}
-        viewBox='0 0 100 100'
+        style={{position: 'absolute', top:0, left: 0}}
+        viewBox='5 0 800 300'
         preserveAspectRatio="none"
         width="100%"
         height="100%"

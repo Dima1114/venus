@@ -34,7 +34,7 @@ class App extends Component {
 
     componentWillReceiveProps(nextProps, nextContent) {
         this.refreshCountDown(nextProps);
-        this.clearRefreshCountDown(nextProps);
+        // this.clearRefreshCountDown();
         this.setUp(nextProps);
     }
 
@@ -60,6 +60,7 @@ class App extends Component {
 
     refreshCountDown(props) {
         if (props.auth.isAuthenticated && !!props.auth.expTime) {
+            this.clearRefreshCountDown();
             const timeOut = props.auth.expTime * 1000 - new Date().getTime() - 60000;
             const refreshTimer = setTimeout(
                 () => this.props.refreshToken(props.auth.refreshToken), timeOut);
@@ -67,11 +68,9 @@ class App extends Component {
         }
     }
 
-    clearRefreshCountDown(props) {
-        if (props.auth.isAuthenticated === false) {
-            clearTimeout(this.state.refreshTimer);
-            this.setState({refreshTimer: null});
-        }
+    clearRefreshCountDown() {
+        clearTimeout(this.state.refreshTimer);
+        this.setState({refreshTimer: null});
     }
 
     render() {

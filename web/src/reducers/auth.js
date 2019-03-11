@@ -5,7 +5,7 @@ import {
     LOGIN_REQUEST,
     LOGIN_SUCCESS,
     LOGOUT_USER,
-    REFRESH_TOKEN_FAIL,
+    REFRESH_TOKEN_FAIL, REFRESH_TOKEN_REQUEST,
     REFRESH_TOKEN_SUCCESS
 } from "../actions/auth";
 
@@ -46,6 +46,11 @@ export const authReducer = createReducer(initState, {
             globalError: payload.globalError,
             isAuthenticating: false,
             isAuthenticated: false
+        });
+    },
+    [REFRESH_TOKEN_REQUEST]: (state) => {
+        return Object.assign({}, state, {
+            isAuthenticating: true
         });
     },
     [REFRESH_TOKEN_SUCCESS]: (state, payload) => {

@@ -8,6 +8,7 @@ import {getEntityListAll} from "../actions/core";
 import MenuItem from "@material-ui/core/MenuItem";
 import Fade from "@material-ui/core/Fade";
 import Paper from "@material-ui/core/Paper";
+import DrawnPaper from "./DrawnPaper";
 
 class DrawnSelectField extends Component {
 
@@ -28,11 +29,11 @@ class DrawnSelectField extends Component {
     }
 
     componentDidMount() {
-        new Vivus(this.props.id, {duration: 50}, () => {});
+        // new Vivus(this.props.id, {duration: 50}, () => {});
     }
 
-    handleChange(event){
-        this.setState({ value: event.target.value });
+    handleChange(event) {
+        this.setState({value: event.target.value});
     }
 
     renderChildren() {
@@ -43,9 +44,10 @@ class DrawnSelectField extends Component {
         ];
         if (!!this.props.list) {
             this.props.list.forEach(option => {
-                    items.push(<MenuItem key={option[this.state.keyProp]} value={option[this.state.valueProp]}>
-                        {option[this.state.valueProp]}
-                    </MenuItem>);
+                    items.push(
+                        <MenuItem key={option[this.state.keyProp]} value={option[this.state.valueProp]}>
+                            <Typing speed={10} hideCursor={true}>{option[this.state.valueProp] || ''}</Typing>
+                        </MenuItem>);
                 }
             );
         }
@@ -58,7 +60,8 @@ class DrawnSelectField extends Component {
                 <TextField select
                            value={this.state.value}
                            onChange={this.handleChange.bind(this)}
-                           label={!!this.props.label ? <Typing speed={10} hideCursor={true}>{this.props.label}</Typing> : null}
+                           label={!!this.props.label ?
+                               <Typing speed={10} hideCursor={true}>{this.props.label}</Typing> : null}
                            style={{minWidth: 195}}
                            InputProps={{
                                disableUnderline: true,
@@ -67,7 +70,7 @@ class DrawnSelectField extends Component {
                                MenuProps: {
                                    TransitionComponent: Fade,
                                    PaperProps:{
-                                       component: PaperWrapper
+                                       component: DrawnPaper
                                    }
                                },
                            }}
@@ -80,8 +83,12 @@ class DrawnSelectField extends Component {
     }
 }
 
-const PaperWrapper = ({id, ...props}) => (
-    <div><Paper {...props}/>{svg(id)}</div>
+const PaperWrapper = ({id, children, ...props}) => (
+    <Paper {...props}>
+        {svg(id)}
+        {children}
+    </Paper>
+
 );
 
 const svg = (id) => (

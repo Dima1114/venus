@@ -8,6 +8,7 @@ import {SimpleLink} from "../../elements/styledElements";
 import {bindActionCreators} from "redux";
 import {getEntityListAll} from "../../actions/core";
 import ToDoFilter from "./ToDoFilter";
+import Overlay from "../overlay/Overlay";
 
 
 class TodoList extends React.Component {
@@ -68,26 +69,32 @@ class TodoList extends React.Component {
         return (
             <div className={'app-body'}>
 
-                <ToDoFilter />
+                <ToDoFilter id={'todo-filter'}/>
 
-                <DrawnTextField id={'new'}
-                                label={'new task'}
-                                value={this.state.task}
-                                onChange={e => this.setState({task: e.target.value})}
-                />
-                <DrawnButton id={'Add'}
-                             onClick={this.onclick.bind(this)}>Add</DrawnButton>
-                <DrawnButton id={'todos'}
-                             onClick={this.getTodos.bind(this)}>get todos</DrawnButton>
-                <DrawnButton id={'users'}
-                             onClick={this.getUsers.bind(this)}>get users</DrawnButton>
-                <DrawnButton id={'enums'}
-                             onClick={this.getEnums.bind(this)}>get enums</DrawnButton>
-                {!!this.props.list ? this.props.list.map((el, i) => <p key={'el_' + i}>{el.text}</p>) : null}
+                <div className={'app-body'}>
+                    <h2>Sorry, This section is under construction process</h2>
+                    <Overlay/>
+                    <SimpleLink to={'/'}>
+                        <DrawnButton id={'tomain'}>To Main</DrawnButton>
+                    </SimpleLink>
+                </div>
 
-                <SimpleLink to={'/'}>
-                    <DrawnButton id={'tomain'}>To Main</DrawnButton>
-                </SimpleLink>
+                {/*<DrawnTextField id={'new'}*/}
+                                {/*label={'new task'}*/}
+                                {/*value={this.state.task}*/}
+                                {/*onChange={e => this.setState({task: e.target.value})}*/}
+                {/*/>*/}
+                {/*<DrawnButton id={'Add'}*/}
+                             {/*onClick={this.onclick.bind(this)}>Add</DrawnButton>*/}
+                {/*<DrawnButton id={'todos'}*/}
+                             {/*onClick={this.getTodos.bind(this)}>get todos</DrawnButton>*/}
+                {/*<DrawnButton id={'users'}*/}
+                             {/*onClick={this.getUsers.bind(this)}>get users</DrawnButton>*/}
+                {/*<DrawnButton id={'enums'}*/}
+                             {/*onClick={this.getEnums.bind(this)}>get enums</DrawnButton>*/}
+                {/*{!!this.props.list ? this.props.list.map((el, i) => <p key={'el_' + i}>{el.text}</p>) : null}*/}
+
+
             </div>
         )
     }
