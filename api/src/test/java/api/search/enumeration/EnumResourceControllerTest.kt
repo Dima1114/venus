@@ -12,9 +12,9 @@ import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
-
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 
 
@@ -43,10 +43,10 @@ class EnumResourceControllerTest {
 
         //given
         whenever(enumResourceService.getEnumResource("testEnum"))
-                .thenReturn(TestEnum.values().map { EnumValue(it.name) }.toList())
+                .thenReturn(TestEnum.values().map { EnumValue(it.ordinal, it.name) }.toList())
 
         //when
-        val result = this.mvc.perform(get("/api/enums/testEnum").accept(MediaType.APPLICATION_JSON))
+        val result = this.mvc.perform(get("/enums/testEnum").accept(MediaType.APPLICATION_JSON))
 
         //then
         result.andExpect(status().isOk)
@@ -62,7 +62,7 @@ class EnumResourceControllerTest {
                 .thenThrow(JwtAuthenticationException("Not authorized"))
 
         //when
-        this.mvc.perform(get("/api/enums/testEnum2").accept(MediaType.APPLICATION_JSON))
+        this.mvc.perform(get("/enums/testEnum2").accept(MediaType.APPLICATION_JSON))
     }
 
     @Test
@@ -73,7 +73,7 @@ class EnumResourceControllerTest {
                 .thenThrow(ResourceNotFoundException("Requested resource not found"))
 
         //when
-        val result = this.mvc.perform(get("/api/enums/testEnum3").accept(MediaType.APPLICATION_JSON))
+        val result = this.mvc.perform(get("/enums/testEnum3").accept(MediaType.APPLICATION_JSON))
 
         //then
         result.andExpect(status().isNotFound)

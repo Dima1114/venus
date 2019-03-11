@@ -1,13 +1,8 @@
 import React, {Component} from 'react';
 import '../App.css';
 import {connect} from "react-redux";
-import {withStyles} from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Vivus from "vivus";
-import getMuiTheme from "material-ui/styles/getMuiTheme";
-import DefaultTheme from "../themeDefault";
-
-const muiTheme = getMuiTheme(DefaultTheme);
 
 class DrawnButton extends Component {
 
@@ -21,7 +16,7 @@ class DrawnButton extends Component {
         return (
             <div style={{position: 'relative', height: 48}}>
                 {svg(id)}
-                <StyledButton {...other} />
+                <Button {...other} />
             </div>
         )
     }
@@ -50,24 +45,6 @@ const svg = (id) => (
         </g>
     </svg>
 );
-
-const StyledButton = withStyles({
-    root: {
-        borderRadius: 3,
-        border: 0,
-        color: 'black',
-        height: 44,
-        padding: '0 30px',
-    },
-    label: {
-        width: '100%',
-        textTransform: 'capitalize',
-        fontFamily: muiTheme.typography.fontFamily,
-        fontSize: 20,
-        fontWeight: 600,
-        textDecoration: 'none'
-    },
-})(Button);
 
 const mapStateToProps = () => ({});
 const mapDispatchToProps = () => ({});

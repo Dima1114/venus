@@ -1,5 +1,3 @@
-import getMuiTheme from "material-ui/styles/getMuiTheme";
-import DefaultTheme from "../themeDefault";
 import React, {Component} from "react";
 import Vivus from "vivus";
 import {connect} from "react-redux";
@@ -7,49 +5,90 @@ import TextField from "@material-ui/core/TextField";
 import Typing from "react-typing-animation";
 import {bindActionCreators} from "redux";
 import {getEntityListAll} from "../actions/core";
-
-const muiTheme = getMuiTheme(DefaultTheme);
+import MenuItem from "@material-ui/core/MenuItem";
+import Fade from "@material-ui/core/Fade";
+import Paper from "@material-ui/core/Paper";
 
 class DrawnSelectField extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
-        this.state={
-            children: null
+        this.state = {
+            value: '',
+            keyProp: this.props.keyProp || 'id',
+            valueProp: this.props.valueProp || 'value'
         }
     }
 
     componentWillMount() {
-        this.props.getEntityListAll(this.props.baseUrl, )
+        if (!this.props.list) {
+            this.props.getEntityListAll(this.props.store, this.props.entities, this.props.paramName);
+        }
     }
 
     componentDidMount() {
-        new Vivus(this.props.id, {duration: 100}, () => {
-        });
+        new Vivus(this.props.id, {duration: 50}, () => {});
+    }
+
+    handleChange(event){
+        this.setState({ value: event.target.value });
+    }
+
+    renderChildren() {
+        const items = [
+            <MenuItem key={null} value={null}>
+                {null}
+            </MenuItem>
+        ];
+        if (!!this.props.list) {
+            this.props.list.forEach(option => {
+                    items.push(<MenuItem key={option[this.state.keyProp]} value={option[this.state.valueProp]}>
+                        {option[this.state.valueProp]}
+                    </MenuItem>);
+                }
+            );
+        }
+        return items;
     }
 
     render() {
-        const {id, helperText, ...props} = this.props;
         return (
             <div style={{position: 'relative'}}>
-                <TextField {...props}
-                           select
-                           helperText={!!helperText ? <Typing speed={10} hideCursor={true}>{helperText}</Typing> : null}
+                <TextField select
+                           value={this.state.value}
+                           onChange={this.handleChange.bind(this)}
+                           label={!!this.props.label ? <Typing speed={10} hideCursor={true}>{this.props.label}</Typing> : null}
+                           style={{minWidth: 195}}
+                           InputProps={{
+                               disableUnderline: true,
+                           }}
+                           SelectProps={{
+                               MenuProps: {
+                                   TransitionComponent: Fade,
+                                   PaperProps:{
+                                       component: PaperWrapper
+                                   }
+                               },
+                           }}
                 >
-                    {this.state.children}
+                    {this.renderChildren()}
                 </TextField>
-                {svg(id)}
+                {svg(this.props.id)}
             </div>
         )
     }
 }
 
+const PaperWrapper = ({id, ...props}) => (
+    <div><Paper {...props}/>{svg(id)}</div>
+);
+
 const svg = (id) => (
     <svg
         id={id}
         style={{position: 'absolute', left: 0, top: 48}}
-        viewBox='10 0 500 50'
+        viewBox='10 5 500 50'
         preserveAspectRatio="none"
         width="100%"
         height="50px"
@@ -63,8 +102,8 @@ const svg = (id) => (
     </svg>
 );
 
-const mapStateToProps = (state) => ({
-    baseUrl: state.initBaseUrl.baseUrl
+const mapStateToProps = (state, props) => ({
+    list: !!state.core[props.store] ? state.core[props.store].list : null
 });
 const mapDispatchToProps = (dispatch) => ({
     getEntityListAll: bindActionCreators(getEntityListAll, dispatch)

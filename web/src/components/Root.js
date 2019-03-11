@@ -1,19 +1,20 @@
 import React from 'react'
 import {Provider} from 'react-redux'
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import App from "./App";
-import getMuiTheme from "material-ui/styles/getMuiTheme";
-import DefaultTheme from '../themeDefault.js';
 import {BrowserRouter as Router} from "react-router-dom";
-
-const muiTheme = getMuiTheme(DefaultTheme);
+import {muiTheme} from "../themeDefault";
+import DateFnsUtils from '@date-io/date-fns';
+import {MuiPickersUtilsProvider} from 'material-ui-pickers';
 
 const Root = ({store}) => (
     <Provider store={store}>
         <MuiThemeProvider theme={muiTheme}>
-            <Router>
-                <App/>
-            </Router>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <Router>
+                    <App/>
+                </Router>
+            </MuiPickersUtilsProvider>
         </MuiThemeProvider>
     </Provider>
 );

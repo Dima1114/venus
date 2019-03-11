@@ -8,7 +8,7 @@ class Home extends React.Component {
     render() {
         return (
             <div className={'app-body'} style={{fontSize: 40}}>
-                <Typing speed={5} hideCursor={true}>
+                <Typing speed={1} hideCursor={true}>
                     <h1>Welcome to TODO List application</h1>
                 </Typing>
             </div>

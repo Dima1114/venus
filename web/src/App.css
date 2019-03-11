@@ -1,14 +1,17 @@
 .App {
   text-align: center;
 }
+#wrapper > div {
+  font-family: Indie Flower, serif !important;
+}
 .login-form > div {
   width: 100%
 }
-.flower > div{
+.flower div{
   font-family: Indie Flower, serif !important;
 }
 
-body > div{
+body > div > div{
   font-family: Indie Flower, serif !important;
 }
 .App-logo {
@@ -38,6 +41,14 @@ body > div{
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+.filter-body{
+  margin: 5px 5px;
+  min-height: 20vh;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 .error-body{
   display: flex;

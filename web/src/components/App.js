@@ -28,7 +28,7 @@ class App extends Component {
 
     componentWillMount() {
         this.props.initBaseUrl(baseUrl);
-        this.refreshTokenOnReload(baseUrl);
+        this.refreshTokenOnReload();
         this.setUp(this.props);
     }
 
@@ -51,7 +51,7 @@ class App extends Component {
         }
     }
 
-    refreshTokenOnReload(baseUrl) {
+    refreshTokenOnReload() {
         const refreshToken = localStorage.getItem('refreshToken');
         if (!this.props.auth.isAuthenticated && !!refreshToken) {
             this.props.refreshToken(refreshToken);
@@ -76,7 +76,7 @@ class App extends Component {
 
     render() {
         return (
-            <div className={"wrapper"}>
+            <div id={"wrapper"}>
                 <div className="App-header">
                     <img src={logo} className="App-logo" alt="logo"/>
                     {this.props.auth.isAuthenticated ?

@@ -7,10 +7,7 @@ import api.service.getUserFromContext
 import org.reflections.Reflections
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
-import org.springframework.web.servlet.NoHandlerFoundException
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
-import java.lang.IllegalArgumentException
-import java.util.Collections
+import java.util.*
 
 @Service
 class EnumResourceServiceImpl(@Value("\${reflection.enum.root-path}") private val rootPackage: String? = null) : EnumResourceService {
@@ -26,7 +23,7 @@ class EnumResourceServiceImpl(@Value("\${reflection.enum.root-path}") private va
         return candidate
                 .takeOrThrow(::checkPermissions) { JwtAuthenticationException("You don`t have permission to access") }
                 .enumConstants
-                .map { EnumValue((it as Enum<*>).name) }
+                .map { EnumValue((it as Enum<*>).ordinal, it.name) }
                 .toList()
     }
 
@@ -46,4 +43,4 @@ class EnumResourceServiceImpl(@Value("\${reflection.enum.root-path}") private va
     }
 }
 
-data class EnumValue (val name: String)
+data class EnumValue (val ordinal: Int, val name: String)

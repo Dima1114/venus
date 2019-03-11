@@ -7,6 +7,7 @@ import DrawnTextField from "../../elements/DrawnTextField";
 import {SimpleLink} from "../../elements/styledElements";
 import {bindActionCreators} from "redux";
 import {getEntityListAll} from "../../actions/core";
+import ToDoFilter from "./ToDoFilter";
 
 
 class TodoList extends React.Component {
@@ -66,6 +67,8 @@ class TodoList extends React.Component {
     render() {
         return (
             <div className={'app-body'}>
+
+                <ToDoFilter />
 
                 <DrawnTextField id={'new'}
                                 label={'new task'}

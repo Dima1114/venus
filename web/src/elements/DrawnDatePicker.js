@@ -1,28 +1,47 @@
 import React, {Component} from "react";
-import Vivus from "vivus";
 import {connect} from "react-redux";
-import TextField from "@material-ui/core/TextField";
-import Typing from "react-typing-animation";
+import {DatePicker} from "material-ui-pickers";
+import Vivus from "vivus";
 
-class DrawnTextField extends Component {
+class DrawnDatePicker extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            value: null,
+        }
+    }
 
     componentDidMount() {
-        new Vivus(this.props.id, {duration: 100}, () => {
-        });
+        new Vivus(this.props.id, {duration: 50}, () => {});
+    }
+
+    handleChange(date){
+
+        if(!!this.props.onChange){
+            this.props.onChange(date);
+        }
+
+        this.setState({value: date});
     }
 
     render() {
-        const {id, inputProps, helperText, ...props} = this.props;
         return (
             <div style={{position: 'relative'}}>
-                <TextField {...props}
-                           helperText={!!helperText ? <Typing speed={10} hideCursor={true}>{helperText}</Typing> : null}
-                           InputProps={{
-                               ...inputProps,
-                               disableUnderline: true,
-                           }}
+                <DatePicker
+                    // margin="normal"
+                    label={this.props.label}
+                    clearable
+                    autoOk
+                    format={" dd / MM / yyyy"}
+                    InputProps={{
+                        disableUnderline: true,
+                    }}
+                    value={this.state.value}
+                    onChange={date => this.handleChange(date)}
                 />
-                {svg(id)}
+                {svg(this.props.id)}
             </div>
         )
     }
@@ -49,6 +68,6 @@ const svg = (id) => (
 const mapStateToProps = () => ({});
 const mapDispatchToProps = () => ({});
 
-export default connect(mapStateToProps, mapDispatchToProps)(DrawnTextField);
+export default connect(mapStateToProps, mapDispatchToProps)(DrawnDatePicker);
 
 

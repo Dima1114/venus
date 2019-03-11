@@ -3,10 +3,8 @@ import {connect} from 'react-redux'
 import {addTodo} from "../../actions";
 import Vivus from "vivus";
 import Typing from "react-typing-animation";
-import getMuiTheme from "material-ui/styles/getMuiTheme";
-import DefaultTheme from "../../themeDefault";
+import {muiTheme} from "../../themeDefault";
 
-const muiTheme = getMuiTheme(DefaultTheme);
 const color = muiTheme.palette.error.main;
 
 class Error extends React.Component {
