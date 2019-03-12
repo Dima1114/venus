@@ -27,15 +27,16 @@ body > div > div{
   max-width: 150px;
 }
 .main-gear{
-  animation: App-logo-spin infinite 3s linear;
+  animation: App-logo-spin infinite 6s linear;
   padding: 0;
-  margin-right: -15px;
+  margin-right: -12px;
   margin-top: 30px;
-  max-width: 75px;
-  max-height: 75px;
+  max-width: 150px;
+  max-height: 150px;
 }
 .secondary-gear{
   animation: App-logo-spin-reverse infinite 3s linear;
+  /*transform: rotate(-25deg);*/
   padding: 0;
   margin-bottom: 30px;
   max-width: 75px;
@@ -93,9 +94,9 @@ body > div > div{
 }
 @keyframes App-logo-spin-reverse {
   from {
-    transform: rotate(-32deg);
+    transform: rotate(-25deg);
   }
   to {
-    transform: rotate(-392deg);
+    transform: rotate(-385deg);
   }
 }

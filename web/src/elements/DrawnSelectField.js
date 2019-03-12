@@ -7,7 +7,6 @@ import {bindActionCreators} from "redux";
 import {getEntityListAll} from "../actions/core";
 import MenuItem from "@material-ui/core/MenuItem";
 import Fade from "@material-ui/core/Fade";
-import Paper from "@material-ui/core/Paper";
 import DrawnPaper from "./DrawnPaper";
 
 class DrawnSelectField extends Component {
@@ -29,7 +28,7 @@ class DrawnSelectField extends Component {
     }
 
     componentDidMount() {
-        // new Vivus(this.props.id, {duration: 50}, () => {});
+        new Vivus(this.props.id, {duration: 50}, () => {});
     }
 
     handleChange(event) {
@@ -83,13 +82,13 @@ class DrawnSelectField extends Component {
     }
 }
 
-const PaperWrapper = ({id, children, ...props}) => (
-    <Paper {...props}>
-        {svg(id)}
-        {children}
-    </Paper>
-
-);
+// const PaperWrapper = ({id, children, ...props}) => (
+//     <Paper {...props}>
+//         {svg(id)}
+//         {children}
+//     </Paper>
+//
+// );
 
 const svg = (id) => (
     <svg

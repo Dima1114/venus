@@ -3,7 +3,6 @@ import {connect} from 'react-redux'
 import {addTodo} from "../../actions";
 import $ from "jquery";
 import DrawnButton from "../../elements/DrawnButton";
-import DrawnTextField from "../../elements/DrawnTextField";
 import {SimpleLink} from "../../elements/styledElements";
 import {bindActionCreators} from "redux";
 import {getEntityListAll} from "../../actions/core";
