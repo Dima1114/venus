@@ -1,22 +1,35 @@
-import React, {Component} from 'react';
-import '../App.css';
-import {connect} from "react-redux";
-import Paper from "./DrawnSelectField";
+import React from "react";
+import Vivus from "vivus";
+import Paper from "@material-ui/core/Paper";
 
-class DrawnPaper extends Component {
+class DrawnPaper extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state={
+            id: this.props.id || Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+        }
+    }
+
+    componentDidMount() {
+        new Vivus(this.state.id, {duration: 50}, () => {});
+    }
 
     render() {
         const {id, children, ...props} = this.props;
         return (
             <Paper {...props}>
-                {svg(id)}
+                {svgPaper(this.state.id)}
                 {children}
             </Paper>
         )
     }
 }
 
-const svg = (id) => (
+export default DrawnPaper;
+
+export const svgPaper = (id) => (
     <svg id={id}
          style={{position: 'absolute'}}
          width="100%"
@@ -39,9 +52,3 @@ const svg = (id) => (
         </g>
     </svg>
 );
-
-const mapStateToProps = state => ({});
-
-const mapDispatchToProps = () => ({});
-
-export default connect(mapStateToProps, mapDispatchToProps)(DrawnPaper);

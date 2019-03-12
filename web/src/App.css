@@ -19,12 +19,13 @@ body > div > div{
   height: 20vmin;
 }
 .overlay{
+  position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  padding: 10vmin;
-  max-width: 150px;
+  padding: 40px;
+  max-width: 220px;
 }
 .main-gear{
   animation: App-logo-spin infinite 6s linear;
@@ -36,11 +37,21 @@ body > div > div{
 }
 .secondary-gear{
   animation: App-logo-spin-reverse infinite 3s linear;
-  /*transform: rotate(-25deg);*/
+  transform: rotate(-25deg);
   padding: 0;
   margin-bottom: 30px;
   max-width: 75px;
   max-height: 75px;
+}
+.inner-gear{
+  animation: App-inner-spin infinite 2.4s linear;
+  /*transform: rotate(-29deg);*/
+  position: absolute;
+  top:140px;
+  left:116px;
+  padding: 0;
+  max-width: 40px;
+  max-height: 40px;
 }
 .App-nav {
   display: flex;
@@ -90,6 +101,14 @@ body > div > div{
   }
   to {
     transform: rotate(360deg);
+  }
+}
+@keyframes App-inner-spin {
+  from {
+    transform: rotate(25deg);
+  }
+  to {
+    transform: rotate(385deg);
   }
 }
 @keyframes App-logo-spin-reverse {
