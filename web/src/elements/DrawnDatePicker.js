@@ -30,7 +30,6 @@ class DrawnDatePicker extends Component {
         return (
             <div style={{position: 'relative'}}>
                 <DatePicker
-                    // margin="normal"
                     label={this.props.label}
                     clearable
                     autoOk
