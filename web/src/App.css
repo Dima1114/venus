@@ -45,7 +45,7 @@ body > div > div{
 }
 .inner-gear{
   animation: App-inner-spin infinite 2.4s linear;
-  /*transform: rotate(-29deg);*/
+  /*transform: rotate(15deg);*/
   position: absolute;
   top:140px;
   left:116px;
@@ -105,10 +105,10 @@ body > div > div{
 }
 @keyframes App-inner-spin {
   from {
-    transform: rotate(25deg);
+    transform: rotate(15deg);
   }
   to {
-    transform: rotate(385deg);
+    transform: rotate(375deg);
   }
 }
 @keyframes App-logo-spin-reverse {
