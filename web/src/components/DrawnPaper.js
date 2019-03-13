@@ -3,7 +3,7 @@ import Vivus from "vivus";
 import Paper from "@material-ui/core/Paper";
 import {ReactComponent as SelectSvg} from "../svg/select.svg"
 
-class DrawnPaper extends React.Component {
+export default class DrawnPaper extends React.Component {
 
     constructor(props) {
         super(props);
@@ -32,5 +32,3 @@ class DrawnPaper extends React.Component {
         )
     }
 }
-
-export default DrawnPaper;

@@ -5,6 +5,7 @@ import DrawnDatePicker from "../../components/DrawnDatePicker";
 import Typing from "react-typing-animation";
 import Vivus from "vivus";
 import {ReactComponent as FilterSvg} from "../../svg/filter.svg"
+import DrawnCheckbox from "../../components/DrawnCheckbox";
 
 class ToDoFilter extends React.Component {
 
@@ -39,6 +40,8 @@ class ToDoFilter extends React.Component {
                     <DrawnDatePicker id={'date-before'} label={'Date from'}/>
                     <span style={{marginRight: 20}}/>
                     <DrawnDatePicker id={'date-after'} label={'Date to'}/>
+                    <span style={{marginRight: 20}}/>
+                    <DrawnCheckbox id={'filter-checkbox'}/>
                 </div>
             </div>
         )

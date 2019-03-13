@@ -1,11 +1,11 @@
 import React from "react";
-import {connect} from "react-redux";
 import Vivus from "vivus";
+import './style.css';
 import {ReactComponent as BigGear} from "../../svg/big-gear2.svg"
 import {ReactComponent as SecondaryGear} from "../../svg/gear.svg"
 import {ReactComponent as InnerGear} from "../../svg/inner-gear.svg"
 
-class Overlay extends React.Component {
+export default class Overlay extends React.Component {
 
     componentDidMount() {
         new Vivus('main-gear', {type: 'sync', duration: 10}, () => {});
@@ -29,9 +29,3 @@ class Overlay extends React.Component {
         )
     }
 }
-
-const mapStateToProps = state => ({});
-
-const mapDispatchToProps = dispatch => ({});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Overlay);

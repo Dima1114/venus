@@ -1,0 +1,60 @@
+.overlay{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    max-width: 220px;
+}
+.main-gear{
+    animation: spin infinite 6s linear;
+    padding: 0;
+    margin-right: -12px;
+    margin-top: 30px;
+    max-width: 150px;
+    max-height: 150px;
+}
+.secondary-gear{
+    animation: spin-reverse infinite 3s linear;
+    transform: rotate(-25deg);
+    padding: 0;
+    margin-bottom: 30px;
+    max-width: 75px;
+    max-height: 75px;
+}
+.inner-gear{
+    animation: inner-spin infinite 2.4s linear;
+    /*transform: rotate(15deg);*/
+    position: absolute;
+    top:140px;
+    left:116px;
+    padding: 0;
+    max-width: 40px;
+    max-height: 40px;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+@keyframes inner-spin {
+    from {
+        transform: rotate(15deg);
+    }
+    to {
+        transform: rotate(375deg);
+    }
+}
+@keyframes spin-reverse {
+    from {
+        transform: rotate(-25deg);
+    }
+    to {
+        transform: rotate(-385deg);
+    }
+}
