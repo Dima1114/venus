@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 import configureStore from "./store";
-import Root from "./components/Root";
+import Root from "./roots/Root";
 import WebFont from 'webfontloader';
 
 WebFont.load({

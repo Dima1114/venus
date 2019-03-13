@@ -23,8 +23,7 @@
     "redux-router": "^2.1.2",
     "redux-thunk": "^2.3.0",
     "vivus": "^0.4.4",
-    "webfontloader": "^1.6.28",
-    "react-svg": "latest"
+    "webfontloader": "^1.6.28"
   },
   "scripts": {
     "start": "react-scripts start",

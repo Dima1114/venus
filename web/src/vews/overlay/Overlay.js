@@ -1,30 +1,29 @@
 import React from "react";
 import {connect} from "react-redux";
 import Vivus from "vivus";
-import bigGear from "../../svg/big-gear2.svg"
-import secondaryGear from "../../svg/gear.svg"
-import innerGear from "../../svg/inner-gear.svg"
-import ReactSVG from 'react-svg'
+import {ReactComponent as BigGear} from "../../svg/big-gear2.svg"
+import {ReactComponent as SecondaryGear} from "../../svg/gear.svg"
+import {ReactComponent as InnerGear} from "../../svg/inner-gear.svg"
 
 class Overlay extends React.Component {
+
+    componentDidMount() {
+        new Vivus('main-gear', {type: 'sync', duration: 10}, () => {});
+        new Vivus('inner-gear', {type: 'sync', duration: 10}, () => {});
+        new Vivus('secondary-gear', {type: 'sync', duration: 10}, () => {});
+    }
 
     render() {
         return (
             <div className={'overlay'}>
                 <div className={'inner-gear'}>
-                    <ReactSVG src={innerGear}
-                              onInjected={() => new Vivus('inner-gear', {duration: 50}, () => {})}
-                    />
+                    <InnerGear id='inner-gear' viewBox="0 0 200 200" width="40"/>
                 </div>
                 <div className={'main-gear'}>
-                    <ReactSVG src={bigGear}
-                              onInjected={() => new Vivus('main-gear', {duration: 50}, () => {})}
-                    />
+                    <BigGear id='main-gear' viewBox="0 0 600 600" width="150"/>
                 </div>
                 <div className={'secondary-gear'}>
-                    <ReactSVG src={secondaryGear}
-                              onInjected={() => new Vivus('secondary-gear', {duration: 50}, () => {})}
-                    />
+                    <SecondaryGear id='secondary-gear' viewBox='0 0 300 300' width="75"/>
                 </div>
             </div>
         )

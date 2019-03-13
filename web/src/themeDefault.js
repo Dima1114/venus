@@ -54,7 +54,8 @@ export const muiTheme = createMuiTheme({
         },
         MuiSelect:{
             selectMenu:{
-                height: 25
+                height: 25,
+                lineHeight: '25px'
             }
         },
         MuiMenuItem: {
@@ -90,18 +91,3 @@ export const muiTheme = createMuiTheme({
         fontFamily: font
     }
 });
-
-// const theme = createMuiTheme({
-//     overrides: {
-//         MuiInput: {
-//             underline: {
-//                 '&:before': { //underline color when textfield is inactive
-//                     backgroundColor: 'red',
-//                 },
-//                 '&:hover:not($disabled):before': { //underline color when hovered
-//                     backgroundColor: 'green',
-//                 },
-//             }
-//         }
-//     }
-// });

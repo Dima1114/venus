@@ -9,9 +9,9 @@ import TodoList from "../vews/todo/TodoList";
 import {initBaseUrl} from "../actions";
 import {logoutAndRedirect, refreshToken} from "../actions/auth";
 import {bindActionCreators} from "redux";
-import ProtectedRoute from "../elements/ProtectedRoute";
-import {SimpleLink} from "../elements/styledElements";
-import DrawnButton from "../elements/DrawnButton";
+import ProtectedRoute from "../components/ProtectedRoute";
+import {SimpleLink} from "../components/styledElements";
+import DrawnButton from "../components/DrawnButton";
 import Home from "../vews/home/Home";
 
 const baseUrl = 'http://localhost:3000';

@@ -5,8 +5,8 @@ import {login} from "../../actions/auth";
 import {validate} from "../../utils/validation";
 import loginSvg from "../../svg/login.svg";
 import Vivus from "vivus";
-import DrawnButton from "../../elements/DrawnButton";
-import DrawnTextField from "../../elements/DrawnTextField";
+import DrawnButton from "../../components/DrawnButton";
+import DrawnTextField from "../../components/DrawnTextField";
 import {Redirect} from "react-router-dom";
 import Error from "../error/Error";
 import Overlay from "../overlay/Overlay";
@@ -25,8 +25,7 @@ class LoginComponent extends Component {
 
     componentDidMount() {
         if (this.props.auth.isAuthenticating === false && this.props.auth.isAuthenticated === false) {
-            new Vivus('my-svg', {duration: 100, file: loginSvg}, () => {
-            });
+            new Vivus('my-svg', {duration: 100, file: loginSvg}, () => {});
         }
     }
 

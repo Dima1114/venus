@@ -2,8 +2,8 @@ import React from 'react';
 import {connect} from 'react-redux'
 import {addTodo} from "../../actions";
 import $ from "jquery";
-import DrawnButton from "../../elements/DrawnButton";
-import {SimpleLink} from "../../elements/styledElements";
+import DrawnButton from "../../components/DrawnButton";
+import {SimpleLink} from "../../components/styledElements";
 import {bindActionCreators} from "redux";
 import {getEntityListAll} from "../../actions/core";
 import ToDoFilter from "./ToDoFilter";
@@ -23,10 +23,30 @@ class TodoList extends React.Component {
     onclick() {
         $.ajax({
             type: 'GET',
-            url: '/rest/hello',
+            url: '/customers/insurances/export',
             dataType: 'json',
+            xhrFields : { responseType : 'arraybuffer' },
+            headers: {
+                "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQURNSU4iLCJ1c3IiOiJhZG1pbiIsImV4cCI6MTU1MjU1Nzg5OH0.jB1eopzQIjFVUd9hJeh-Nm5EIzTTko2TX8SBrPxgeuA'
+            }
         }).then(response => {
             console.log(response);
+            const a = document.createElement("a");
+            const file = new Blob([response], {type: "application/octet-stream"});
+            const fileName = "customers";
+            if (window.navigator.msSaveOrOpenBlob) // IE10+
+                window.navigator.msSaveOrOpenBlob(file, fileName);
+            else {
+                const url = URL.createObjectURL(file);
+                a.href = url;
+                a.download = fileName + ".pdf";
+                document.body.appendChild(a);
+                a.click();
+                setTimeout(function () {
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+                }, 0);
+            }
         }).catch(error => {
             const message = error.responseJSON || error.responseText || error;
             console.log(message);
@@ -83,8 +103,8 @@ class TodoList extends React.Component {
                                 {/*value={this.state.task}*/}
                                 {/*onChange={e => this.setState({task: e.target.value})}*/}
                 {/*/>*/}
-                {/*<DrawnButton id={'Add'}*/}
-                             {/*onClick={this.onclick.bind(this)}>Add</DrawnButton>*/}
+                <DrawnButton id={'GET XSLS FILE'}
+                             onClick={this.onclick.bind(this)}>GET XSLS FILE</DrawnButton>
                 {/*<DrawnButton id={'todos'}*/}
                              {/*onClick={this.getTodos.bind(this)}>get todos</DrawnButton>*/}
                 {/*<DrawnButton id={'users'}*/}

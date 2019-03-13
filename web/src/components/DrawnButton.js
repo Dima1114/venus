@@ -3,7 +3,7 @@ import '../App.css';
 import {connect} from "react-redux";
 import Button from "@material-ui/core/Button";
 import Vivus from "vivus";
-import ButtonSvg from "../svg/ButtonSvg";
+import {ReactComponent as ButtonSvg} from "../svg/button.svg"
 
 class DrawnButton extends Component {
 
