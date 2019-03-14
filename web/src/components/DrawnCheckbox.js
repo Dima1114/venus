@@ -43,7 +43,7 @@ class DrawnCheckbox extends Component {
                             checked={this.state.checked}
                             onChange={() => this.handleClick()}
                         />}
-                    label="Label"
+                    label={this.props.label}
                 />
             </div>
         )

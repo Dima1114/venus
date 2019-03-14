@@ -6,11 +6,17 @@ import Typing from "react-typing-animation";
 import Vivus from "vivus";
 import {ReactComponent as FilterSvg} from "../../svg/filter.svg"
 import DrawnCheckbox from "../../components/DrawnCheckbox";
+import DrawnButton from "../../components/DrawnButton";
+import "./style.css";
 
 class ToDoFilter extends React.Component {
 
     componentDidMount() {
         new Vivus(this.props.id, {duration: 50}, () => {});
+    }
+
+    search(){
+
     }
 
     render() {
@@ -41,7 +47,16 @@ class ToDoFilter extends React.Component {
                     <span style={{marginRight: 20}}/>
                     <DrawnDatePicker id={'date-after'} label={'Date to'}/>
                     <span style={{marginRight: 20}}/>
-                    <DrawnCheckbox id={'filter-checkbox'}/>
+                    <DrawnCheckbox id={'filter-checkbox-bin'} label={'show bin'}/>
+                    <span style={{marginRight: 20}}/>
+                    <DrawnCheckbox id={'filter-checkbox-done'} label={'show completed'}/>
+                </div>
+                <div className={'search-button'}>
+                    <DrawnButton id={'Search-filter'}
+                                 onClick={() => this.search()}>Search</DrawnButton>
+                    <span style={{marginRight: 20}}/>
+                    <DrawnButton id={'Clear-filter'}
+                                 onClick={() => this.search()}>Clear</DrawnButton>
                 </div>
             </div>
         )

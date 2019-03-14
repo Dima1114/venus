@@ -82,11 +82,15 @@ export const muiTheme = createMuiTheme({
             }
         },
         MuiPaper: {
-            root: {
-                // backgroundImage: 'url(' + svg + ')',
-            },
             elevation8:{
                 boxShadow: 'none'
+            }
+        },
+        MuiTypography:{
+            body2:{
+                fontFamily: font,
+                fontWeight: 600,
+                fontSize: 20
             }
         }
     },

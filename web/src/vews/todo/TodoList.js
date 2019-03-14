@@ -8,6 +8,7 @@ import {bindActionCreators} from "redux";
 import {getEntityListAll} from "../../actions/core";
 import ToDoFilter from "./ToDoFilter";
 import Overlay from "../overlay/Overlay";
+import {saveAs} from 'file-saver';
 
 
 class TodoList extends React.Component {
@@ -24,28 +25,23 @@ class TodoList extends React.Component {
         $.ajax({
             type: 'GET',
             url: '/customers/insurances/export',
-            dataType: 'json',
-            xhrFields : { responseType : 'arraybuffer' },
+            contentType: 'application/json',
+            xhrFields: {responseType: 'arraybuffer'},
             headers: {
-                "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQURNSU4iLCJ1c3IiOiJhZG1pbiIsImV4cCI6MTU1MjU1Nzg5OH0.jB1eopzQIjFVUd9hJeh-Nm5EIzTTko2TX8SBrPxgeuA'
+                "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQURNSU4iLCJ1c3IiOiJhZG1pbiIsImV4cCI6MTU1MjYzMjY2NX0.HmwSi4JXKP1l28bPofkHA0HI9xhBfTnYVPmKsD8JlYw'
             }
         }).then(response => {
-            console.log(response);
-            const a = document.createElement("a");
-            const file = new Blob([response], {type: "application/octet-stream"});
-            const fileName = "customers";
-            if (window.navigator.msSaveOrOpenBlob) // IE10+
+            const fileName = "customers.xlsx";
+            const link = document.createElement("a");
+            const file = new Blob([response]);
+            if (window.navigator.msSaveOrOpenBlob) { // IE10+
                 window.navigator.msSaveOrOpenBlob(file, fileName);
-            else {
-                const url = URL.createObjectURL(file);
-                a.href = url;
-                a.download = fileName + ".pdf";
-                document.body.appendChild(a);
-                a.click();
-                setTimeout(function () {
-                    document.body.removeChild(a);
-                    window.URL.revokeObjectURL(url);
-                }, 0);
+            } else {
+                link.href = URL.createObjectURL(file);
+                link.download = fileName;
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
             }
         }).catch(error => {
             const message = error.responseJSON || error.responseText || error;
@@ -99,18 +95,18 @@ class TodoList extends React.Component {
                 </div>
 
                 {/*<DrawnTextField id={'new'}*/}
-                                {/*label={'new task'}*/}
-                                {/*value={this.state.task}*/}
-                                {/*onChange={e => this.setState({task: e.target.value})}*/}
+                {/*label={'new task'}*/}
+                {/*value={this.state.task}*/}
+                {/*onChange={e => this.setState({task: e.target.value})}*/}
                 {/*/>*/}
-                <DrawnButton id={'GET XSLS FILE'}
-                             onClick={this.onclick.bind(this)}>GET XSLS FILE</DrawnButton>
+                {/*<DrawnButton id={'GET XSLS FILE'}*/}
+                             {/*onClick={this.onclick.bind(this)}>GET XSLS FILE</DrawnButton>*/}
                 {/*<DrawnButton id={'todos'}*/}
-                             {/*onClick={this.getTodos.bind(this)}>get todos</DrawnButton>*/}
+                {/*onClick={this.getTodos.bind(this)}>get todos</DrawnButton>*/}
                 {/*<DrawnButton id={'users'}*/}
-                             {/*onClick={this.getUsers.bind(this)}>get users</DrawnButton>*/}
+                {/*onClick={this.getUsers.bind(this)}>get users</DrawnButton>*/}
                 {/*<DrawnButton id={'enums'}*/}
-                             {/*onClick={this.getEnums.bind(this)}>get enums</DrawnButton>*/}
+                {/*onClick={this.getEnums.bind(this)}>get enums</DrawnButton>*/}
                 {/*{!!this.props.list ? this.props.list.map((el, i) => <p key={'el_' + i}>{el.text}</p>) : null}*/}
 
 

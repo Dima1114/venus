@@ -29,6 +29,7 @@ class DrawnDatePicker extends Component {
         this.setState({value: date});
     }
 
+    //TODO customize dialog and its buttons
     render() {
         return (
             <div style={{position: 'relative'}}>
