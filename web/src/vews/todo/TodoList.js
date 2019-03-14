@@ -8,8 +8,6 @@ import {bindActionCreators} from "redux";
 import {getEntityListAll} from "../../actions/core";
 import ToDoFilter from "./ToDoFilter";
 import Overlay from "../overlay/Overlay";
-import {saveAs} from 'file-saver';
-
 
 class TodoList extends React.Component {
 
@@ -88,7 +86,7 @@ class TodoList extends React.Component {
 
                 <div className={'app-body'}>
                     <h2>Sorry, This section is under construction process</h2>
-                    <Overlay/>
+                    <Overlay scale={5}/>
                     <SimpleLink to={'/'}>
                         <DrawnButton id={'tomain'}>To Main</DrawnButton>
                     </SimpleLink>

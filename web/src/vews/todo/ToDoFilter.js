@@ -15,9 +15,9 @@ class ToDoFilter extends React.Component {
         new Vivus(this.props.id, {duration: 50}, () => {});
     }
 
-    search(){
+    search(){}
 
-    }
+    clear(){}
 
     render() {
         return (
@@ -36,18 +36,26 @@ class ToDoFilter extends React.Component {
                 </div>
                 <div className={'filter-body'}>
                     <DrawnSelectField id={'task-type'}
+                                      storeName={'taskTypes'}
                                       entities={'enums/taskType'}
                                       paramName={'enumValues'}
                                       keyProp={'name'}
                                       valueProp={'name'}
-                                      label={'task types'}
+                                      label={'Task Type'}
+                    />
+                    <span style={{marginRight: 20}}/>
+                    <DrawnSelectField id={'task-status'}
+                                      storeName={'taskStatuses'}
+                                      entities={'enums/taskStatus'}
+                                      paramName={'enumValues'}
+                                      keyProp={'name'}
+                                      valueProp={'name'}
+                                      label={'Task Status'}
                     />
                     <span style={{marginRight: 20}}/>
                     <DrawnDatePicker id={'date-before'} label={'Date from'}/>
                     <span style={{marginRight: 20}}/>
                     <DrawnDatePicker id={'date-after'} label={'Date to'}/>
-                    <span style={{marginRight: 20}}/>
-                    <DrawnCheckbox id={'filter-checkbox-bin'} label={'show bin'}/>
                     <span style={{marginRight: 20}}/>
                     <DrawnCheckbox id={'filter-checkbox-done'} label={'show completed'}/>
                 </div>
@@ -56,7 +64,7 @@ class ToDoFilter extends React.Component {
                                  onClick={() => this.search()}>Search</DrawnButton>
                     <span style={{marginRight: 20}}/>
                     <DrawnButton id={'Clear-filter'}
-                                 onClick={() => this.search()}>Clear</DrawnButton>
+                                 onClick={() => this.clear()}>Clear</DrawnButton>
                 </div>
             </div>
         )

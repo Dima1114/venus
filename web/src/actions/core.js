@@ -20,31 +20,31 @@ export function getEntityListAll(store, entities, paramName) {
     }
 }
 
-export function getEntityListRequest(store) {
+export function getEntityListRequest(storeName) {
     return {
         type: GET_ENTITY_LIST_REQUEST,
         payload: {
-            store: store
+            storeName: storeName
         }
 
     }
 }
 
-export function getEntityListSuccess(store, payload) {
+export function getEntityListSuccess(storeName, payload) {
     return {
         type: GET_ENTITY_LIST_SUCCESS,
         payload: {
-            store: store,
+            storeName: storeName,
             list: payload
         }
     }
 }
 
-export function getEntityListFail(store, payload) {
+export function getEntityListFail(storeName, payload) {
     return {
         type: GET_ENTITY_LIST_FAIL,
         payload: {
-            store: store,
+            storeName: storeName,
             errors: payload
         }
     }

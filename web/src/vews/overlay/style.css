@@ -10,28 +10,28 @@
 .main-gear{
     animation: spin infinite 6s linear;
     padding: 0;
-    margin-right: -12px;
-    margin-top: 30px;
-    max-width: 150px;
-    max-height: 150px;
+    /*margin-right: -12px;*/
+    /*margin-top: 30px;*/
+    /*max-width: 150px;*/
+    /*max-height: 150px;*/
 }
 .secondary-gear{
     animation: spin-reverse infinite 3s linear;
-    transform: rotate(-25deg);
+    /*transform: rotate(-25deg);*/
     padding: 0;
-    margin-bottom: 30px;
-    max-width: 75px;
-    max-height: 75px;
+    /*margin-bottom: 30px;*/
+    /*max-width: 75px;*/
+    /*max-height: 75px;*/
 }
 .inner-gear{
     animation: inner-spin infinite 2.4s linear;
-    /*transform: rotate(15deg);*/
+    /*transform: rotate(14deg);*/
     position: absolute;
-    top:140px;
-    left:116px;
     padding: 0;
-    max-width: 40px;
-    max-height: 40px;
+    /*top:140px;*/
+    /*left:116px;*/
+    /*max-width: 40px;*/
+    /*max-height: 40px;*/
 }
 
 @keyframes spin {
@@ -44,10 +44,10 @@
 }
 @keyframes inner-spin {
     from {
-        transform: rotate(15deg);
+        transform: rotate(14deg);
     }
     to {
-        transform: rotate(375deg);
+        transform: rotate(374deg);
     }
 }
 @keyframes spin-reverse {

@@ -73,6 +73,7 @@ class App extends Component {
         this.setState({refreshTimer: null});
     }
 
+    //TODO replace react img with some other
     render() {
         return (
             <div id={"wrapper"}>

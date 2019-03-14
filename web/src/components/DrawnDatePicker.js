@@ -16,8 +16,7 @@ class DrawnDatePicker extends Component {
     }
 
     componentDidMount() {
-        new Vivus(this.props.id, {duration: 50}, () => {
-        });
+        new Vivus(this.props.id, {duration: 50}, () => {});
     }
 
     handleChange(date) {
@@ -29,7 +28,7 @@ class DrawnDatePicker extends Component {
         this.setState({value: date});
     }
 
-    //TODO customize dialog and its buttons
+    //TODO customize dialog and its buttons and add vivus
     render() {
         return (
             <div style={{position: 'relative'}}>
@@ -37,13 +36,9 @@ class DrawnDatePicker extends Component {
                     label={this.props.label}
                     clearable
                     autoOk
-                    okLabel={<span>
-                        <ButtonSvg id={this.props.id + '-date-ok-pick'}
-                                   style={{position: 'absolute'}}
-                                   width={"106%"}
-                                   height={"100%"}
-                                   viewBox={'0 0 100 48'}/>
-                                              Ok</span>}
+                    okLabel={<Label id={this.props.id + 'Ok-button'} label={'Ok'}/>}
+                    clearLabel={<Label id={this.props.id + 'Clear-button'} label={'Clear'}/>}
+                    cancelLabel={<Label id={this.props.id + 'Cancel-button'} label={'Cancel'}/>}
                     format={" dd / MM / yyyy"}
                     InputProps={{
                         disableUnderline: true,
@@ -56,6 +51,14 @@ class DrawnDatePicker extends Component {
         )
     }
 }
+
+const Label = ({id, label}) => (
+    <span><ButtonSvg id={id}
+                     style={{position: 'absolute', top: 0, left: 0}}
+                     width={"106%"}
+                     height={"106%"}
+                     viewBox={'0 0 100 48'}/>{label}</span>
+);
 
 const mapStateToProps = () => ({});
 const mapDispatchToProps = () => ({});

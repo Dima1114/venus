@@ -2,6 +2,12 @@ import React from 'react';
 import {connect} from 'react-redux'
 import Typing from "react-typing-animation";
 
+/*
+TODO
+open for everyone
+add registration form
+ */
+
 class Home extends React.Component {
 
     render() {

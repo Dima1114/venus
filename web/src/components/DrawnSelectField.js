@@ -24,7 +24,7 @@ class DrawnSelectField extends Component {
 
     componentWillMount() {
         if (!this.props.list) {
-            this.props.getEntityListAll(this.props.store, this.props.entities, this.props.paramName);
+            this.props.getEntityListAll(this.props.storeName, this.props.entities, this.props.paramName);
         }
     }
 
@@ -55,6 +55,7 @@ class DrawnSelectField extends Component {
         return items;
     }
 
+    //TODO popup menu slightly wider than drawn frame. do something, dude
     render() {
         return (
             <div style={{position: 'relative'}}>
@@ -85,7 +86,7 @@ class DrawnSelectField extends Component {
 }
 
 const mapStateToProps = (state, props) => ({
-    list: !!state.core[props.store] ? state.core[props.store].list : null
+    list: !!state.core[props.storeName] ? state.core[props.storeName].list : null
 });
 const mapDispatchToProps = (dispatch) => ({
     getEntityListAll: bindActionCreators(getEntityListAll, dispatch)

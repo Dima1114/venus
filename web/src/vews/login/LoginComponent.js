@@ -33,6 +33,8 @@ class LoginComponent extends Component {
         this.props.login(this.state.username, this.state.password);
     }
 
+    //TODO forgot password
+    //TODO replase styles with css file and classes
     render() {
 
         if (this.props.auth.isAuthenticated === true) {

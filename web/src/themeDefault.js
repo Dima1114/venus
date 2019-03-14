@@ -64,7 +64,9 @@ export const muiTheme = createMuiTheme({
         },
         MuiMenuItem: {
             root: {
-                fontWeight: 600
+                fontFamily: font,
+                fontWeight: 600,
+                fontSize: 20
             }
         },
         MuiFormLabel: {
@@ -92,7 +94,7 @@ export const muiTheme = createMuiTheme({
                 fontWeight: 600,
                 fontSize: 20
             }
-        }
+        },
     },
     typography: {
         useNextVariants: true,

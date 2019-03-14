@@ -25,6 +25,7 @@ export default class DrawnPaper extends React.Component {
                 <SelectSvg id={this.state.id}
                            width={'100%'}
                            height={'100%'}
+                           preserveAspectRatio={"none"}
                            style={{position: 'absolute'}}
                            viewBox={'0 0 210 210'}/>
                 {children}
