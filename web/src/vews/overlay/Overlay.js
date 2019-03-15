@@ -18,7 +18,7 @@ export default class Overlay extends React.Component {
     }
 
     render() {
-        const scale = this.props.scale / 5 || 1;
+        const scale = 5 / this.props.scale || 1;
         return (
             <div className={'overlay'} style={{padding: 40 / scale, maxWidth: 220 / scale}}>
                 <div className={'inner-gear'}

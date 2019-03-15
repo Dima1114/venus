@@ -95,6 +95,19 @@ export const muiTheme = createMuiTheme({
                 fontSize: 20
             }
         },
+        MuiTableCell:{
+            head:{
+                color: grey[900],
+                fontFamily: font,
+                fontWeight: 600,
+                fontSize: 20
+            },
+            body:{
+                fontFamily: font,
+                fontWeight: 600,
+                fontSize: 20
+            }
+        }
     },
     typography: {
         useNextVariants: true,

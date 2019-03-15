@@ -5,9 +5,10 @@ import $ from "jquery";
 import DrawnButton from "../../components/DrawnButton";
 import {SimpleLink} from "../../components/styledElements";
 import {bindActionCreators} from "redux";
-import {getEntityListAll} from "../../actions/core";
+import {getEntityList} from "../../actions/core";
 import ToDoFilter from "./ToDoFilter";
 import Overlay from "../overlay/Overlay";
+import DrawnList from "../../components/DrawnList";
 
 class TodoList extends React.Component {
 
@@ -79,19 +80,28 @@ class TodoList extends React.Component {
     }
 
     render() {
+
+        const rows = [
+            // {id:1, label:'Id', value:'id'},
+            {id:2, label:'Title', value:'title'},
+            {id:2, label:'Comment', value:'comment'},
+            {id:2, label:'Type', value:'type'},
+            {id:2, label:'Status', value:'status'},
+        ];
+
         return (
             <div className={'app-body'}>
 
                 <ToDoFilter id={'todo-filter'}/>
 
                 <div className={'app-body'}>
-                    <h2>Sorry, This section is under construction process</h2>
-                    <Overlay scale={5}/>
-                    <SimpleLink to={'/'}>
-                        <DrawnButton id={'tomain'}>To Main</DrawnButton>
-                    </SimpleLink>
+
+                    <DrawnList storeName={'tasks'} entities={'tasks'} rows={rows}/>
                 </div>
 
+                {/*<SimpleLink to={'/'}>*/}
+                    {/*<DrawnButton id={'tomain'}>To Main</DrawnButton>*/}
+                {/*</SimpleLink>*/}
                 {/*<DrawnTextField id={'new'}*/}
                 {/*label={'new task'}*/}
                 {/*value={this.state.task}*/}
@@ -122,7 +132,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     onTodoClick: text => dispatch(addTodo(text)),
-    getEntityListAll: bindActionCreators(getEntityListAll, dispatch)
+    getEntityListAll: bindActionCreators(getEntityList, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoList);

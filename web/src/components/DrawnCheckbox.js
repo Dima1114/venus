@@ -34,6 +34,7 @@ class DrawnCheckbox extends Component {
 
     render() {
         return (
+            //TODO centre frame
             <div style={{position: 'relative', height: 48}}>
                 <FormControlLabel
                     control={
@@ -43,7 +44,7 @@ class DrawnCheckbox extends Component {
                             checked={this.state.checked}
                             onChange={() => this.handleClick()}
                         />}
-                    label={this.props.label}
+                    label={this.props.label || ''}
                 />
             </div>
         )

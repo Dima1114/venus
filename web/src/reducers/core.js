@@ -4,11 +4,6 @@ import {GET_ENTITY_LIST_REQUEST, GET_ENTITY_LIST_SUCCESS, GET_ENTITY_LIST_FAIL} 
 export const coreReducer = createReducer({}, {
 
     [GET_ENTITY_LIST_REQUEST]: (state, payload) => {
-        console.log('GET_ENTITY_LIST_REQUEST');
-        console.log('payload');
-        console.log(payload);
-        console.log('state');
-        console.log(state);
         return {
             ...state,
             [payload.storeName]: {
@@ -20,11 +15,6 @@ export const coreReducer = createReducer({}, {
         }
     },
     [GET_ENTITY_LIST_SUCCESS]: (state, payload) => {
-        console.log('GET_ENTITY_LIST_SUCCESS');
-        console.log('payload');
-        console.log(payload);
-        console.log('state');
-        console.log(state);
         return {
             ...state,
             [payload.storeName]: {

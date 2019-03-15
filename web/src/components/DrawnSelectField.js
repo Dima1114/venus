@@ -4,7 +4,7 @@ import {connect} from "react-redux";
 import TextField from "@material-ui/core/TextField";
 import Typing from "react-typing-animation";
 import {bindActionCreators} from "redux";
-import {getEntityListAll} from "../actions/core";
+import {getEntityList} from "../actions/core";
 import MenuItem from "@material-ui/core/MenuItem";
 import Fade from "@material-ui/core/Fade";
 import DrawnPaper from "./DrawnPaper";
@@ -89,7 +89,7 @@ const mapStateToProps = (state, props) => ({
     list: !!state.core[props.storeName] ? state.core[props.storeName].list : null
 });
 const mapDispatchToProps = (dispatch) => ({
-    getEntityListAll: bindActionCreators(getEntityListAll, dispatch)
+    getEntityListAll: bindActionCreators(getEntityList, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DrawnSelectField);

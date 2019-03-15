@@ -1,15 +1,16 @@
 import $ from 'jquery'
+import {formRequestProps} from "../utils/formRequestProps";
 
 export const GET_ENTITY_LIST_REQUEST = 'GET_ENTITY_LIST_REQUEST';
 export const GET_ENTITY_LIST_SUCCESS = 'GET_ENTITY_LIST_SUCCESS';
 export const GET_ENTITY_LIST_FAIL = 'GET_ENTITY_LIST_FAIL';
 
-export function getEntityListAll(store, entities, paramName) {
+export function getEntityList(store, entities, paramName, params) {
     return function (dispatch) {
         dispatch(getEntityListRequest(store));
         $.ajax({
             type: 'GET',
-            url: '/' + entities,
+            url: '/' + entities + formRequestProps(params),
             contentType: 'application/json',
         }).then(response => {
             dispatch(getEntityListSuccess(store, response._embedded[paramName || entities]))

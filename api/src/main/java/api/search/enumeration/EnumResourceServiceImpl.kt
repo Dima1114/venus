@@ -23,7 +23,7 @@ class EnumResourceServiceImpl(@Value("\${reflection.enum.root-path}") private va
         return candidate
                 .takeOrThrow(::checkPermissions) { JwtAuthenticationException("You don`t have permission to access") }
                 .enumConstants
-                .map { EnumValue((it as Enum<*>).ordinal, it.name.replace("_", " ")) }
+                .map { EnumValue((it as Enum<*>).ordinal, it.name,  it.name.replace("_", " ")) }
                 .toList()
     }
 
@@ -43,4 +43,4 @@ class EnumResourceServiceImpl(@Value("\${reflection.enum.root-path}") private va
     }
 }
 
-data class EnumValue (val ordinal: Int, val name: String)
+data class EnumValue (val ordinal: Int, val name: String, val label: String)
