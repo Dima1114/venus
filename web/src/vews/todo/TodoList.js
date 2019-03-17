@@ -2,12 +2,9 @@ import React from 'react';
 import {connect} from 'react-redux'
 import {addTodo} from "../../actions";
 import $ from "jquery";
-import DrawnButton from "../../components/DrawnButton";
-import {SimpleLink} from "../../components/styledElements";
 import {bindActionCreators} from "redux";
 import {getEntityList} from "../../actions/core";
 import ToDoFilter from "./ToDoFilter";
-import Overlay from "../overlay/Overlay";
 import DrawnList from "../../components/DrawnList";
 
 class TodoList extends React.Component {
@@ -82,11 +79,11 @@ class TodoList extends React.Component {
     render() {
 
         const rows = [
-            // {id:1, label:'Id', value:'id'},
-            {id:2, label:'Title', value:'title'},
-            {id:2, label:'Comment', value:'comment'},
-            {id:2, label:'Type', value:'type'},
-            {id:2, label:'Status', value:'status'},
+            {id:1, label:'Id', value:'id'},
+            {id: 2, label: 'Title', value: 'title'},
+            {id: 2, label: 'Comment', value: 'comment'},
+            {id: 2, label: 'Type', value: 'type'},
+            {id: 2, label: 'Status', value: 'status'},
         ];
 
         return (
@@ -96,11 +93,15 @@ class TodoList extends React.Component {
 
                 <div className={'app-body'}>
 
-                    <DrawnList storeName={'tasks'} entities={'tasks'} rows={rows}/>
+                    <DrawnList storeName={'tasks'}
+                               entities={'tasks'}
+                               params={{projection: 'info'}}
+                               isSelected={item => item.status === 'COMPLETED'}
+                               rows={rows}/>
                 </div>
 
                 {/*<SimpleLink to={'/'}>*/}
-                    {/*<DrawnButton id={'tomain'}>To Main</DrawnButton>*/}
+                {/*<DrawnButton id={'tomain'}>To Main</DrawnButton>*/}
                 {/*</SimpleLink>*/}
                 {/*<DrawnTextField id={'new'}*/}
                 {/*label={'new task'}*/}
@@ -108,7 +109,7 @@ class TodoList extends React.Component {
                 {/*onChange={e => this.setState({task: e.target.value})}*/}
                 {/*/>*/}
                 {/*<DrawnButton id={'GET XSLS FILE'}*/}
-                             {/*onClick={this.onclick.bind(this)}>GET XSLS FILE</DrawnButton>*/}
+                {/*onClick={this.onclick.bind(this)}>GET XSLS FILE</DrawnButton>*/}
                 {/*<DrawnButton id={'todos'}*/}
                 {/*onClick={this.getTodos.bind(this)}>get todos</DrawnButton>*/}
                 {/*<DrawnButton id={'users'}*/}

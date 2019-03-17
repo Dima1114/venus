@@ -21,6 +21,9 @@ class Task : BaseEntity() {
     @Column(name = "Tsk_Complete", columnDefinition = "TIMESTAMP")
     var dateComplete: LocalDateTime? = null
 
+    @Column(name = "Tsk_Due_Date", columnDefinition = "TIMESTAMP")
+    var dueDate: LocalDateTime? = null
+
     @ManyToOne
     @NotNull
     @CreatedBy

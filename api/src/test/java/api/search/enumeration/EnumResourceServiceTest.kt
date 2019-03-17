@@ -36,13 +36,13 @@ class EnumResourceServiceTest{
 
         //then
         result.size `should be equal to` 7
-        result `should contain` EnumValue(0,"GET")
-        result `should contain` EnumValue(1,"POST")
-        result `should contain` EnumValue(2,"HEAD")
-        result `should contain` EnumValue(3,"PUT")
-        result `should contain` EnumValue(4,"PATCH")
-        result `should contain` EnumValue(5,"DELETE")
-        result `should contain` EnumValue(6,"OPTION")
+        result `should contain` EnumValue(0,"GET", "GET")
+        result `should contain` EnumValue(1,"POST", "POST")
+        result `should contain` EnumValue(2,"HEAD", "HEAD")
+        result `should contain` EnumValue(3,"PUT", "PUT")
+        result `should contain` EnumValue(4,"PATCH", "PATCH")
+        result `should contain` EnumValue(5,"DELETE", "DELETE")
+        result `should contain` EnumValue(6,"OPTION", "OPTION")
     }
 
     @Test
@@ -56,8 +56,8 @@ class EnumResourceServiceTest{
 
         //then
         result.size `should be equal to` 2
-        result `should contain` EnumValue(0,"JAVA")
-        result `should contain` EnumValue(1,"KOTLIN")
+        result `should contain` EnumValue(0,"JAVA", "JAVA")
+        result `should contain` EnumValue(1,"KOTLIN", "KOTLIN")
     }
 
     @Test(expected = JwtAuthenticationException::class)
@@ -88,8 +88,8 @@ class EnumResourceServiceTest{
 
         //then
         result.size `should be equal to` 2
-        result `should contain` EnumValue(0,"GET")
-        result `should contain` EnumValue(1,"POST")
+        result `should contain` EnumValue(0,"GET", "GET")
+        result `should contain` EnumValue(1,"POST", "POST")
     }
 
     private fun setUpSecurityContextHolder(vararg roles: Role){

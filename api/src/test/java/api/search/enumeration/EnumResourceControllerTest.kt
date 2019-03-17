@@ -43,7 +43,7 @@ class EnumResourceControllerTest {
 
         //given
         whenever(enumResourceService.getEnumResource("testEnum"))
-                .thenReturn(TestEnum.values().map { EnumValue(it.ordinal, it.name) }.toList())
+                .thenReturn(TestEnum.values().map { EnumValue(it.ordinal, it.name, it.name) }.toList())
 
         //when
         val result = this.mvc.perform(get("/enums/testEnum").accept(MediaType.APPLICATION_JSON))

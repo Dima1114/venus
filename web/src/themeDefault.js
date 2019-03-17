@@ -107,6 +107,16 @@ export const muiTheme = createMuiTheme({
                 fontWeight: 600,
                 fontSize: 20
             }
+        },
+        MuiFormControlLabel:{
+            root:{
+                marginLeft: 0
+            }
+        },
+        MuiIconButton:{
+            root:{
+                padding: 4
+            }
         }
     },
     typography: {

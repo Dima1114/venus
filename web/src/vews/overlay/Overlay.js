@@ -5,7 +5,6 @@ import {ReactComponent as BigGear} from "../../svg/big-gear2.svg"
 import {ReactComponent as SecondaryGear} from "../../svg/gear.svg"
 import {ReactComponent as InnerGear} from "../../svg/inner-gear-2.svg"
 
-//TODO fix scale options (5 is the biggest 1 is the smallest)
 export default class Overlay extends React.Component {
 
     componentDidMount() {

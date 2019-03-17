@@ -17,12 +17,12 @@ databaseChangeLog:
     changes:
     - dropColumn:
         columnName: Tsk_Bin
-        tableName: Task
+        tableName: task
 - changeSet:
     id: 1552589138307-5
     author: Dmitry (generated)
     changes:
     - dropColumn:
         columnName: Tsk_Done
-        tableName: Task
+        tableName: task
 

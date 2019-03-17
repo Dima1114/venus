@@ -13,36 +13,59 @@ class DrawnCheckbox extends Component {
         super(props);
 
         this.state = {
-            checked: false,
+            checked: this.props.defaultValue || false,
             checkedAnimation: null
         }
     }
 
-    componentDidMount() {
-        new Vivus('unchecked-' + this.props.id, {type:'oneByOne', duration: 20}, () => {});
-    }
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.state.checked === true) {
-            new Vivus('checked-' + this.props.id, {type:'oneByOne', duration: 20}, () => {})
+    componentWillReceiveProps(nextProps, nextContext) {
+        if (nextProps.checked !== this.props.checked) {
+            this.setState({checked: nextProps.checked});
         }
     }
 
-    handleClick() {
-        this.setState({checked: !this.state.checked});
+    componentDidMount() {
+        if (this.state.checked === true) {
+            new Vivus('checked-' + this.props.id, {type: 'oneByOne', duration: 20}, () => {})
+        } else {
+            new Vivus('unchecked-' + this.props.id, {type: 'oneByOne', duration: 20}, () => {});
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.state.checked === true && prevState.checked !== this.state.checked) {
+            new Vivus('checked-' + this.props.id, {type: 'oneByOne', duration: 20}, () => {})
+        }
+    }
+
+    //TODO change state from parent component
+    changeState(){
+        this.setState({checked: this.props.changeState(this.state.checked)});
+    }
+
+    handleClick(event) {
+
+        if (!!this.props.onChange) {
+            this.props.onChange(event);
+        }
+
+        this.setState({checked: event.target.checked});
     }
 
     render() {
         return (
-            //TODO centre frame
             <div style={{position: 'relative', height: 48}}>
                 <FormControlLabel
                     control={
                         <Checkbox
-                            checkedIcon={<CheckedIconSvg id={'checked-' + this.props.id}/>}
-                            icon={<IconSvg id={'unchecked-' + this.props.id}/>}
+                            checkedIcon={<CheckedIconSvg id={'checked-' + this.props.id}
+                                                         width={40}
+                                                         height={40}/>}
+                            icon={<IconSvg id={'unchecked-' + this.props.id}
+                                           width={40}
+                                           height={40}/>}
                             checked={this.state.checked}
-                            onChange={() => this.handleClick()}
+                            onChange={event => this.handleClick(event)}
                         />}
                     label={this.props.label || ''}
                 />

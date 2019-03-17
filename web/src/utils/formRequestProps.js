@@ -11,7 +11,7 @@ export function formRequestProps(getProps) {
                 const value = getProps[key];
                 let s;
                 if (Array.isArray(value)) {
-                    value.forEach(function (item) {
+                    value.forEach(item => {
                         s = key + (!!item ? ("=" + encodeURIComponent(item)) : "");
                         filterPostfix = filterPostfix + "&" + s;
                     });
