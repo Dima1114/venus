@@ -11,12 +11,13 @@ class DrawnDatePicker extends Component {
         super(props);
 
         this.state = {
-            value: null,
+            id: 'picker-' + Math.random().toString(36).substring(2, 15),
+            value: null
         }
     }
 
     componentDidMount() {
-        new Vivus(this.props.id, {duration: 50}, () => {});
+        new Vivus(this.state.id, {duration: 50}, () => {});
     }
 
     handleChange(date) {
@@ -36,9 +37,9 @@ class DrawnDatePicker extends Component {
                     label={this.props.label}
                     clearable
                     autoOk
-                    okLabel={<Label id={this.props.id + 'Ok-button'} label={'Ok'}/>}
-                    clearLabel={<Label id={this.props.id + 'Clear-button'} label={'Clear'}/>}
-                    cancelLabel={<Label id={this.props.id + 'Cancel-button'} label={'Cancel'}/>}
+                    okLabel={<Label label={'Ok'}/>}
+                    clearLabel={<Label label={'Clear'}/>}
+                    cancelLabel={<Label label={'Cancel'}/>}
                     format={" dd / MM / yyyy"}
                     InputProps={{
                         disableUnderline: true,
@@ -46,15 +47,14 @@ class DrawnDatePicker extends Component {
                     value={this.state.value}
                     onChange={date => this.handleChange(date)}
                 />
-                <Line id={this.props.id}/>
+                <Line id={this.state.id}/>
             </div>
         )
     }
 }
 
-const Label = ({id, label}) => (
-    <span><ButtonSvg id={id}
-                     style={{position: 'absolute', top: 0, left: 0}}
+const Label = ({label}) => (
+    <span><ButtonSvg style={{position: 'absolute', top: 0, left: 0}}
                      width={"106%"}
                      height={"106%"}
                      viewBox={'0 0 100 48'}/>{label}</span>

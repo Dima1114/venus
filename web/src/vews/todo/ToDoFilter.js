@@ -11,60 +11,68 @@ import "./style.css";
 
 class ToDoFilter extends React.Component {
 
-    componentDidMount() {
-        new Vivus(this.props.id, {duration: 50}, () => {});
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            id: 'list-filter-' + Math.random().toString(36).substring(2, 15),
+        }
     }
 
-    search(){}
+    componentDidMount() {
+        new Vivus(this.state.id, {duration: 30}, () => {});
+    }
 
-    clear(){}
+    search() {
+    }
+
+    clear() {
+    }
 
     render() {
         return (
-            <div style={{position: 'relative'}}>
-                <FilterSvg id={this.props.id}
-                           style={{position: 'absolute', top:0, left: 0}}
+            <div style={{position: 'relative', padding: 10}}>
+                <FilterSvg id={this.state.id}
+                           style={{position: 'absolute', top: 0, left: 0}}
                            viewBox='5 0 800 300'
                            preserveAspectRatio="none"
                            width="100%"
                            height="100%"
                 />
                 <div>
-                    <Typing speed={10} hideCursor={true}>
-                        <h2 style={{margin: '20px', fontWeight: 600}}>Todo Filter</h2>
-                    </Typing>
-                </div>
-                <div className={'filter-body'}>
-                    <DrawnSelectField id={'task-type'}
-                                      storeName={'taskTypes'}
-                                      entities={'enums/taskType'}
-                                      paramName={'enumValues'}
-                                      keyProp={'name'}
-                                      valueProp={'name'}
-                                      label={'Task Type'}
-                    />
-                    <span style={{marginRight: 20}}/>
-                    <DrawnSelectField id={'task-status'}
-                                      storeName={'taskStatuses'}
-                                      entities={'enums/taskStatus'}
-                                      paramName={'enumValues'}
-                                      keyProp={'name'}
-                                      valueProp={'name'}
-                                      label={'Task Status'}
-                    />
-                    <span style={{marginRight: 20}}/>
-                    <DrawnDatePicker id={'date-before'} label={'Date from'}/>
-                    <span style={{marginRight: 20}}/>
-                    <DrawnDatePicker id={'date-after'} label={'Date to'}/>
-                    <span style={{marginRight: 20}}/>
-                    <DrawnCheckbox id={'filter-checkbox-done'} label={'show completed'}/>
-                </div>
-                <div className={'search-button'}>
-                    <DrawnButton id={'Search-filter'}
-                                 onClick={() => this.search()}>Search</DrawnButton>
-                    <span style={{marginRight: 20}}/>
-                    <DrawnButton id={'Clear-filter'}
-                                 onClick={() => this.clear()}>Clear</DrawnButton>
+                    <div>
+                        <Typing speed={10} hideCursor={true}>
+                            <h2 style={{margin: '20px', fontWeight: 600}}>Todo Filter</h2>
+                        </Typing>
+                    </div>
+                    <div className={'filter-body'}>
+                        <DrawnSelectField storeName={'taskTypes'}
+                                          entities={'enums/taskType'}
+                                          paramName={'enumValues'}
+                                          keyProp={'name'}
+                                          valueProp={'name'}
+                                          label={'Task Type'}
+                        />
+                        <span style={{marginRight: 20}}/>
+                        <DrawnSelectField storeName={'taskStatuses'}
+                                          entities={'enums/taskStatus'}
+                                          paramName={'enumValues'}
+                                          keyProp={'name'}
+                                          valueProp={'name'}
+                                          label={'Task Status'}
+                        />
+                        <span style={{marginRight: 20}}/>
+                        <DrawnDatePicker label={'Date from'}/>
+                        <span style={{marginRight: 20}}/>
+                        <DrawnDatePicker label={'Date to'}/>
+                        <span style={{marginRight: 20}}/>
+                        <DrawnCheckbox label={'show completed'}/>
+                    </div>
+                    <div className={'search-button'}>
+                        <DrawnButton onClick={() => this.search()}>Search</DrawnButton>
+                        <span style={{marginRight: 20}}/>
+                        <DrawnButton onClick={() => this.clear()}>Clear</DrawnButton>
+                    </div>
                 </div>
             </div>
         )

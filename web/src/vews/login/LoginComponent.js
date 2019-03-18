@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux'
-import '../../App.css';
+import './login.css';
 import {login} from "../../actions/auth";
 import {validate} from "../../utils/validation";
 import loginSvg from "../../svg/login.svg";
@@ -10,6 +10,7 @@ import DrawnTextField from "../../components/DrawnTextField";
 import {Redirect} from "react-router-dom";
 import Error from "../error/Error";
 import Overlay from "../overlay/Overlay";
+import Wrapper from "../Wrapper";
 
 class LoginComponent extends Component {
 
@@ -25,7 +26,7 @@ class LoginComponent extends Component {
 
     componentDidMount() {
         if (this.props.auth.isAuthenticating === false && this.props.auth.isAuthenticated === false) {
-            new Vivus('my-svg', {duration: 100, file: loginSvg}, () => {});
+            new Vivus('login-svg', {duration: 100, file: loginSvg}, () => {});
         }
     }
 
@@ -34,8 +35,7 @@ class LoginComponent extends Component {
     }
 
     //TODO forgot password
-    //TODO replase styles with css file and classes
-    render() {
+    renderForm() {
 
         if (this.props.auth.isAuthenticated === true) {
             return <Redirect to={'/'}/>;
@@ -43,23 +43,17 @@ class LoginComponent extends Component {
 
         if (this.props.auth.isAuthenticating === true) {
             return (
-                <div className={'app-body  login-form flower'}>
+                <div className={'login-form'}>
                     <Overlay/>
                 </div>)
         }
 
         return (
-            <div className={'app-body  login-form flower'}>
+            <div className={'login-form-main'}>
                 <div style={{width: 582}}>
-                    <div style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        marginBottom: 20,
-                        height: 402,
-                        position: 'relative'
-                    }}>
-                        <div id={'my-svg'} style={{width: 582, height: 402, position: 'absolute'}}/>
-                        <div style={{width: 300, margin: '0 auto'}}>
+                    <div className={'form'}>
+                        <div id={'login-svg'}/>
+                        <div className={'form-body'}>
                             <div style={{marginTop: 100, marginLeft: 30}}>
                                 <DrawnTextField
                                     id={'username'}
@@ -86,8 +80,7 @@ class LoginComponent extends Component {
                         </div>
                     </div>
                     <div style={{float: 'right'}}>
-                        <DrawnButton id={'login-button'}
-                                     onClick={() => this.onclick()}>Submit</DrawnButton>
+                        <DrawnButton onClick={() => this.onclick()}>Submit</DrawnButton>
                     </div>
                     {
                         !!this.props.auth.globalError ?
@@ -99,6 +92,10 @@ class LoginComponent extends Component {
             </div>
         )
             ;
+    }
+
+    render() {
+        return(<Wrapper components={this.renderForm()}/>)
     }
 }
 

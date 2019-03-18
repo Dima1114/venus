@@ -7,16 +7,23 @@ import {ReactComponent as ButtonSvg} from "../svg/button.svg"
 
 class DrawnButton extends Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            id: 'button-' + +Math.random().toString(36).substring(2, 15),
+        }
+    }
+
     componentDidMount() {
-        new Vivus(this.props.id, {duration: 40}, () => {
-        });
+        new Vivus(this.state.id, {duration: 40}, () => {});
     }
 
     render() {
-        const {id, ...other} = this.props;
+        const {...other} = this.props;
         return (
             <div style={{position: 'relative', height: 48}}>
-                <ButtonSvg id={id}
+                <ButtonSvg id={this.state.id}
                            style={{position: 'absolute'}}
                            width={"106%"}
                            height={"100%"}

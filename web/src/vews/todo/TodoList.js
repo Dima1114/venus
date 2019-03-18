@@ -6,6 +6,7 @@ import {bindActionCreators} from "redux";
 import {getEntityList} from "../../actions/core";
 import ToDoFilter from "./ToDoFilter";
 import DrawnList from "../../components/DrawnList";
+import Wrapper from "../Wrapper";
 
 class TodoList extends React.Component {
 
@@ -76,7 +77,7 @@ class TodoList extends React.Component {
         })
     }
 
-    render() {
+    renderComponent() {
 
         const rows = [
             {id:1, label:'Id', value:'id'},
@@ -85,19 +86,21 @@ class TodoList extends React.Component {
             {id: 2, label: 'Type', value: 'type'},
             {id: 2, label: 'Status', value: 'status'},
         ];
-
         return (
-            <div className={'app-body'}>
+            <div>
 
-                <ToDoFilter id={'todo-filter'}/>
+                <ToDoFilter/>
 
-                <div className={'app-body'}>
+                <div>
 
                     <DrawnList storeName={'tasks'}
                                entities={'tasks'}
                                params={{projection: 'info'}}
                                isSelected={item => item.status === 'COMPLETED'}
-                               rows={rows}/>
+                               rows={rows}
+                               toolBar
+                               title={'ToDo List'}
+                    />
                 </div>
 
                 {/*<SimpleLink to={'/'}>*/}
@@ -118,9 +121,12 @@ class TodoList extends React.Component {
                 {/*onClick={this.getEnums.bind(this)}>get enums</DrawnButton>*/}
                 {/*{!!this.props.list ? this.props.list.map((el, i) => <p key={'el_' + i}>{el.text}</p>) : null}*/}
 
-
             </div>
         )
+    }
+
+    render() {
+        return(<Wrapper components={this.renderComponent()}/>)
     }
 
 

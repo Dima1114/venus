@@ -4,9 +4,6 @@
 #wrapper > div {
   font-family: Indie Flower, serif !important;
 }
-.login-form > div {
-  width: 100%
-}
 .flower div{
   font-family: Indie Flower, serif !important;
 }
@@ -35,7 +32,6 @@ body > div > div{
 }
 
 .app-body {
-  min-height: 50vh;
   display: flex;
   flex-direction: column;
   align-items: center;

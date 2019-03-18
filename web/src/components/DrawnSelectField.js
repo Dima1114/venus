@@ -16,6 +16,7 @@ class DrawnSelectField extends Component {
         super(props);
 
         this.state = {
+            id: 'select-' + Math.random().toString(36).substring(2, 15),
             value: '',
             keyProp: this.props.keyProp || 'id',
             valueProp: this.props.valueProp || 'value'
@@ -29,7 +30,7 @@ class DrawnSelectField extends Component {
     }
 
     componentDidMount() {
-        new Vivus(this.props.id, {duration: 50}, () => {
+        new Vivus(this.state.id, {duration: 50}, () => {
         });
     }
 
@@ -79,7 +80,7 @@ class DrawnSelectField extends Component {
                 >
                     {this.renderChildren()}
                 </TextField>
-                <Line id={this.props.id}/>
+                <Line id={this.state.id}/>
             </div>
         )
     }

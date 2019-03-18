@@ -1,5 +1,4 @@
 import React from "react";
-import Paper from "@material-ui/core/Paper";
 import {connect} from "react-redux";
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
@@ -10,6 +9,9 @@ import {bindActionCreators} from "redux";
 import {getEntityList} from "../actions/core";
 import Overlay from "../vews/overlay/Overlay";
 import DrawnCheckbox from "./DrawnCheckbox";
+import DrawnTableToolBar from "./DrawnTableToolBar";
+import {ReactComponent as TableSvg} from "../svg/table.svg"
+import Vivus from "vivus";
 
 //TODO add pagination
 //TODO add checkboxes logic
@@ -20,6 +22,7 @@ class DrawnList extends React.Component {
         super(props);
 
         this.state = {
+            id: 'table-'+ Math.random().toString(36).substring(2, 15),
             selected: []
         }
     }
@@ -33,7 +36,15 @@ class DrawnList extends React.Component {
     }
 
     componentDidMount() {
-        // new Vivus(this.state.id, {type: 'sync', duration: 50}, () => {});
+        if(!!this.props.list){
+            new Vivus(this.state.id, {type: 'sync', duration: 30}, () => {});
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if(!!this.props.list && !prevProps.list){
+            new Vivus(this.state.id, {type: 'sync', duration: 30}, () => {});
+        }
     }
 
     componentWillReceiveProps(nextProps, nextContext) {
@@ -48,8 +59,6 @@ class DrawnList extends React.Component {
 
     selectAll = (event) => {
         if (event.target.checked === true) {
-            console.log('SELECT ALL');
-            console.log(this.props.list.map(it => it.id));
             this.setState({selected: this.props.list.map(it => it.id)})
         } else {
             this.setState({selected: []})
@@ -58,8 +67,6 @@ class DrawnList extends React.Component {
 
     //TODO it should be ID or some other field
     selectItem = (item, event) => {
-
-        console.log('SELECT ITEM: ' + item.id);
         if (!!this.props.onSelect) {
             this.props.onSelect(item, event);
         }
@@ -68,17 +75,15 @@ class DrawnList extends React.Component {
         } else {
             const index = this.state.selected.indexOf(item.id);
             if (index !== -1) {
-                console.log('index = '+index);
-                this.setState({selected: this.state.selected.splice(index, 1)})
+                const arr = [...this.state.selected];
+                arr.splice(index, 1);
+                this.setState({selected: arr})
             }
         }
 
     };
 
     isSelected = item => {
-        console.log('ITEM: ' + item.id);
-        console.log(this.state.selected);
-        console.log(this.state.selected.indexOf(item.id) !== -1);
         return this.state.selected.indexOf(item.id) !== -1;
     };
 
@@ -87,7 +92,7 @@ class DrawnList extends React.Component {
             <TableHead>
                 <TableRow>
                     <TableCell style={{align: 'center'}}>
-                        <DrawnCheckbox id={'table-header-checkbox'} onChange={event => this.selectAll(event)}/>
+                        <DrawnCheckbox onChange={event => this.selectAll(event)}/>
                     </TableCell>
                     {this.props.rows.map((row, i) => (
                         <TableCell key={'head_' + i + '_' + row.id}>{row.label}</TableCell>
@@ -101,9 +106,9 @@ class DrawnList extends React.Component {
         return (
             <TableRow key={'row_' + index}>
                 <TableCell padding="checkbox">
-                    <DrawnCheckbox id={'table-row-checkbox-' + index}
-                                   onChange={event => this.selectItem(item, event)}
+                    <DrawnCheckbox onChange={event => this.selectItem(item, event)}
                                    defaultValue={this.isSelected(item)}
+                                   checked={this.isSelected(item)}
                     />
                 </TableCell>
                 {this.props.rows.map((row, i) => (
@@ -115,19 +120,43 @@ class DrawnList extends React.Component {
 
     render() {
         return (
-            <Paper elevation={4}>
+            <div style={style.root}>
                 {!!this.props.list ?
-                    <Table>
-                        {this.createTableHead()}
-                        <TableBody>
-                            {this.props.list.map((item, index) => (this.createTableRow(item, index)))}
-                        </TableBody>
-                    </Table>
+                    <div style={style.child}>
+                        <TableSvg id={this.state.id}
+                                   style={{position: 'absolute', top: 0, left: 0}}
+                                   viewBox='0 0 500 510'
+                                   preserveAspectRatio="none"
+                                   width="100%"
+                                   height="100%"
+                        />
+                        {!!this.props.toolBar ? <DrawnTableToolBar name={this.props.title} numSelected={this.state.selected.length}/> : null}
+                        <Table>
+                            {this.createTableHead()}
+                            <TableBody>
+                                {this.props.list.map((item, index) => (this.createTableRow(item, index)))}
+                            </TableBody>
+                        </Table>
+                    </div>
                     : <Overlay/>}
-            </Paper>
+            </div>
         )
     }
 }
+
+const style = {
+    root : {
+        position:'relative',
+        padding: 30,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    child: {
+        width: '100%'
+    }
+};
 
 const mapStateToProps = (state, props) => ({
     list: !!state.core[props.storeName] ? state.core[props.storeName].list : null
