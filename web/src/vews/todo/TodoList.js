@@ -7,6 +7,7 @@ import {getEntityList} from "../../actions/core";
 import ToDoFilter from "./ToDoFilter";
 import DrawnList from "../../components/DrawnList";
 import Wrapper from "../Wrapper";
+import DrawnButton from "../../components/DrawnButton";
 
 class TodoList extends React.Component {
 
@@ -99,6 +100,8 @@ class TodoList extends React.Component {
                                isSelected={item => item.status === 'COMPLETED'}
                                rows={rows}
                                toolBar
+                               completePattern={{id: 'id', status: 'COMPLETED'}}
+                               deletePattern={{id: 'id', status: 'IN_BIN'}}
                                title={'ToDo List'}
                     />
                 </div>
@@ -113,8 +116,8 @@ class TodoList extends React.Component {
                 {/*/>*/}
                 {/*<DrawnButton id={'GET XSLS FILE'}*/}
                 {/*onClick={this.onclick.bind(this)}>GET XSLS FILE</DrawnButton>*/}
-                {/*<DrawnButton id={'todos'}*/}
-                {/*onClick={this.getTodos.bind(this)}>get todos</DrawnButton>*/}
+                <DrawnButton id={'todos'}
+                onClick={this.getTodos.bind(this)}>get todos</DrawnButton>
                 {/*<DrawnButton id={'users'}*/}
                 {/*onClick={this.getUsers.bind(this)}>get users</DrawnButton>*/}
                 {/*<DrawnButton id={'enums'}*/}

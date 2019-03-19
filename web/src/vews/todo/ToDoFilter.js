@@ -24,9 +24,11 @@ class ToDoFilter extends React.Component {
     }
 
     search() {
+        //TODO
     }
 
     clear() {
+        //TODO
     }
 
     render() {

@@ -39,6 +39,19 @@ class DrawnTableToolBar extends Component {
         new Vivus(this.state.deleteId, {type: 'oneByOne', duration: 20}, () => {});
     }
 
+    complete(){
+        if(!!this.props.complete){
+            this.props.complete();
+        }
+    }
+
+    delete(){
+        if(!!this.props.delete){
+            this.props.delete();
+        }
+    }
+
+    //TODO expand icon buttons hover area
     render() {
         return (
             <div  style={{position: 'relative'}}>
@@ -58,13 +71,17 @@ class DrawnTableToolBar extends Component {
                     <div>
                         {this.props.numSelected > 0 ? (
                             <div style={{display: 'flex', flexDirection: 'row'}}>
-                                <Tooltip title="Set as Completed">
-                                    <IconButton aria-label="Set as Completed">
+                                <Tooltip title="Mark as Completed">
+                                    <IconButton aria-label="Mark as Completed"
+                                                onClick={() => this.complete()}
+                                    >
                                         <CompletedSvg id={this.state.completedId}/>
                                     </IconButton>
                                 </Tooltip>
                                 <Tooltip title="Delete">
-                                    <IconButton aria-label="Delete">
+                                    <IconButton aria-label="Delete"
+                                                onClick={() => this.delete()}
+                                    >
                                         <BinSvg id={this.state.deleteId}/>
                                     </IconButton>
                                 </Tooltip>

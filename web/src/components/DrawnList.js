@@ -6,7 +6,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell";
 import TableBody from "@material-ui/core/TableBody";
 import {bindActionCreators} from "redux";
-import {getEntityList} from "../actions/core";
+import {getEntityList, saveEntityList} from "../actions/core";
 import Overlay from "../vews/overlay/Overlay";
 import DrawnCheckbox from "./DrawnCheckbox";
 import DrawnTableToolBar from "./DrawnTableToolBar";
@@ -22,7 +22,7 @@ class DrawnList extends React.Component {
         super(props);
 
         this.state = {
-            id: 'table-'+ Math.random().toString(36).substring(2, 15),
+            id: 'table-' + Math.random().toString(36).substring(2, 15),
             selected: []
         }
     }
@@ -36,14 +36,16 @@ class DrawnList extends React.Component {
     }
 
     componentDidMount() {
-        if(!!this.props.list){
-            new Vivus(this.state.id, {type: 'sync', duration: 30}, () => {});
+        if (!!this.props.list) {
+            new Vivus(this.state.id, {type: 'sync', duration: 30}, () => {
+            });
         }
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if(!!this.props.list && !prevProps.list){
-            new Vivus(this.state.id, {type: 'sync', duration: 30}, () => {});
+        if (!!this.props.list && !prevProps.list) {
+            new Vivus(this.state.id, {type: 'sync', duration: 30}, () => {
+            });
         }
     }
 
@@ -87,6 +89,29 @@ class DrawnList extends React.Component {
         return this.state.selected.indexOf(item.id) !== -1;
     };
 
+    complete() {
+
+        const completed = this.state.selected.map(id => {
+            const value = this.props.completePattern;
+            value.id = id;
+            return value;
+        });
+
+        this.props.saveEntityList(this.props.storeName, this.props.entities, '/search/setStatus', {id: this.state.selected, status: 'COMPLETED'},
+            this.props.paramName || this.props.entities, this.props.params)
+    }
+
+    delete() {
+        const deleted = this.state.selected.map(id => {
+            const value = this.props.deletePattern;
+            value.id = id;
+            return value;
+        });
+
+        this.props.saveEntityList(this.props.storeName, this.props.entities, {batch: [...deleted]},
+            this.props.paramName || this.props.entities, this.props.params)
+    }
+
     createTableHead() {
         return (
             <TableHead>
@@ -124,13 +149,19 @@ class DrawnList extends React.Component {
                 {!!this.props.list ?
                     <div style={style.child}>
                         <TableSvg id={this.state.id}
-                                   style={{position: 'absolute', top: 0, left: 0}}
-                                   viewBox='0 0 500 510'
-                                   preserveAspectRatio="none"
-                                   width="100%"
-                                   height="100%"
+                                  style={{position: 'absolute', top: 0, left: 0}}
+                                  viewBox='0 0 500 510'
+                                  preserveAspectRatio="none"
+                                  width="100%"
+                                  height="100%"
                         />
-                        {!!this.props.toolBar ? <DrawnTableToolBar name={this.props.title} numSelected={this.state.selected.length}/> : null}
+                        {!!this.props.toolBar ?
+                            <DrawnTableToolBar name={this.props.title}
+                                               numSelected={this.state.selected.length}
+                                               complete={() => this.complete()}
+                                               delete={() => this.delete()}
+                            />
+                            : null}
                         <Table>
                             {this.createTableHead()}
                             <TableBody>
@@ -145,8 +176,8 @@ class DrawnList extends React.Component {
 }
 
 const style = {
-    root : {
-        position:'relative',
+    root: {
+        position: 'relative',
         padding: 30,
         display: 'flex',
         flexDirection: 'column',
@@ -162,7 +193,8 @@ const mapStateToProps = (state, props) => ({
     list: !!state.core[props.storeName] ? state.core[props.storeName].list : null
 });
 const mapDispatchToProps = (dispatch) => ({
-    getEntityList: bindActionCreators(getEntityList, dispatch)
+    getEntityList: bindActionCreators(getEntityList, dispatch),
+    saveEntityList: bindActionCreators(saveEntityList, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DrawnList);

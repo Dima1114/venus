@@ -74,6 +74,7 @@ class App extends Component {
     }
 
     //TODO replace react img with some other
+    //TODO add possibility to switch off vivus drawing
     render() {
         return (
             <div id={"wrapper"}>
