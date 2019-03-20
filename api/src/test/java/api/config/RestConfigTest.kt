@@ -3,11 +3,14 @@ package api.config
 import api.auditor.AuditAwareImpl
 import api.entity.TestEntity
 import api.projection.TestProjection
+import com.fasterxml.jackson.databind.Module
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.module.SimpleModule
 import com.nhaarman.mockito_kotlin.spy
+import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.whenever
-import org.amshove.kluent.*
+import org.amshove.kluent.`should be equal to`
+import org.amshove.kluent.`should be instance of`
+import org.amshove.kluent.`should have value`
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -28,7 +31,7 @@ class RestConfigTest {
     lateinit var config: RepositoryRestConfiguration
 
     @Captor
-    private lateinit var moduleCaptor: ArgumentCaptor<SimpleModule>
+    private lateinit var moduleCaptor: ArgumentCaptor<Module>
 
     @Before
     fun setUp(){
@@ -70,7 +73,9 @@ class RestConfigTest {
         testSubject.configureJacksonObjectMapper(objectMapper)
 
         //then
-        Mockito.verify(objectMapper).registerModule(moduleCaptor.capture())
-        moduleCaptor.value.moduleName `should be equal to` "LocalDateModule"
+        Mockito.verify(objectMapper, times(3)).registerModule(moduleCaptor.capture())
+        moduleCaptor.allValues[0].moduleName `should be equal to` "Jdk8Module"
+        moduleCaptor.allValues[1].moduleName `should be equal to` "jackson-module-kotlin"
+        moduleCaptor.allValues[2].moduleName `should be equal to` "LocalDateModule"
     }
 }

@@ -2,12 +2,8 @@ package api.config
 
 import api.auditor.AuditAwareImpl
 import api.entity.User
+import api.json.LocalDateModule
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.module.SimpleModule
-import api.json.JsonLocalDateDeserializer
-import api.json.JsonLocalDateSerializer
-import api.json.JsonLocalDateTimeDeserializer
-import api.json.JsonLocalDateTimeSerializer
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import org.reflections.Reflections
@@ -20,8 +16,6 @@ import org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean
 import org.springframework.data.rest.core.config.Projection
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer
-import java.time.LocalDate
-import java.time.LocalDateTime
 
 @Configuration
 @EnableJpaAuditing
@@ -42,17 +36,10 @@ class RestConfig : RepositoryRestConfigurer {
     }
 
     override fun configureJacksonObjectMapper(objectMapper: ObjectMapper) {
-        val module = SimpleModule("LocalDateModule")
-        with(module) {
-            addSerializer(LocalDate::class.java, JsonLocalDateSerializer())
-            addDeserializer(LocalDate::class.java, JsonLocalDateDeserializer())
-            addSerializer(LocalDateTime::class.java, JsonLocalDateTimeSerializer())
-            addDeserializer(LocalDateTime::class.java, JsonLocalDateTimeDeserializer())
-        }
         objectMapper.apply {
             registerModule(Jdk8Module())
             registerModule(KotlinModule())
-            registerModule(module)
+            registerModule(LocalDateModule())
         }
     }
 

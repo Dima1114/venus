@@ -2,7 +2,6 @@ package api.config
 
 import com.fasterxml.jackson.databind.Module
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.module.SimpleModule
 import com.nhaarman.mockito_kotlin.*
 import org.amshove.kluent.`should be equal to`
 import org.amshove.kluent.`should be instance of`
@@ -64,6 +63,6 @@ class CommonConfigTest {
         result.registeredModuleIds.size `should be equal to` 3
         result.registeredModuleIds.contains("com.fasterxml.jackson.datatype.jdk8.Jdk8Module") `should be equal to` true
         result.registeredModuleIds.contains("com.fasterxml.jackson.module.kotlin.KotlinModule") `should be equal to` true
-        result.registeredModuleIds.contains("LocalDateModule") `should be equal to` true
+        result.registeredModuleIds.contains("api.json.LocalDateModule") `should be equal to` true
     }
 }
