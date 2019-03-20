@@ -7,23 +7,33 @@ import {Line} from "./styledElements";
 
 class DrawnTextField extends Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            id: 'text-field-' + Math.random().toString(36).substring(2, 15),
+        }
+    }
+
     componentDidMount() {
-        new Vivus(this.props.id, {duration: 100}, () => {
+        new Vivus(this.state.id, {duration: 50}, () => {
         });
     }
 
     render() {
-        const {id, inputProps, helperText, ...props} = this.props;
+        const {onChange, inputProps, helperText, ...props} = this.props;
         return (
-            <div style={{position: 'relative'}}>
+            <div style={{position: 'relative', paddingBottom: 10}}>
                 <TextField {...props}
+                           fullWidth={true}
+                           onChange={(event) => onChange(event.target.value)}
                            helperText={!!helperText ? <Typing speed={10} hideCursor={true}>{helperText}</Typing> : null}
                            InputProps={{
                                ...inputProps,
                                disableUnderline: true,
                            }}
                 />
-                <Line id={id}/>
+                <Line id={this.state.id}/>
             </div>
         )
     }

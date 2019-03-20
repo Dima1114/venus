@@ -4,6 +4,7 @@ import {DatePicker} from "material-ui-pickers";
 import Vivus from "vivus";
 import {Line} from "./styledElements";
 import {ReactComponent as ButtonSvg} from "../svg/button.svg"
+import {format} from 'date-fns/esm'
 
 class DrawnDatePicker extends Component {
 
@@ -23,7 +24,7 @@ class DrawnDatePicker extends Component {
     handleChange(date) {
 
         if (!!this.props.onChange) {
-            this.props.onChange(date);
+            this.props.onChange(format(date, this.props.outFormat || 'yyyy-MM-dd'));
         }
 
         this.setState({value: date});
@@ -32,7 +33,7 @@ class DrawnDatePicker extends Component {
     //TODO customize dialog and its buttons and add vivus
     render() {
         return (
-            <div style={{position: 'relative', minWidth: 195}}>
+            <div style={{position: 'relative', minWidth: 195, paddingBottom: 10}}>
                 <DatePicker
                     label={this.props.label}
                     clearable

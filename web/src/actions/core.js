@@ -4,9 +4,9 @@ import {formRequestProps} from "../utils/formRequestProps";
 export const GET_ENTITY_LIST_REQUEST = 'GET_ENTITY_LIST_REQUEST';
 export const GET_ENTITY_LIST_SUCCESS = 'GET_ENTITY_LIST_SUCCESS';
 export const GET_ENTITY_LIST_FAIL = 'GET_ENTITY_LIST_FAIL';
-export const SAVE_ENTITY_LIST_REQUEST = 'SAVE_ENTITY_LIST_REQUEST';
-export const SAVE_ENTITY_LIST_SUCCESS = 'SAVE_ENTITY_LIST_SUCCESS';
-export const SAVE_ENTITY_LIST_FAIL = 'SAVE_ENTITY_LIST_FAIL';
+export const SAVE_ENTITY_REQUEST = 'SAVE_ENTITY_REQUEST';
+export const SAVE_ENTITY_SUCCESS = 'SAVE_ENTITY_SUCCESS';
+export const SAVE_ENTITY_FAIL = 'SAVE_ENTITY_FAIL';
 
 
 export function getEntityList(store, entities, paramName, params) {
@@ -57,45 +57,79 @@ function getEntityListFail(storeName, payload) {
 
 export function saveEntityList(store, controllerPath, body) {
     return function (dispatch) {
-        dispatch(saveEntityListRequest(store));
+        dispatch(saveEntityRequest(store));
         $.ajax({
             type: 'PATCH',
             url: '/' + controllerPath,
             contentType: 'application/json',
             data: JSON.stringify(body)
         }).then(() => {
-            dispatch(saveEntityListSuccess(store))
+            dispatch(saveEntitySuccess(store))
         }).catch(error => {
             const message = error.responseJSON || error.responseText;
-            dispatch(saveEntityListFail(store, message))
+            dispatch(saveEntityFail(store, message))
         })
     }
 }
 
-function saveEntityListRequest(storeName) {
+export function saveEntity(store, entities, body) {
+    return function (dispatch) {
+        dispatch(saveEntityRequest(store));
+        $.ajax({
+            type: 'PATCH',
+            url: '/' + entities + '/' + body.id,
+            contentType: 'application/json',
+            data: JSON.stringify(body)
+        }).then(() => {
+            dispatch(saveEntitySuccess(store))
+        }).catch(error => {
+            const message = error.responseJSON || error.responseText;
+            dispatch(saveEntityFail(store, message))
+        })
+    }
+}
+
+function saveEntityRequest(storeName) {
     return {
-        type: SAVE_ENTITY_LIST_REQUEST,
+        type: SAVE_ENTITY_REQUEST,
         payload: {
             storeName: storeName
         }
     }
 }
 
-function saveEntityListSuccess(storeName) {
+function saveEntitySuccess(storeName) {
     return {
-        type: SAVE_ENTITY_LIST_SUCCESS,
+        type: SAVE_ENTITY_SUCCESS,
         payload: {
             storeName: storeName
         }
     }
 }
 
-function saveEntityListFail(storeName, payload) {
+function saveEntityFail(storeName, payload) {
     return {
-        type: SAVE_ENTITY_LIST_FAIL,
+        type: SAVE_ENTITY_FAIL,
         payload: {
             storeName: storeName,
             errors: payload
         }
+    }
+}
+
+export function createEntity(store, entities, body) {
+    return function (dispatch) {
+        dispatch(saveEntityRequest(store));
+        $.ajax({
+            type: 'POST',
+            url: '/' + entities,
+            contentType: 'application/json',
+            data: JSON.stringify(body)
+        }).then(() => {
+            dispatch(saveEntitySuccess(store))
+        }).catch(error => {
+            const message = error.responseJSON || error.responseText;
+            dispatch(saveEntityFail(store, message))
+        })
     }
 }

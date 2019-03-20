@@ -37,14 +37,6 @@ body > div > div{
   align-items: center;
   justify-content: center;
 }
-.filter-body{
-  padding: 20px 20px;
-  /*min-height: 20vh;*/
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-start;
-}
 .error-body{
   display: flex;
   flex-direction: column;

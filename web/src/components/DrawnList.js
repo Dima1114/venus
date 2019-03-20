@@ -13,9 +13,6 @@ import DrawnTableToolBar from "./DrawnTableToolBar";
 import {ReactComponent as TableSvg} from "../svg/table.svg"
 import Vivus from "vivus";
 
-//TODO add pagination
-//TODO add checkboxes logic
-//TODO add drawn frame
 class DrawnList extends React.Component {
 
     constructor(props) {
@@ -73,11 +70,11 @@ class DrawnList extends React.Component {
     };
 
     //TODO it should be ID or some other field
-    selectItem = (item, event) => {
+    selectItem = (item, checked) => {
         if (!!this.props.onSelect) {
-            this.props.onSelect(item, event);
+            this.props.onSelect(item, checked);
         }
-        if (event.target.checked === true) {
+        if (checked === true) {
             this.setState({selected: [...this.state.selected, item.id]})
         } else {
             const index = this.state.selected.indexOf(item.id);
@@ -102,6 +99,12 @@ class DrawnList extends React.Component {
     delete() {
         if (!!this.props.deleteAction) {
             this.props.deleteAction(this.state.selected)
+        }
+    }
+
+    add() {
+        if (!!this.props.addAction) {
+            this.props.addAction()
         }
     }
 
@@ -142,6 +145,7 @@ class DrawnList extends React.Component {
         )
     }
 
+    //TODO add pagination
     render() {
         return (
             <div style={style.root}>
@@ -159,6 +163,7 @@ class DrawnList extends React.Component {
                                                numSelected={this.state.selected.length}
                                                complete={() => this.complete()}
                                                delete={() => this.delete()}
+                                               add={() => this.add()}
                             />
                             : null}
                         {this.props.list.length > 0 ?

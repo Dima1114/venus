@@ -3,7 +3,7 @@ import {
     GET_ENTITY_LIST_REQUEST,
     GET_ENTITY_LIST_SUCCESS,
     GET_ENTITY_LIST_FAIL,
-    SAVE_ENTITY_LIST_REQUEST, SAVE_ENTITY_LIST_SUCCESS, SAVE_ENTITY_LIST_FAIL
+    SAVE_ENTITY_REQUEST, SAVE_ENTITY_SUCCESS, SAVE_ENTITY_FAIL
 } from "../actions/core";
 
 export const coreReducer = createReducer({}, {
@@ -41,7 +41,7 @@ export const coreReducer = createReducer({}, {
             }
         }
     },
-    [SAVE_ENTITY_LIST_REQUEST]: (state, payload) => {
+    [SAVE_ENTITY_REQUEST]: (state, payload) => {
         console.log(state);
         return {
             ...state,
@@ -53,7 +53,7 @@ export const coreReducer = createReducer({}, {
             }
         }
     },
-    [SAVE_ENTITY_LIST_SUCCESS]: (state, payload) => {
+    [SAVE_ENTITY_SUCCESS]: (state, payload) => {
         console.log(state);
         return {
             ...state,
@@ -65,7 +65,7 @@ export const coreReducer = createReducer({}, {
             }
         }
     },
-    [SAVE_ENTITY_LIST_FAIL]: (state, payload) => {
+    [SAVE_ENTITY_FAIL]: (state, payload) => {
         return {
             ...state,
             [payload.storeName]: {

@@ -5,7 +5,6 @@ import DrawnDatePicker from "../../components/DrawnDatePicker";
 import Typing from "react-typing-animation";
 import Vivus from "vivus";
 import {ReactComponent as FilterSvg} from "../../svg/filter.svg"
-import DrawnCheckbox from "../../components/DrawnCheckbox";
 import DrawnButton from "../../components/DrawnButton";
 import "./style.css";
 import {bindActionCreators} from "redux";
@@ -18,13 +17,12 @@ class ToDoFilter extends React.Component {
 
         this.state = {
             id: 'list-filter-' + Math.random().toString(36).substring(2, 15),
-            prams: this.props.defaultParams || {}
+            params: this.props.defaultParams || {}
         }
     }
 
     componentDidMount() {
-        new Vivus(this.state.id, {duration: 30}, () => {
-        });
+        new Vivus(this.state.id, {duration: 30}, () => {});
     }
 
     handleParams(paramName, value) {
@@ -37,9 +35,9 @@ class ToDoFilter extends React.Component {
     }
 
     clear() {
+        this.setState({params: this.props.defaultParams || {}});
         this.props.getEntityList(this.props.storeName, this.props.entities,
             this.props.paramName || this.props.entities, this.props.defaultParams);
-        this.setState({params: this.props.defaultParams || {}});
     }
 
     render() {
@@ -75,8 +73,8 @@ class ToDoFilter extends React.Component {
                                           valueProp={'name'}
                                           label={'Task Status'}
                                           multiple={true}
-                                          defaultValue={['ACTIVE', 'OVERDUE']}
-                                          onChange={(value) => this.handleParams('status', value)}
+                                          value={this.state.params['status:in'] || []}
+                                          onChange={(value) => this.handleParams('status:in', value)}
                         />
                         <span style={{marginRight: 20}}/>
                         <DrawnDatePicker label={'Due Date from'}

@@ -7,9 +7,12 @@ import {getEntityList, saveEntityList} from "../../actions/core";
 import ToDoFilter from "./ToDoFilter";
 import DrawnList from "../../components/DrawnList";
 import Wrapper from "../Wrapper";
+import TaskForm from "./TaskForm";
+import {format} from 'date-fns/esm'
 
 const store = 'tasks';
-const defaultParams = {projection: 'info', 'status:in': ['ACTIVE', 'OVERDUE']};
+const entities = 'tasks';
+const defaultParams = {sort: 'dateAdded,desc', projection: 'info', 'status:in': ['ACTIVE', 'OVERDUE']};
 
 class TodoList extends React.Component {
 
@@ -17,7 +20,7 @@ class TodoList extends React.Component {
         super(props);
 
         this.state = {
-            task: ''
+            openForm: false
         }
     }
 
@@ -27,9 +30,6 @@ class TodoList extends React.Component {
             url: '/customers/insurances/export',
             contentType: 'application/json',
             xhrFields: {responseType: 'arraybuffer'},
-            headers: {
-                "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQURNSU4iLCJ1c3IiOiJhZG1pbiIsImV4cCI6MTU1MjYzMjY2NX0.HmwSi4JXKP1l28bPofkHA0HI9xhBfTnYVPmKsD8JlYw'
-            }
         }).then(response => {
             const fileName = "customers.xlsx";
             const link = document.createElement("a");
@@ -50,42 +50,17 @@ class TodoList extends React.Component {
 
     }
 
-    getTodos() {
-        this.props.getEntityListAll('todos', 'tasks')
-    }
-
-    getUsers() {
-        $.ajax({
-            type: 'GET',
-            url: this.props.baseUrl + '/users?email:isNotNull',
-            dataType: 'json',
-        }).then(response => {
-            console.log(response);
-        }).catch(error => {
-            const message = error.responseJSON || error.responseText || error;
-            console.log(message);
-        })
-    }
-
-    getEnums() {
-        $.ajax({
-            type: 'GET',
-            url: this.props.baseUrl + '/api/enums/taskType',
-            dataType: 'json',
-        }).then(response => {
-            console.log(response);
-        }).catch(error => {
-            const message = error.responseJSON || error.responseText || error;
-            console.log(message);
-        })
-    }
-
     completeAction(selected) {
-        this.props.saveEntityList(store, 'tasks/setStatus', {id: selected, status: 'COMPLETED'});
+        this.props.saveEntityList(store, 'tasks/setStatus',
+            {id: selected, status: 'COMPLETED', dateComplete: format(new Date(), 'yyyy-MM-dd HH:mm:ss')});
     }
 
     deleteAction(selected) {
         this.props.saveEntityList(store, 'tasks/setStatus', {id: selected, status: 'IN_BIN'});
+    }
+
+    addAction() {
+        this.setState({openForm: true})
     }
 
     renderComponent() {
@@ -102,39 +77,29 @@ class TodoList extends React.Component {
             <div style={{width: '1000px'}}>
                 <ToDoFilter defaultParams={defaultParams}
                             storeName={store}
-                            entities={'tasks'}
+                            entities={entities}
                             title={'ToDo Filter'}
                 />
                 <div>
                     <DrawnList storeName={store}
-                               entities={'tasks'}
+                               entities={entities}
                                params={defaultParams}
                                isSelected={item => item.status === 'COMPLETED'}
                                rows={rows}
                                toolBar
                                completeAction={selected => this.completeAction(selected)}
                                deleteAction={selected => this.deleteAction(selected)}
+                               addAction={() => this.addAction()}
                                title={'ToDo List'}
                     />
                 </div>
+                <TaskForm storeName={store}
+                          entities={entities}
+                          open={this.state.openForm}
+                          handleClose={() => this.setState({openForm: false})}/>
 
-                {/*<SimpleLink to={'/'}>*/}
-                {/*<DrawnButton id={'tomain'}>To Main</DrawnButton>*/}
-                {/*</SimpleLink>*/}
-                {/*<DrawnTextField id={'new'}*/}
-                {/*label={'new task'}*/}
-                {/*value={this.state.task}*/}
-                {/*onChange={e => this.setState({task: e.target.value})}*/}
-                {/*/>*/}
                 {/*<DrawnButton id={'GET XSLS FILE'}*/}
                 {/*onClick={this.onclick.bind(this)}>GET XSLS FILE</DrawnButton>*/}
-                {/*<DrawnButton id={'todos'}*/}
-                {/*onClick={this.getTodos.bind(this)}>get todos</DrawnButton>*/}
-                {/*<DrawnButton id={'users'}*/}
-                {/*onClick={this.getUsers.bind(this)}>get users</DrawnButton>*/}
-                {/*<DrawnButton id={'enums'}*/}
-                {/*onClick={this.getEnums.bind(this)}>get enums</DrawnButton>*/}
-                {/*{!!this.props.list ? this.props.list.map((el, i) => <p key={'el_' + i}>{el.text}</p>) : null}*/}
 
             </div>
         )

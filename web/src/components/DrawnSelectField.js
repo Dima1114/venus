@@ -17,7 +17,7 @@ class DrawnSelectField extends Component {
 
         this.state = {
             id: 'select-' + Math.random().toString(36).substring(2, 15),
-            value: this.props.defaultValue || [],
+            value: this.props.value || [],
             keyProp: this.props.keyProp || 'id',
             valueProp: this.props.valueProp || 'value'
         }
@@ -30,8 +30,7 @@ class DrawnSelectField extends Component {
     }
 
     componentDidMount() {
-        new Vivus(this.state.id, {duration: 50}, () => {
-        });
+        new Vivus(this.state.id, {duration: 50}, () => {});
     }
 
     handleChange(event) {
@@ -39,7 +38,6 @@ class DrawnSelectField extends Component {
         if(!!this.props.onChange){
             this.props.onChange(event.target.value)
         }
-        console.log(event.target.value);
         this.setState({value: event.target.value});
     }
 
@@ -72,10 +70,9 @@ class DrawnSelectField extends Component {
     //TODO popup menu slightly wider than drawn frame. do something, dude
     render() {
         return (
-            <div style={{position: 'relative'}}>
+            <div style={{position: 'relative', paddingBottom: 10}}>
                 <TextField select
                            multiple={true}
-
                            onChange={this.handleChange.bind(this)}
                            label={!!this.props.label ?
                                <Typing speed={10} hideCursor={true}>{this.props.label}</Typing> : null}
@@ -84,7 +81,7 @@ class DrawnSelectField extends Component {
                                disableUnderline: true,
                            }}
                            SelectProps={{
-                               value: this.state.value,
+                               value: this.props.value || this.state.value,
                                multiple: this.props.multiple || false,
                                renderValue: value => this.renderValue(value),
                                MenuProps: {
