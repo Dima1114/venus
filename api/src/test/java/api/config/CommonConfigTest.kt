@@ -1,11 +1,15 @@
 package api.config
 
+import com.fasterxml.jackson.databind.Module
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.module.SimpleModule
 import com.nhaarman.mockito_kotlin.*
 import org.amshove.kluent.`should be equal to`
 import org.amshove.kluent.`should be instance of`
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentCaptor
+import org.mockito.Captor
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer
@@ -22,6 +26,8 @@ class CommonConfigTest {
     lateinit var configurer: DefaultJmsListenerContainerFactoryConfigurer
     @Mock
     lateinit var connectionFactory: ConnectionFactory
+    @Captor
+    lateinit var moduleCaptor: ArgumentCaptor<Module>
 
     @Test
     fun `should return jms listener container factory`(){
@@ -55,8 +61,9 @@ class CommonConfigTest {
 
         //then
         result `should be instance of` ObjectMapper::class
-        result.registeredModuleIds.size `should be equal to` 2
+        result.registeredModuleIds.size `should be equal to` 3
         result.registeredModuleIds.contains("com.fasterxml.jackson.datatype.jdk8.Jdk8Module") `should be equal to` true
         result.registeredModuleIds.contains("com.fasterxml.jackson.module.kotlin.KotlinModule") `should be equal to` true
+        result.registeredModuleIds.contains("LocalDateModule") `should be equal to` true
     }
 }

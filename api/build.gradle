@@ -59,8 +59,12 @@ dependencies {
 
     //email
     implementation('org.springframework.boot:spring-boot-starter-mail')
-    
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+
+	//quartz
+	compile 'org.quartz-scheduler:quartz:2.3.0'
+	compile 'org.quartz-scheduler:quartz-jobs:2.3.0'
+	
+	compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 	compile "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
 	compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 
