@@ -12,10 +12,11 @@ import java.time.LocalDateTime
 @RequestMapping("/tasks")
 class TaskController(val taskRepository: TaskRepository) {
 
+    //TODO test
     @PatchMapping(path = ["/setStatus"])
     fun updateStatuses(@RequestBody wrap: Wrap) {
         taskRepository.updateStatuses(wrap.id, wrap.status, wrap.dateComplete)
     }
 }
 
-class Wrap(val id: List<Long>, val status: TaskStatus, val dateComplete: LocalDateTime)
+class Wrap(val id: List<Long>, val status: TaskStatus, val dateComplete: LocalDateTime?)

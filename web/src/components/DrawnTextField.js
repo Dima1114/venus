@@ -16,8 +16,7 @@ class DrawnTextField extends Component {
     }
 
     componentDidMount() {
-        new Vivus(this.state.id, {duration: 50}, () => {
-        });
+        new Vivus(this.state.id, {duration: 50}, () => {});
     }
 
     render() {

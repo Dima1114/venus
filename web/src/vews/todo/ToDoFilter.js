@@ -63,6 +63,7 @@ class ToDoFilter extends React.Component {
                                           keyProp={'name'}
                                           valueProp={'name'}
                                           label={'Task Type'}
+                                          value={this.state.params['type'] || []}
                                           onChange={(value) => this.handleParams('type', value)}
                         />
                         <span style={{marginRight: 20}}/>
@@ -78,10 +79,12 @@ class ToDoFilter extends React.Component {
                         />
                         <span style={{marginRight: 20}}/>
                         <DrawnDatePicker label={'Due Date from'}
+                                         value={this.state.params['dueDate:dgoe'] || null}
                                          onChange={(value) => this.handleParams('dueDate:dgoe', value)}
                         />
                         <span style={{marginRight: 20}}/>
                         <DrawnDatePicker label={'Due Date to'}
+                                         value={this.state.params['dueDate:dloe'] || null}
                                          onChange={(value) => this.handleParams('dueDate:dloe', value)}
                         />
                     </div>

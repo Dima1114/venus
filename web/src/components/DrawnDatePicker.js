@@ -13,7 +13,6 @@ class DrawnDatePicker extends Component {
 
         this.state = {
             id: 'picker-' + Math.random().toString(36).substring(2, 15),
-            value: null
         }
     }
 
@@ -26,8 +25,6 @@ class DrawnDatePicker extends Component {
         if (!!this.props.onChange) {
             this.props.onChange(format(date, this.props.outFormat || 'yyyy-MM-dd'));
         }
-
-        this.setState({value: date});
     }
 
     //TODO customize dialog and its buttons and add vivus
@@ -45,7 +42,7 @@ class DrawnDatePicker extends Component {
                     InputProps={{
                         disableUnderline: true,
                     }}
-                    value={this.state.value}
+                    value={this.props.value}
                     onChange={date => this.handleChange(date)}
                 />
                 <Line id={this.state.id}/>

@@ -21,5 +21,5 @@ interface TaskRepository : BaseRepository<Task> {
     @Transactional
     @Modifying
     @Query("update Task task set task.status = :status, task.dateComplete = :dateComplete where task.id in (:idList)")
-    fun updateStatuses(@Param("idList") idList: List<Long>, @Param("status") status: TaskStatus, @Param("dateComplete") dateComplete: LocalDateTime)
+    fun updateStatuses(@Param("idList") idList: List<Long>, @Param("status") status: TaskStatus, @Param("dateComplete") dateComplete: LocalDateTime?)
 }

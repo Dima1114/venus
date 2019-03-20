@@ -62,7 +62,7 @@ class LoginComponent extends Component {
                                     value={this.state.username}
                                     error={!!validate('username', this.props.auth.errors)}
                                     helperText={validate('username', this.props.auth.errors)}
-                                    onChange={(event) => this.setState({username: event.target.value})}
+                                    onChange={(value) => this.setState({username: value})}
                                 />
                             </div>
                             <div style={{marginTop: 60, marginLeft: 30}}>
@@ -74,7 +74,7 @@ class LoginComponent extends Component {
                                     type="password"
                                     error={!!validate('password', this.props.auth.errors)}
                                     helperText={validate('password', this.props.auth.errors)}
-                                    onChange={(event) => this.setState({password: event.target.value})}
+                                    onChange={(value) => this.setState({password: value})}
                                 />
                             </div>
                         </div>

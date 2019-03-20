@@ -68,6 +68,7 @@ class TaskForm extends React.Component {
                         />
                         <span style={{marginRight: 20}}/>
                         <DrawnDatePicker label={'Due Date'}
+                                         value={this.state.task.dueDate || null}
                                          onChange={(value) => this.handleParams('dueDate', value)}
                         />
                     </div>
