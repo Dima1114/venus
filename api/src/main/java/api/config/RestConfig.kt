@@ -8,6 +8,8 @@ import api.json.JsonLocalDateDeserializer
 import api.json.JsonLocalDateSerializer
 import api.json.JsonLocalDateTimeDeserializer
 import api.json.JsonLocalDateTimeSerializer
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import org.reflections.Reflections
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -47,7 +49,11 @@ class RestConfig : RepositoryRestConfigurer {
             addSerializer(LocalDateTime::class.java, JsonLocalDateTimeSerializer())
             addDeserializer(LocalDateTime::class.java, JsonLocalDateTimeDeserializer())
         }
-        objectMapper.registerModule(module)
+        objectMapper.apply {
+            registerModule(Jdk8Module())
+            registerModule(KotlinModule())
+            registerModule(module)
+        }
     }
 
     @Bean
