@@ -1,39 +1,80 @@
 package api.json
 
-import com.fasterxml.jackson.databind.JsonDeserializer
-import com.fasterxml.jackson.databind.JsonSerializer
-import com.nhaarman.mockito_kotlin.times
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.whenever
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import org.amshove.kluent.`should be equal to`
-import org.amshove.kluent.any
-import org.amshove.kluent.mock
+import org.amshove.kluent.`should equal`
+import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentCaptor
-import org.mockito.Captor
 import org.mockito.junit.MockitoJUnitRunner
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
 
 @RunWith(MockitoJUnitRunner::class)
-class LocalDateTimeModuleTest{
+class LocalDateTimeModuleTest {
 
-    @Captor
-    lateinit var serializerCaptor: ArgumentCaptor<JsonSerializer<*>>
-    @Captor
-    lateinit var deserializerCaptor: ArgumentCaptor<JsonDeserializer<*>>
+    lateinit var objectMapper: ObjectMapper
+
+    @Before
+    fun setUp() {
+        objectMapper = ObjectMapper().apply {
+            registerModule(LocalDateModule())
+        }
+    }
 
     @Test
-    fun `after init should contain serializers and deserializers`(){
+    fun `should convert local date to string`() {
 
         //given
-        val module = mock(LocalDateModule::class)
-        whenever(module.addSerializer(any(Class::class), any())).thenReturn(module)
-        whenever(module.addDeserializer(any(Class::class), any())).thenReturn(module)
+        val date = LocalDate.of(2019, 3, 20)
+
+        //when
+        val result = objectMapper.writeValueAsString(date)
 
         //then
-        verify(module, times(2)).addSerializer(any(), serializerCaptor.capture())
-        serializerCaptor.allValues.size `should be equal to` 2
-        verify(module, times(2)).addDeserializer(any(), deserializerCaptor.capture())
-        deserializerCaptor.allValues.size `should be equal to` 2
+        result `should be equal to` """"2019-03-20""""
+    }
+
+    @Test
+    fun `should convert local date time to string`() {
+
+        //given
+        val date = LocalDateTime.of(
+                LocalDate.of(2019, 3, 20),
+                LocalTime.of(22, 46, 10))
+
+        //when
+        val result = objectMapper.writeValueAsString(date)
+
+        //then
+        result `should be equal to` """"2019-03-20 22:46:10""""
+    }
+
+    @Test
+    fun `should convert string to local date`() {
+
+        //given
+        val date = """"2019-03-20""""
+
+        //when
+        val result = objectMapper.readValue<LocalDate>(date)
+
+        //then
+        result `should equal` LocalDate.of(2019, 3, 20)
+    }
+
+    @Test
+    fun `should convert string to local date time`() {
+
+        //given
+        val dateTime = """"2019-03-20 22:46:10""""
+
+        //when
+        val result = objectMapper.readValue<LocalDateTime>(dateTime)
+
+        //then
+        result `should equal` LocalDateTime.of(LocalDate.of(2019, 3, 20), LocalTime.of(22, 46, 10))
     }
 }
