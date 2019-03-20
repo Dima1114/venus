@@ -5,6 +5,7 @@ import api.entity.TaskStatus
 import api.entity.TaskType
 import api.entity.User
 import org.springframework.data.rest.core.config.Projection
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Projection(name = "info", types = [Task::class])
@@ -16,7 +17,7 @@ interface TaskProjection : BaseProjection {
 
     val dateComplete: LocalDateTime?
 
-    val dueDate: LocalDateTime?
+    val dueDate: LocalDate?
 
     val userAdded: User?
 

@@ -1,6 +1,7 @@
 package api.entity
 
 import org.springframework.data.annotation.CreatedBy
+import java.time.LocalDate
 import java.time.LocalDateTime
 import javax.persistence.*
 import javax.validation.constraints.NotNull
@@ -21,8 +22,8 @@ class Task : BaseEntity() {
     @Column(name = "Tsk_Complete", columnDefinition = "TIMESTAMP")
     var dateComplete: LocalDateTime? = null
 
-    @Column(name = "Tsk_Due_Date", columnDefinition = "TIMESTAMP")
-    var dueDate: LocalDateTime? = null
+    @Column(name = "Tsk_Due_Date", columnDefinition = "DATE")
+    var dueDate: LocalDate? = null
 
     @ManyToOne
     @NotNull

@@ -13,3 +13,5 @@ databaseChangeLog:
       file: src/main/resources/db/changelog/20190314-2144.yml
 - include:
       file: src/main/resources/db/changelog/20190316-1851.yml
+- include:
+      file: src/main/resources/db/changelog/20190320-1522.yml

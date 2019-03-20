@@ -3,14 +3,18 @@ package api.config
 import api.auditor.AuditAwareImpl
 import api.entity.TestEntity
 import api.projection.TestProjection
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.module.SimpleModule
+import com.nhaarman.mockito_kotlin.spy
 import com.nhaarman.mockito_kotlin.whenever
-import org.amshove.kluent.`should be equal to`
-import org.amshove.kluent.`should be instance of`
-import org.amshove.kluent.`should have value`
+import org.amshove.kluent.*
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentCaptor
+import org.mockito.Captor
 import org.mockito.Mock
+import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
 import org.springframework.data.rest.core.config.ProjectionDefinitionConfiguration
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration
@@ -22,6 +26,9 @@ class RestConfigTest {
 
     @Mock
     lateinit var config: RepositoryRestConfiguration
+
+    @Captor
+    private lateinit var moduleCaptor: ArgumentCaptor<SimpleModule>
 
     @Before
     fun setUp(){
@@ -51,5 +58,19 @@ class RestConfigTest {
         val result = testSubject.auditorProvider()
         //then
         result `should be instance of` AuditAwareImpl::class
+    }
+
+    @Test
+    fun `registered object mapper module exists`(){
+
+        //given
+        val objectMapper = spy(ObjectMapper())
+
+        //when
+        testSubject.configureJacksonObjectMapper(objectMapper)
+
+        //then
+        Mockito.verify(objectMapper).registerModule(moduleCaptor.capture())
+        moduleCaptor.value.moduleName `should be equal to` "LocalDateModule"
     }
 }
