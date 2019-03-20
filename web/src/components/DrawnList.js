@@ -12,6 +12,7 @@ import DrawnCheckbox from "./DrawnCheckbox";
 import DrawnTableToolBar from "./DrawnTableToolBar";
 import {ReactComponent as TableSvg} from "../svg/table.svg"
 import Vivus from "vivus";
+import {format} from 'date-fns/esm'
 
 class DrawnList extends React.Component {
 
@@ -132,11 +133,20 @@ class DrawnList extends React.Component {
                                    checked={this.isSelected(item)}
                     />
                 </TableCell>
-                {this.props.rows.map((row, i) => (
-                    <TableCell key={'cell_' + i + '_' + row.id}>{item[row.value]}</TableCell>
-                ))}
+                {this.props.rows.map((row, i) => this.getItemCell(item, row, index, i))}
             </TableRow>
         )
+    }
+
+    getItemCell(item, row, index, rowIndex) {
+        switch (row.type) {
+            case 'string':
+                return (<TableCell key={'cell_' + index + '_' + rowIndex}>{item[row.value]}</TableCell>);
+            case 'date':
+                return (<TableCell
+                    key={'cell_' + index + '_' + rowIndex}>{format(new Date(item[row.value]), row.format)}</TableCell>);
+        }
+
     }
 
     createEmptyRow() {

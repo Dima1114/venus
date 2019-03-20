@@ -12,7 +12,7 @@ class LocalDateCustomConverter : Converter<String, LocalDate> {
         return source?.let { tryParse(source) }
     }
 
-    fun tryParse(source: String?): LocalDate? {
+    private fun tryParse(source: String?): LocalDate? {
         val patterns = listOf("MM-dd-yyyy", "MM/dd/yyyy", "yyyy-MM-dd", "yyyy/MM/dd")
         var result : LocalDate? = null
         patterns.forEach {

@@ -66,11 +66,11 @@ class TodoList extends React.Component {
     renderComponent() {
 
         const rows = [
-            {id: 1, label: 'Id', value: 'id'},
-            {id: 2, label: 'Title', value: 'title'},
-            {id: 2, label: 'Comment', value: 'comment'},
-            {id: 2, label: 'Type', value: 'type'},
-            {id: 2, label: 'Status', value: 'status'},
+            {id: 2, label: 'Title', value: 'title', type: 'string'},
+            {id: 2, label: 'Comment', value: 'comment', type: 'string'},
+            {id: 2, label: 'Type', value: 'type', type: 'string'},
+            {id: 2, label: 'Status', value: 'status', type: 'string'},
+            {id: 2, label: 'Due Date', value: 'dueDate', type: 'date', format: 'dd/MM/yyyy'},
         ];
 
         return (
