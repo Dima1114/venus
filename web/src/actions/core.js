@@ -14,7 +14,7 @@ export function getEntityList(store, entities, paramName, params) {
         dispatch(getEntityListRequest(store));
         $.ajax({
             type: 'GET',
-            url: '/' + entities +'/search'+ formRequestProps(params),
+            url: '/' + entities + formRequestProps(params),
             contentType: 'application/json',
         }).then(response => {
             dispatch(getEntityListSuccess(store, response._embedded[paramName || entities]))
@@ -55,16 +55,16 @@ function getEntityListFail(storeName, payload) {
     }
 }
 
-export function saveEntityList(store, entities, path, bodies, paramName, params) {
+export function saveEntityList(store, controllerPath, body) {
     return function (dispatch) {
         dispatch(saveEntityListRequest(store));
         $.ajax({
             type: 'PATCH',
-            url: '/' + entities + path + formRequestProps(params),
+            url: '/' + controllerPath,
             contentType: 'application/json',
-            data: JSON.stringify(bodies)
-        }).then(response => {
-            dispatch(saveEntityListSuccess(store, response._embedded[paramName || entities]))
+            data: JSON.stringify(body)
+        }).then(() => {
+            dispatch(saveEntityListSuccess(store))
         }).catch(error => {
             const message = error.responseJSON || error.responseText;
             dispatch(saveEntityListFail(store, message))
@@ -78,16 +78,14 @@ function saveEntityListRequest(storeName) {
         payload: {
             storeName: storeName
         }
-
     }
 }
 
-function saveEntityListSuccess(storeName, payload) {
+function saveEntityListSuccess(storeName) {
     return {
         type: SAVE_ENTITY_LIST_SUCCESS,
         payload: {
-            storeName: storeName,
-            list: payload
+            storeName: storeName
         }
     }
 }

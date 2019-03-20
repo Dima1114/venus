@@ -3,11 +3,13 @@ import {connect} from 'react-redux'
 import {addTodo} from "../../actions";
 import $ from "jquery";
 import {bindActionCreators} from "redux";
-import {getEntityList} from "../../actions/core";
+import {getEntityList, saveEntityList} from "../../actions/core";
 import ToDoFilter from "./ToDoFilter";
 import DrawnList from "../../components/DrawnList";
 import Wrapper from "../Wrapper";
-import DrawnButton from "../../components/DrawnButton";
+
+const store = 'tasks';
+const defaultParams = {projection: 'info', 'status:in': ['ACTIVE', 'OVERDUE']};
 
 class TodoList extends React.Component {
 
@@ -78,30 +80,40 @@ class TodoList extends React.Component {
         })
     }
 
+    completeAction(selected) {
+        this.props.saveEntityList(store, 'tasks/setStatus', {id: selected, status: 'COMPLETED'});
+    }
+
+    deleteAction(selected) {
+        this.props.saveEntityList(store, 'tasks/setStatus', {id: selected, status: 'IN_BIN'});
+    }
+
     renderComponent() {
 
         const rows = [
-            {id:1, label:'Id', value:'id'},
+            {id: 1, label: 'Id', value: 'id'},
             {id: 2, label: 'Title', value: 'title'},
             {id: 2, label: 'Comment', value: 'comment'},
             {id: 2, label: 'Type', value: 'type'},
             {id: 2, label: 'Status', value: 'status'},
         ];
+
         return (
-            <div>
-
-                <ToDoFilter/>
-
+            <div style={{width: '1000px'}}>
+                <ToDoFilter defaultParams={defaultParams}
+                            storeName={store}
+                            entities={'tasks'}
+                            title={'ToDo Filter'}
+                />
                 <div>
-
-                    <DrawnList storeName={'tasks'}
+                    <DrawnList storeName={store}
                                entities={'tasks'}
-                               params={{projection: 'info'}}
+                               params={defaultParams}
                                isSelected={item => item.status === 'COMPLETED'}
                                rows={rows}
                                toolBar
-                               completePattern={{id: 'id', status: 'COMPLETED'}}
-                               deletePattern={{id: 'id', status: 'IN_BIN'}}
+                               completeAction={selected => this.completeAction(selected)}
+                               deleteAction={selected => this.deleteAction(selected)}
                                title={'ToDo List'}
                     />
                 </div>
@@ -116,8 +128,8 @@ class TodoList extends React.Component {
                 {/*/>*/}
                 {/*<DrawnButton id={'GET XSLS FILE'}*/}
                 {/*onClick={this.onclick.bind(this)}>GET XSLS FILE</DrawnButton>*/}
-                <DrawnButton id={'todos'}
-                onClick={this.getTodos.bind(this)}>get todos</DrawnButton>
+                {/*<DrawnButton id={'todos'}*/}
+                {/*onClick={this.getTodos.bind(this)}>get todos</DrawnButton>*/}
                 {/*<DrawnButton id={'users'}*/}
                 {/*onClick={this.getUsers.bind(this)}>get users</DrawnButton>*/}
                 {/*<DrawnButton id={'enums'}*/}
@@ -129,10 +141,8 @@ class TodoList extends React.Component {
     }
 
     render() {
-        return(<Wrapper components={this.renderComponent()}/>)
+        return (<Wrapper components={this.renderComponent()}/>)
     }
-
-
 }
 
 const mapStateToProps = state => ({
@@ -142,7 +152,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     onTodoClick: text => dispatch(addTodo(text)),
-    getEntityListAll: bindActionCreators(getEntityList, dispatch)
+    getEntityListAll: bindActionCreators(getEntityList, dispatch),
+    saveEntityList: bindActionCreators(saveEntityList, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoList);

@@ -42,21 +42,23 @@ export const coreReducer = createReducer({}, {
         }
     },
     [SAVE_ENTITY_LIST_REQUEST]: (state, payload) => {
+        console.log(state);
         return {
             ...state,
             [payload.storeName]: {
+                ...state[payload.storeName],
                 saving: true,
                 saved: false,
-                updateList: null,
                 errors: null,
             }
         }
     },
     [SAVE_ENTITY_LIST_SUCCESS]: (state, payload) => {
+        console.log(state);
         return {
             ...state,
             [payload.storeName]: {
-                updateList: payload.list,
+                ...state[payload.storeName],
                 errors: null,
                 saving: false,
                 saved: true
@@ -67,7 +69,7 @@ export const coreReducer = createReducer({}, {
         return {
             ...state,
             [payload.storeName]: {
-                updateList: null,
+                ...state[payload.storeName],
                 errors: payload.errors,
                 saving: false,
                 saved: false

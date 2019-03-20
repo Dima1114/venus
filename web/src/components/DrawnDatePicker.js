@@ -32,7 +32,7 @@ class DrawnDatePicker extends Component {
     //TODO customize dialog and its buttons and add vivus
     render() {
         return (
-            <div style={{position: 'relative'}}>
+            <div style={{position: 'relative', minWidth: 195}}>
                 <DatePicker
                     label={this.props.label}
                     clearable

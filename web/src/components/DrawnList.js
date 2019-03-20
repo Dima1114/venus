@@ -30,7 +30,7 @@ class DrawnList extends React.Component {
     componentWillMount() {
         if (!this.props.list) {
             this.props.getEntityList(this.props.storeName, this.props.entities,
-                this.props.paramName || this.props.entities, this.props.params)
+                this.props.paramName || this.props.entities, this.props.params);
         }
         this.initSelects(this.props);
     }
@@ -51,6 +51,11 @@ class DrawnList extends React.Component {
 
     componentWillReceiveProps(nextProps, nextContext) {
         this.initSelects(nextProps);
+
+        if (nextProps.saved === true && this.props.saved === false) {
+            this.props.getEntityList(this.props.storeName, this.props.entities,
+                this.props.paramName || this.props.entities, this.props.params);
+        }
     }
 
     initSelects(props) {
@@ -82,7 +87,6 @@ class DrawnList extends React.Component {
                 this.setState({selected: arr})
             }
         }
-
     };
 
     isSelected = item => {
@@ -90,26 +94,15 @@ class DrawnList extends React.Component {
     };
 
     complete() {
-
-        const completed = this.state.selected.map(id => {
-            const value = this.props.completePattern;
-            value.id = id;
-            return value;
-        });
-
-        this.props.saveEntityList(this.props.storeName, this.props.entities, '/search/setStatus', {id: this.state.selected, status: 'COMPLETED'},
-            this.props.paramName || this.props.entities, this.props.params)
+        if (!!this.props.completeAction) {
+            this.props.completeAction(this.state.selected)
+        }
     }
 
     delete() {
-        const deleted = this.state.selected.map(id => {
-            const value = this.props.deletePattern;
-            value.id = id;
-            return value;
-        });
-
-        this.props.saveEntityList(this.props.storeName, this.props.entities, {batch: [...deleted]},
-            this.props.paramName || this.props.entities, this.props.params)
+        if (!!this.props.deleteAction) {
+            this.props.deleteAction(this.state.selected)
+        }
     }
 
     createTableHead() {
@@ -143,6 +136,12 @@ class DrawnList extends React.Component {
         )
     }
 
+    createEmptyRow() {
+        return (
+            <h2 style={{display: 'flex', justifyContent: 'center'}}>EMPTY</h2>
+        )
+    }
+
     render() {
         return (
             <div style={style.root}>
@@ -162,12 +161,14 @@ class DrawnList extends React.Component {
                                                delete={() => this.delete()}
                             />
                             : null}
-                        <Table>
-                            {this.createTableHead()}
-                            <TableBody>
-                                {this.props.list.map((item, index) => (this.createTableRow(item, index)))}
-                            </TableBody>
-                        </Table>
+                        {this.props.list.length > 0 ?
+                            <Table>
+                                {this.createTableHead()}
+                                <TableBody>
+                                    {this.props.list.map((item, index) => (this.createTableRow(item, index)))}
+                                </TableBody>
+                            </Table>
+                            : this.createEmptyRow()}
                     </div>
                     : <Overlay/>}
             </div>
@@ -179,6 +180,7 @@ const style = {
     root: {
         position: 'relative',
         padding: 30,
+        marginBottom: 50,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -190,7 +192,8 @@ const style = {
 };
 
 const mapStateToProps = (state, props) => ({
-    list: !!state.core[props.storeName] ? state.core[props.storeName].list : null
+    list: !!state.core[props.storeName] ? state.core[props.storeName].list : null,
+    saved: !!state.core[props.storeName] ? state.core[props.storeName].saved : false
 });
 const mapDispatchToProps = (dispatch) => ({
     getEntityList: bindActionCreators(getEntityList, dispatch),

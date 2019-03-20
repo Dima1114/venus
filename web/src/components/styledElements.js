@@ -9,7 +9,8 @@ export const SimpleLink = ({style, ...props}) => (
 export const Line = ({id}) => (
     <LineSvg id={id}
              style={{position: 'absolute', left: 0, top: 45}}
-             viewBox='0 0 200 10'
+             viewBox='0 0 200 20'
+             preserveAspectRatio="none"
              width="100%"
              height="20px"/>
 );

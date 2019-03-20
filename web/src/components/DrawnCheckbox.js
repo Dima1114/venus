@@ -48,7 +48,7 @@ class DrawnCheckbox extends Component {
     handleClick(event) {
 
         if (!!this.props.onChange) {
-            this.props.onChange(event);
+            this.props.onChange(event.target.checked);
         }
 
         this.setState({checked: event.target.checked});

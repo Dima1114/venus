@@ -8,6 +8,8 @@ import {ReactComponent as FilterSvg} from "../../svg/filter.svg"
 import DrawnCheckbox from "../../components/DrawnCheckbox";
 import DrawnButton from "../../components/DrawnButton";
 import "./style.css";
+import {bindActionCreators} from "redux";
+import {getEntityList} from "../../actions/core";
 
 class ToDoFilter extends React.Component {
 
@@ -16,19 +18,28 @@ class ToDoFilter extends React.Component {
 
         this.state = {
             id: 'list-filter-' + Math.random().toString(36).substring(2, 15),
+            prams: this.props.defaultParams || {}
         }
     }
 
     componentDidMount() {
-        new Vivus(this.state.id, {duration: 30}, () => {});
+        new Vivus(this.state.id, {duration: 30}, () => {
+        });
+    }
+
+    handleParams(paramName, value) {
+        this.setState({params: {...this.state.params, [paramName]: value}});
     }
 
     search() {
-        //TODO
+        this.props.getEntityList(this.props.storeName, this.props.entities,
+            this.props.paramName || this.props.entities, this.state.params);
     }
 
     clear() {
-        //TODO
+        this.props.getEntityList(this.props.storeName, this.props.entities,
+            this.props.paramName || this.props.entities, this.props.defaultParams);
+        this.setState({params: this.props.defaultParams || {}});
     }
 
     render() {
@@ -44,7 +55,7 @@ class ToDoFilter extends React.Component {
                 <div>
                     <div>
                         <Typing speed={10} hideCursor={true}>
-                            <h2 style={{margin: '20px', fontWeight: 600}}>Todo Filter</h2>
+                            <h2 style={{margin: '20px', fontWeight: 600}}>{this.props.title}</h2>
                         </Typing>
                     </div>
                     <div className={'filter-body'}>
@@ -54,6 +65,7 @@ class ToDoFilter extends React.Component {
                                           keyProp={'name'}
                                           valueProp={'name'}
                                           label={'Task Type'}
+                                          onChange={(value) => this.handleParams('type', value)}
                         />
                         <span style={{marginRight: 20}}/>
                         <DrawnSelectField storeName={'taskStatuses'}
@@ -62,13 +74,18 @@ class ToDoFilter extends React.Component {
                                           keyProp={'name'}
                                           valueProp={'name'}
                                           label={'Task Status'}
+                                          multiple={true}
+                                          defaultValue={['ACTIVE', 'OVERDUE']}
+                                          onChange={(value) => this.handleParams('status', value)}
                         />
                         <span style={{marginRight: 20}}/>
-                        <DrawnDatePicker label={'Date from'}/>
+                        <DrawnDatePicker label={'Due Date from'}
+                                         onChange={(value) => this.handleParams('dueDate:dgoe', value)}
+                        />
                         <span style={{marginRight: 20}}/>
-                        <DrawnDatePicker label={'Date to'}/>
-                        <span style={{marginRight: 20}}/>
-                        <DrawnCheckbox label={'show completed'}/>
+                        <DrawnDatePicker label={'Due Date to'}
+                                         onChange={(value) => this.handleParams('dueDate:dloe', value)}
+                        />
                     </div>
                     <div className={'search-button'}>
                         <DrawnButton onClick={() => this.search()}>Search</DrawnButton>
@@ -83,6 +100,8 @@ class ToDoFilter extends React.Component {
 
 const mapStateToProps = state => ({});
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+    getEntityList: bindActionCreators(getEntityList, dispatch),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(ToDoFilter);

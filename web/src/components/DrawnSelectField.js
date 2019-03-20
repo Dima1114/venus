@@ -17,7 +17,7 @@ class DrawnSelectField extends Component {
 
         this.state = {
             id: 'select-' + Math.random().toString(36).substring(2, 15),
-            value: '',
+            value: this.props.defaultValue || [],
             keyProp: this.props.keyProp || 'id',
             valueProp: this.props.valueProp || 'value'
         }
@@ -35,7 +35,20 @@ class DrawnSelectField extends Component {
     }
 
     handleChange(event) {
+
+        if(!!this.props.onChange){
+            this.props.onChange(event.target.value)
+        }
+        console.log(event.target.value);
         this.setState({value: event.target.value});
+    }
+
+    renderValue(value){
+        if(this.props.multiple === true){
+            return(<span>{value.join(', ')}</span>)
+        }else{
+            return( <span>{value}</span>)
+        }
     }
 
     renderChildren() {
@@ -61,7 +74,8 @@ class DrawnSelectField extends Component {
         return (
             <div style={{position: 'relative'}}>
                 <TextField select
-                           value={this.state.value}
+                           multiple={true}
+
                            onChange={this.handleChange.bind(this)}
                            label={!!this.props.label ?
                                <Typing speed={10} hideCursor={true}>{this.props.label}</Typing> : null}
@@ -70,6 +84,9 @@ class DrawnSelectField extends Component {
                                disableUnderline: true,
                            }}
                            SelectProps={{
+                               value: this.state.value,
+                               multiple: this.props.multiple || false,
+                               renderValue: value => this.renderValue(value),
                                MenuProps: {
                                    TransitionComponent: Fade,
                                    PaperProps: {
