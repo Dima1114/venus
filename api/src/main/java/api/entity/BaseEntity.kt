@@ -1,6 +1,7 @@
 package api.entity
 
 import org.springframework.data.annotation.CreatedDate
+import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
 
 import javax.persistence.*
@@ -16,4 +17,7 @@ open class BaseEntity {
 
     @CreatedDate
     var dateAdded: LocalDateTime? = null
+
+    @LastModifiedDate
+    var dateModified: LocalDateTime? = null
 }

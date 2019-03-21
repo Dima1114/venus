@@ -1,6 +1,7 @@
 package api.service
 
 import api.repository.UserRepository
+import api.service.impl.UserServiceImpl
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify

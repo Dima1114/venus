@@ -10,7 +10,8 @@ import javax.validation.constraints.NotNull
 @Table(name = "Task")
 @AttributeOverrides(
         AttributeOverride(name = "id", column = Column(name = "Tsk_Id")),
-        AttributeOverride(name = "dateAdded", column = Column(name = "Tsk_Date_Added", columnDefinition = "TIMESTAMP")))
+        AttributeOverride(name = "dateAdded", column = Column(name = "Tsk_Date_Added", columnDefinition = "TIMESTAMP")),
+        AttributeOverride(name = "dateModified", column = Column(name = "Tsk_Date_Modified", columnDefinition = "TIMESTAMP")))
 class Task : BaseEntity() {
 
     @Column(name = "Tsk_Title", nullable = false)

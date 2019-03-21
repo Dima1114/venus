@@ -1,6 +1,7 @@
-package api.service
+package api.service.impl
 
 import api.repository.UserRepository
+import api.service.UserService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 

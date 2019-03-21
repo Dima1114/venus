@@ -1,14 +1,11 @@
 package api.config
 
-import com.fasterxml.jackson.databind.Module
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.nhaarman.mockito_kotlin.*
 import org.amshove.kluent.`should be equal to`
 import org.amshove.kluent.`should be instance of`
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentCaptor
-import org.mockito.Captor
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer
@@ -25,8 +22,6 @@ class CommonConfigTest {
     lateinit var configurer: DefaultJmsListenerContainerFactoryConfigurer
     @Mock
     lateinit var connectionFactory: ConnectionFactory
-    @Captor
-    lateinit var moduleCaptor: ArgumentCaptor<Module>
 
     @Test
     fun `should return jms listener container factory`(){

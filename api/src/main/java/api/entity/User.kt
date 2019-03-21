@@ -10,7 +10,8 @@ import javax.persistence.*
     (UniqueConstraint(columnNames = [("Usr_Ref_Token")]))])
 @AttributeOverrides(
         AttributeOverride(name = "id", column = Column(name = "Usr_Id")),
-        AttributeOverride(name = "dateAdded", column = Column(name = "Usr_Date_Added", columnDefinition = "TIMESTAMP")))
+        AttributeOverride(name = "dateAdded", column = Column(name = "Usr_Date_Added", columnDefinition = "TIMESTAMP")),
+        AttributeOverride(name = "dateModified", column = Column(name = "Usr_Date_Modified", columnDefinition = "TIMESTAMP")))
 class User : BaseEntity() {
 
     @Column(name = "Usr_Username")

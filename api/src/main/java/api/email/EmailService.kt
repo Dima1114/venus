@@ -12,14 +12,14 @@ class EmailService(val javaMailSender: JavaMailSender) {
         private val logger = Logger.getLogger(EmailService::class.java)
     }
 
-    fun sendEmail(to: String, text: String){
+    fun sendEmail(to: String, text: String, subject: String){
 
         val message = javaMailSender.createMimeMessage()
         MimeMessageHelper(message, true).apply {
             setFrom("Venus")
             setTo(to)
             setSubject("test mail")
-            setText(text)
+            setText(subject)
         }
 
         try {

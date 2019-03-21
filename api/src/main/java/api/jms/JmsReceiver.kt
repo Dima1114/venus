@@ -2,7 +2,6 @@ package api.jms
 
 import api.email.EmailService
 import mu.KLogging
-import org.apache.log4j.Logger
 import org.springframework.jms.annotation.JmsListener
 import org.springframework.stereotype.Component
 import java.util.concurrent.atomic.AtomicInteger
@@ -18,7 +17,7 @@ class JmsReceiver(val emailService: EmailService) {
     fun processMessage(jmsMessage: JmsMessage){
         logger.info("process jmsMessage: $jmsMessage")
 
-        emailService.sendEmail(jmsMessage.to, jmsMessage.body)
+        emailService.sendEmail(jmsMessage.to, jmsMessage.body, jmsMessage.subject)
         counter.incrementAndGet()
     }
 }

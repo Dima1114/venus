@@ -32,7 +32,7 @@ class EmailServiceTest {
         whenever(javaMailSender.createMimeMessage()).thenReturn(message)
 
         //when
-        testSubject.sendEmail("from", "to")
+        testSubject.sendEmail("from", "to", "subject")
 
         //then
         verify(javaMailSender, times(1)).send(message)

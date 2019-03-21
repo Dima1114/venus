@@ -22,8 +22,8 @@ class JmsReceiverTest {
     fun `should process received message`(){
 
         //given
-        val email = JmsMessage("to", "message")
-        doNothing().whenever(emailService).sendEmail(any(), any())
+        val email = JmsMessage("to", "message", "subject")
+        doNothing().whenever(emailService).sendEmail(any(), any(), any())
         testSubject.counter.get() `should be equal to` 0
 
         //when
@@ -31,6 +31,6 @@ class JmsReceiverTest {
 
         //then
         testSubject.counter.get() `should be equal to` 1
-        verify(emailService, times(1)).sendEmail(any(), any())
+        verify(emailService, times(1)).sendEmail(any(), any(), any())
     }
 }
