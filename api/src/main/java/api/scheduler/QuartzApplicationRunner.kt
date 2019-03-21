@@ -4,9 +4,11 @@ import api.scheduler.jobs.TaskJob
 import mu.KLogging
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
+import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Component
 
 @Component
+@Profile("!test")
 class QuartzApplicationRunner(val schedulerService: SchedulerService) : ApplicationRunner {
 
     companion object : KLogging()

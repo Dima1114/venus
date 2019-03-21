@@ -12,7 +12,7 @@ import java.time.LocalDateTime
 @RequestMapping("/tasks")
 class TaskController(val taskRepository: TaskRepository) {
 
-    //TODO test
+    //TODO integration test
     @PatchMapping(path = ["/setStatus"])
     fun updateStatuses(@RequestBody wrap: Wrap) {
         taskRepository.updateStatuses(wrap.id, wrap.status, wrap.dateComplete)
