@@ -1,6 +1,8 @@
 package api.scheduler
 
-import com.nhaarman.mockito_kotlin.*
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.times
+import com.nhaarman.mockito_kotlin.verify
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.InjectMocks
@@ -18,10 +20,6 @@ class QuartzApplicationRunnerTest {
 
     @Test
     fun `run all schedulers and add task job`(){
-
-        //given
-        doNothing().whenever(schedulerService).startAllSchedulers()
-        doNothing().whenever(schedulerService).runJob(any(), any())
 
         //when
         testSubject.run(null)

@@ -2,7 +2,10 @@ package api.controller
 
 import api.entity.TaskStatus
 import api.repository.TaskRepository
-import com.nhaarman.mockito_kotlin.*
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.anyOrNull
+import com.nhaarman.mockito_kotlin.times
+import com.nhaarman.mockito_kotlin.verify
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.InjectMocks
@@ -20,9 +23,6 @@ class TaskControllerTest {
 
     @Test
     fun `should call repository method`(){
-
-        //given
-        doNothing().whenever(taskRepository).updateStatuses(any(), any(), any())
 
         //when
         testSubject.updateStatuses(Wrap(listOf(), TaskStatus.ACTIVE, null))

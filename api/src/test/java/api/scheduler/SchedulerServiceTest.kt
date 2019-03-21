@@ -1,7 +1,10 @@
 package api.scheduler
 
 import api.scheduler.jobs.TaskJob
-import com.nhaarman.mockito_kotlin.*
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.times
+import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockito_kotlin.whenever
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -27,9 +30,7 @@ class SchedulerServiceTest {
 
     @Before
     fun setUp(){
-        doNothing().whenever(scheduler).start()
         whenever(schedulerFactory.scheduler).thenReturn(scheduler)
-        doNothing().whenever(jobsCreator).createJob(any(), anyString(), any())
     }
 
     @Test

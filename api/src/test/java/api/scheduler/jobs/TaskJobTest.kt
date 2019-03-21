@@ -4,7 +4,10 @@ import api.entity.Task
 import api.entity.User
 import api.jms.JmsMessage
 import api.repository.TaskRepository
-import com.nhaarman.mockito_kotlin.*
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.times
+import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockito_kotlin.whenever
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -46,8 +49,6 @@ class TaskJobTest {
 
     @Before
     fun setUp(){
-        doNothing().whenever(taskRepository).overdueTasks()
-        doNothing().whenever(jmsTemplate).convertAndSend(anyString(), org.amshove.kluent.any(JmsMessage::class))
         whenever(taskRepository.findAllByStatus(any())).thenReturn(tasks)
 
         setUpContext()
