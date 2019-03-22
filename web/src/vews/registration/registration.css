@@ -1,12 +1,16 @@
-.register-form-main > div {
-    width: 100%
+.register-form-main{
+    margin-bottom: 20px;
 }
 
-.form {
+.register-form-main > div {
+    width: 100%;
+}
+
+.register-form {
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;
-    height: 402px;
+    height: 520px;
     position: relative;
 }
 
@@ -17,6 +21,11 @@
 
 #register-svg{
     width: 582px;
-    height: 402px;
+    height: 520px;
     position: absolute;
+}
+
+.register-buttons-block{
+    float: right;
+    display: flex;
 }

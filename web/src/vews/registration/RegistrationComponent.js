@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import './registration.css';
 import {register} from "../../actions/auth";
 import {validate} from "../../utils/validation";
-import registerSvg from "../../svg/register.svg";
+import {ReactComponent as RegistrationSvg} from "../../svg/registration.svg"
 import Vivus from "vivus";
 import DrawnButton from "../../components/DrawnButton";
 import DrawnTextField from "../../components/DrawnTextField";
@@ -11,6 +11,9 @@ import {Redirect} from "react-router-dom";
 import Error from "../error/Error";
 import Overlay from "../overlay/Overlay";
 import Wrapper from "../Wrapper";
+import {SimpleLink, Space} from "../../components/styledElements";
+import {bindActionCreators} from "redux";
+import {registration} from "../../actions/registration";
 
 class RegistrationComponent extends Component {
 
@@ -26,21 +29,21 @@ class RegistrationComponent extends Component {
 
     componentDidMount() {
         if (this.props.auth.isAuthenticating === false && this.props.auth.isAuthenticated === false) {
-            new Vivus('registration-svg', {duration: 100, file: registerSvg}, () => {});
+            new Vivus('register-svg', {duration: 100}, () => {});
         }
     }
 
-    onclick() {
-        this.props.register(this.state.username, this.state.password);
+    singUp() {
+
     }
 
     renderForm() {
 
-        if (this.props.auth.isAuthenticated === true) {
+        if (this.props.registrationData.isRegistered === true) {
             return <Redirect to={'/'}/>;
         }
 
-        if (this.props.auth.isAuthenticating === true) {
+        if (this.props.registrationData.isRegistering === true) {
             return (
                 <div className={'register-form'}>
                     <Overlay/>
@@ -50,70 +53,77 @@ class RegistrationComponent extends Component {
         return (
             <div className={'register-form-main'}>
                 <div style={{width: 582}}>
-                    <div className={'form'}>
-                        <div id={'register-svg'}/>
+                    <div className={'register-form'}>
+                        <RegistrationSvg id={'register-svg'}
+                                         width={'100%'}
+                                         height={'100%'}
+                                         style={{position: 'absolute', top: 0, left: 0}}
+                                         preserveAspectRatio={"none"}
+                        />
                         <div className={'form-body'}>
-                            <div style={{marginTop: 100, marginLeft: 30}}>
+                            <div style={{marginTop: 120, marginLeft: 30}}>
                                 <DrawnTextField
                                     label={'Username'}
                                     required
                                     fullWidth={true}
                                     value={this.state.username}
-                                    error={!!validate('username', this.props.auth.errors)}
-                                    helperText={validate('username', this.props.auth.errors)}
+                                    error={!!validate('username', this.props.registrationData.errors)}
+                                    helperText={validate('username', this.props.registrationData.errors)}
                                     onChange={(value) => this.setState({username: value})}
                                 />
                             </div>
-                            <div style={{marginTop: 60, marginLeft: 30}}>
+                            <div style={{marginTop: 40, marginLeft: 30}}>
                                 <DrawnTextField
                                     label={'Password'}
                                     required
                                     fullWidth={true}
                                     value={this.state.password}
                                     type="password"
-                                    error={!!validate('password', this.props.auth.errors)}
-                                    helperText={validate('password', this.props.auth.errors)}
+                                    error={!!validate('password', this.props.registrationData.errors)}
+                                    helperText={validate('password', this.props.registrationData.errors)}
                                     onChange={(value) => this.setState({password: value})}
                                 />
                             </div>
-                            <div style={{marginTop: 60, marginLeft: 30}}>
+                            <div style={{marginTop: 40, marginLeft: 30}}>
                                 <DrawnTextField
                                     label={'Email'}
                                     required
                                     fullWidth={true}
                                     value={this.state.email}
-                                    error={!!validate('email', this.props.auth.errors)}
-                                    helperText={validate('email', this.props.auth.errors)}
+                                    error={!!validate('email', this.props.registrationData.errors)}
+                                    helperText={validate('email', this.props.registrationData.errors)}
                                     onChange={(value) => this.setState({email: value})}
                                 />
                             </div>
                         </div>
                     </div>
-                    <div style={{float: 'right'}}>
-                        <DrawnButton onClick={() => this.onclick()}>Submit</DrawnButton>
+                    <div className={'register-buttons-block'}>
+                        <SimpleLink to={'/login'}>
+                            <DrawnButton>{'Sign In'}</DrawnButton>
+                        </SimpleLink>
+                        <Space/>
+                        <DrawnButton onClick={() => this.singUp()}>Sing Up</DrawnButton>
                     </div>
                     {
-                        !!this.props.auth.globalError ?
-                            <Error id={'errors'} style={{clear: 'right'}} error={this.props.auth.globalError}/> : null
+                        !!this.props.registrationData.globalError ?
+                            <Error id={'errors'} style={{clear: 'right'}} error={this.props.registrationData.globalError}/> : null
                     }
                 </div>
             </div>
-        )
-            ;
+        );
     }
 
     render() {
-        return(<Wrapper components={this.renderForm()}/>)
+        return (<Wrapper components={this.renderForm()}/>)
     }
 }
 
 const mapStateToProps = state => ({
-    auth: state.auth
+    registrationData: state.registration
 });
 
 const mapDispatchToProps = dispatch => ({
-    register: (u, p) => dispatch(register(u, p))
-
+    registration: bindActionCreators(registration, dispatch)
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegistrationComponent);

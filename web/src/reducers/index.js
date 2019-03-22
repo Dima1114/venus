@@ -1,20 +1,18 @@
-import { combineReducers } from 'redux'
-import {
-    ADD_TODO,
-    INIT_BASE_URL
-} from "../actions";
+import {combineReducers} from 'redux'
+import {ADD_TODO, INIT_BASE_URL} from "../actions";
 import {createReducer} from "./reducerUtils";
 import {authReducer as auth} from "./auth";
 import {coreReducer as core} from "./core";
+import {registration} from "./registration";
 
-function todoReducer(state = [], action) {
-    switch (action.type) {
-        case ADD_TODO:
-            return [...state, {text: action.text, completed: false}];
-        default:
-            return state;
-    }
-}
+// function todoReducer(state = [], action) {
+//     switch (action.type) {
+//         case ADD_TODO:
+//             return [...state, {text: action.text, completed: false}];
+//         default:
+//             return state;
+//     }
+// }
 
 const initBaseUrl = createReducer({baseUrl: null}, {
     [INIT_BASE_URL]: (state, payload) => {
@@ -45,8 +43,9 @@ const initBaseUrl = createReducer({baseUrl: null}, {
 // }
 
 export default combineReducers({
-    todoReducer,
+    // todoReducer,
     auth,
+    registration,
     initBaseUrl,
     core
 });

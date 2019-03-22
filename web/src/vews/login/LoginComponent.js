@@ -11,7 +11,7 @@ import {Redirect} from "react-router-dom";
 import Error from "../error/Error";
 import Overlay from "../overlay/Overlay";
 import Wrapper from "../Wrapper";
-import {SimpleLink} from "../../components/styledElements";
+import {SimpleLink, Space} from "../../components/styledElements";
 
 class LoginComponent extends Component {
 
@@ -30,7 +30,7 @@ class LoginComponent extends Component {
         }
     }
 
-    onclick() {
+    login() {
         this.props.login(this.state.username, this.state.password);
     }
 
@@ -51,7 +51,7 @@ class LoginComponent extends Component {
         return (
             <div className={'login-form-main'}>
                 <div style={{width: 582}}>
-                    <div className={'form'}>
+                    <div className={'login-form'}>
                         <div id={'login-svg'}/>
                         <div className={'form-body'}>
                             <div style={{marginTop: 100, marginLeft: 30}}>
@@ -79,11 +79,12 @@ class LoginComponent extends Component {
                             </div>
                         </div>
                     </div>
-                    <div style={{float: 'right'}}>
+                    <div style={{float: 'right', display: 'flex'}}>
                         <SimpleLink to={'/registration'}>
                             <DrawnButton>{'Sign Up'}</DrawnButton>
                         </SimpleLink>
-                        <DrawnButton onClick={() => this.onclick()}>Sign In</DrawnButton>
+                        <Space/>
+                        <DrawnButton onClick={() => this.login()}>Sign In</DrawnButton>
                     </div>
                     {
                         !!this.props.auth.globalError ?

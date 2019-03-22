@@ -14,3 +14,7 @@ export const Line = ({id}) => (
              width="100%"
              height="20px"/>
 );
+
+export const Space = ({margin, style}) => (
+    <span style={{...style, marginRight: margin || 20}}/>
+);
