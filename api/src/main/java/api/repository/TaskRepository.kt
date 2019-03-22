@@ -12,6 +12,7 @@ import org.springframework.data.repository.query.Param
 import org.springframework.data.rest.core.annotation.RepositoryRestResource
 import org.springframework.data.rest.core.annotation.RestResource
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 @RepositoryRestResource
@@ -24,12 +25,13 @@ interface TaskRepository : BaseRepository<Task> {
     @RestResource(exported = false)
     @Transactional
     @Modifying
-    @Query("update Task task set task.status = api.entity.TaskStatus.OVERDUE where task.dueDate < CURRENT_DATE")
-    fun overdueTasks()
+    @Query("update Task task set task.status = api.entity.TaskStatus.OVERDUE " +
+            "where task.dueDate < CURRENT_DATE and task.status = api.entity.TaskStatus.ACTIVE")
+    fun overdueTasks() : Int
 
     //TODO integration test
     @EntityGraph(attributePaths = ["userAdded"])
-    fun findAllByStatus(taskStatus: TaskStatus): List<Task>
+    fun findAllByStatusAndDueDateBefore(taskStatus: TaskStatus, dueDate: LocalDate): List<Task>
 
     //TODO integration test
     @Transactional

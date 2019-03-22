@@ -5,6 +5,7 @@ import org.quartz.DateBuilder.futureDate
 import org.quartz.Trigger
 import org.quartz.TriggerBuilder
 import org.quartz.TriggerKey
+import java.util.*
 
 fun executeInMinutes(triggerKey: TriggerKey, interval: Int): Trigger {
     return TriggerBuilder.newTrigger()
@@ -16,6 +17,8 @@ fun executeInMinutes(triggerKey: TriggerKey, interval: Int): Trigger {
 fun executeTomorrow(triggerKey: TriggerKey): Trigger {
     return TriggerBuilder.newTrigger()
             .withIdentity(triggerKey)
-            .startAt(DateBuilder.tomorrowAt(0, 0, 0))
+            .startAt(tomorrow())
             .build()
 }
+
+fun tomorrow() : Date = DateBuilder.tomorrowAt(0, 0, 0)

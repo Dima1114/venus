@@ -18,8 +18,8 @@ class EmailService(val javaMailSender: JavaMailSender) {
         MimeMessageHelper(message, true).apply {
             setFrom("Venus")
             setTo(to)
-            setSubject("test mail")
-            setText(subject)
+            setSubject(subject)
+            setText(text)
         }
 
         try {

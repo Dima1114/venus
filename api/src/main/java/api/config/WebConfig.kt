@@ -6,8 +6,6 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import org.springframework.format.FormatterRegistry
 
-
-
 //@Configuration
 //class WebConfig : WebMvcConfigurer {
 //
@@ -21,8 +19,4 @@ import org.springframework.format.FormatterRegistry
 //                .exposedHeaders("Location")
 //    }
 //
-//    override fun addFormatters(registry: FormatterRegistry) {
-//        registry.addConverter(LocalDateCustomConverter())
-//        registry.javaClass
-//    }
 //}
