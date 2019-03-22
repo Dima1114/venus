@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux'
-import './login.css';
-import {login} from "../../actions/auth";
+import './registration.css';
+import {register} from "../../actions/auth";
 import {validate} from "../../utils/validation";
-import loginSvg from "../../svg/login.svg";
+import registerSvg from "../../svg/register.svg";
 import Vivus from "vivus";
 import DrawnButton from "../../components/DrawnButton";
 import DrawnTextField from "../../components/DrawnTextField";
@@ -11,9 +11,8 @@ import {Redirect} from "react-router-dom";
 import Error from "../error/Error";
 import Overlay from "../overlay/Overlay";
 import Wrapper from "../Wrapper";
-import {SimpleLink} from "../../components/styledElements";
 
-class LoginComponent extends Component {
+class RegistrationComponent extends Component {
 
     constructor(props) {
         super(props);
@@ -21,20 +20,20 @@ class LoginComponent extends Component {
         this.state = {
             username: '',
             password: '',
+            email: ''
         }
     }
 
     componentDidMount() {
         if (this.props.auth.isAuthenticating === false && this.props.auth.isAuthenticated === false) {
-            new Vivus('login-svg', {duration: 100, file: loginSvg}, () => {});
+            new Vivus('registration-svg', {duration: 100, file: registerSvg}, () => {});
         }
     }
 
     onclick() {
-        this.props.login(this.state.username, this.state.password);
+        this.props.register(this.state.username, this.state.password);
     }
 
-    //TODO forgot password
     renderForm() {
 
         if (this.props.auth.isAuthenticated === true) {
@@ -43,21 +42,21 @@ class LoginComponent extends Component {
 
         if (this.props.auth.isAuthenticating === true) {
             return (
-                <div className={'login-form'}>
+                <div className={'register-form'}>
                     <Overlay/>
                 </div>)
         }
 
         return (
-            <div className={'login-form-main'}>
+            <div className={'register-form-main'}>
                 <div style={{width: 582}}>
                     <div className={'form'}>
-                        <div id={'login-svg'}/>
+                        <div id={'register-svg'}/>
                         <div className={'form-body'}>
                             <div style={{marginTop: 100, marginLeft: 30}}>
                                 <DrawnTextField
-                                    id={'username'}
                                     label={'Username'}
+                                    required
                                     fullWidth={true}
                                     value={this.state.username}
                                     error={!!validate('username', this.props.auth.errors)}
@@ -67,8 +66,8 @@ class LoginComponent extends Component {
                             </div>
                             <div style={{marginTop: 60, marginLeft: 30}}>
                                 <DrawnTextField
-                                    id={'password'}
                                     label={'Password'}
+                                    required
                                     fullWidth={true}
                                     value={this.state.password}
                                     type="password"
@@ -77,21 +76,27 @@ class LoginComponent extends Component {
                                     onChange={(value) => this.setState({password: value})}
                                 />
                             </div>
+                            <div style={{marginTop: 60, marginLeft: 30}}>
+                                <DrawnTextField
+                                    label={'Email'}
+                                    required
+                                    fullWidth={true}
+                                    value={this.state.email}
+                                    error={!!validate('email', this.props.auth.errors)}
+                                    helperText={validate('email', this.props.auth.errors)}
+                                    onChange={(value) => this.setState({email: value})}
+                                />
+                            </div>
                         </div>
                     </div>
                     <div style={{float: 'right'}}>
-                        <SimpleLink to={'/registration'}>
-                            <DrawnButton>{'Sign Up'}</DrawnButton>
-                        </SimpleLink>
-                        <DrawnButton onClick={() => this.onclick()}>Sign In</DrawnButton>
+                        <DrawnButton onClick={() => this.onclick()}>Submit</DrawnButton>
                     </div>
                     {
                         !!this.props.auth.globalError ?
                             <Error id={'errors'} style={{clear: 'right'}} error={this.props.auth.globalError}/> : null
                     }
                 </div>
-
-
             </div>
         )
             ;
@@ -107,7 +112,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    login: (u, p) => dispatch(login(u, p))
+    register: (u, p) => dispatch(register(u, p))
+
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(RegistrationComponent);

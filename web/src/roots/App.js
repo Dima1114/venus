@@ -13,6 +13,7 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import {SimpleLink} from "../components/styledElements";
 import DrawnButton from "../components/DrawnButton";
 import Home from "../vews/home/Home";
+import RegistrationComponent from "../vews/registration/RegistrationComponent";
 
 const baseUrl = 'http://localhost:3000';
 
@@ -73,7 +74,7 @@ class App extends Component {
         this.setState({refreshTimer: null});
     }
 
-    //TODO replace react img with some other
+    //TODO replace react img with something other
     //TODO add possibility to switch off vivus drawing
     render() {
         return (
@@ -87,7 +88,7 @@ class App extends Component {
                             </SimpleLink>
                             <span style={{marginLeft: 10}}/>
                             <SimpleLink to={'/todo'}>
-                                <DrawnButton id={'todo'}>Todo</DrawnButton>
+                                <DrawnButton id={'todo'}>{'Todo'}</DrawnButton>
                             </SimpleLink>
                             <span style={{marginLeft: 10}}/>
                             <DrawnButton id={'logout'}
@@ -98,6 +99,7 @@ class App extends Component {
 
                 <Switch>
                     <Route exact path={'/login'} component={LoginComponent}/>
+                    <Route exact path={'/registration'} component={RegistrationComponent}/>
                     <ProtectedRoute path={'/todo'} component={TodoList}/>
                     <ProtectedRoute path={'/'} component={Home}/>
                 </Switch>

@@ -1,0 +1,22 @@
+.register-form-main > div {
+    width: 100%
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    height: 402px;
+    position: relative;
+}
+
+.form-body{
+    width: 300px;
+    margin: 0 auto;
+}
+
+#register-svg{
+    width: 582px;
+    height: 402px;
+    position: absolute;
+}

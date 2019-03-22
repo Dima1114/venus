@@ -40,11 +40,6 @@ class DrawnCheckbox extends Component {
         }
     }
 
-    //TODO change state from parent component
-    changeState(){
-        this.setState({checked: this.props.changeState(this.state.checked)});
-    }
-
     handleClick(event) {
 
         if (!!this.props.onChange) {
