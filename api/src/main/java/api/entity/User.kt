@@ -7,6 +7,7 @@ import javax.persistence.*
 @Entity
 @Table(name = "User", uniqueConstraints = [
     (UniqueConstraint(columnNames = [("Usr_Username")])),
+    (UniqueConstraint(columnNames = [("Usr_Email")])),
     (UniqueConstraint(columnNames = [("Usr_Ref_Token")]))])
 @AttributeOverrides(
         AttributeOverride(name = "id", column = Column(name = "Usr_Id")),
