@@ -10,7 +10,7 @@ import {initBaseUrl} from "../actions";
 import {logoutAndRedirect, refreshToken} from "../actions/auth";
 import {bindActionCreators} from "redux";
 import ProtectedRoute from "../components/ProtectedRoute";
-import {SimpleLink} from "../components/styledElements";
+import {SimpleLink, Space} from "../components/styledElements";
 import DrawnButton from "../components/DrawnButton";
 import Home from "../vews/home/Home";
 import RegistrationComponent from "../vews/registration/RegistrationComponent";
@@ -35,7 +35,6 @@ class App extends Component {
 
     componentWillReceiveProps(nextProps, nextContent) {
         this.refreshCountDown(nextProps);
-        // this.clearRefreshCountDown();
         this.setUp(nextProps);
     }
 
@@ -76,32 +75,40 @@ class App extends Component {
 
     //TODO replace react img with something other
     //TODO add possibility to switch off vivus drawing
+    //TODO buttons 'Sign Up' & 'Sign In' don`t rerender
     render() {
         return (
             <div id={"wrapper"}>
                 <div className="App-header">
                     <img src={logo} className="App-logo" alt="logo"/>
-                    {this.props.auth.isAuthenticated ?
-                        <div className={'App-nav'}>
-                            <SimpleLink to={'/'}>
-                                <DrawnButton id={'home'}>home</DrawnButton>
-                            </SimpleLink>
-                            <span style={{marginLeft: 10}}/>
+                    <div className={'App-nav'}>
+                        <SimpleLink to={'/'}>
+                            <DrawnButton>{'Home'}</DrawnButton>
+                        </SimpleLink>
+                        <Space/>
+                        {this.props.auth.isAuthenticated ?
                             <SimpleLink to={'/todo'}>
-                                <DrawnButton id={'todo'}>{'Todo'}</DrawnButton>
+                                <DrawnButton>{'Todo'}</DrawnButton>
                             </SimpleLink>
-                            <span style={{marginLeft: 10}}/>
-                            <DrawnButton id={'logout'}
-                                         onClick={() => this.props.logout()}>Logout</DrawnButton>
-                        </div>
-                        : null}
+                            :
+                            <SimpleLink to={'/registration'}>
+                                <DrawnButton>{'Sign Up'}</DrawnButton>
+                            </SimpleLink>}
+                        <Space/>
+                        {this.props.auth.isAuthenticated ?
+                            <DrawnButton onClick={() => this.props.logout()}>Logout</DrawnButton>
+                            :
+                            <SimpleLink to={'/login'}>
+                                <DrawnButton>{'Sign In'}</DrawnButton>
+                            </SimpleLink>}
+                    </div>
                 </div>
 
                 <Switch>
                     <Route exact path={'/login'} component={LoginComponent}/>
                     <Route exact path={'/registration'} component={RegistrationComponent}/>
                     <ProtectedRoute path={'/todo'} component={TodoList}/>
-                    <ProtectedRoute path={'/'} component={Home}/>
+                    <Route path={'/'} component={Home}/>
                 </Switch>
             </div>
         );

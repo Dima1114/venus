@@ -1,7 +1,7 @@
 package api.security.service.impl
 
 import api.entity.User
-import api.repository.UserRepository
+import api.service.UserService
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.whenever
 import org.amshove.kluent.`should equal`
@@ -20,14 +20,14 @@ class JwtUserDetailsServiceTest {
     lateinit var testSubject: JwtUserDetailsService
 
     @Mock
-    lateinit var userRepository: UserRepository
+    lateinit var userService: UserService
 
     @Test
     fun `should return user`() {
 
         //given
         val user = User().apply { username = "user" }
-        whenever(userRepository.findByUsername(any())).thenReturn(Optional.of(user))
+        whenever(userService.findByUsername(any())).thenReturn(Optional.of(user))
 
         //when
         val usr = testSubject.loadUserByUsername("user")
@@ -40,7 +40,7 @@ class JwtUserDetailsServiceTest {
     fun `should throw exception`() {
 
         //given
-        whenever(userRepository.findByUsername(any())).thenThrow(UsernameNotFoundException("username does not exist"))
+        whenever(userService.findByUsername(any())).thenThrow(UsernameNotFoundException("username does not exist"))
 
         //when
         testSubject.loadUserByUsername("user")

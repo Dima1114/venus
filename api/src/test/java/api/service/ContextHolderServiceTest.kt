@@ -6,6 +6,7 @@ import api.security.model.JwtUserDetails
 import org.amshove.kluent.`should equal`
 import org.junit.Before
 import org.junit.Test
+import org.springframework.security.authentication.AnonymousAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 
 class ContextHolderServiceTest {
@@ -33,6 +34,20 @@ class ContextHolderServiceTest {
         user!!.username `should equal` auth.username
         user.roles `should equal` auth.authorities
         user.id `should equal` auth.getId()
+    }
+
+    @Test
+    fun `should return null because context is not UsernamePasswordAuthenticationToken instance`() {
+
+        //given
+        SecurityContextHolder.getContext().authentication =
+                AnonymousAuthenticationToken("user", "user", listOf(Role.ROLE_ADMIN))
+
+        //when
+        val user = getUserFromContext()
+
+        //then
+        user `should equal` null
     }
 
     @Test

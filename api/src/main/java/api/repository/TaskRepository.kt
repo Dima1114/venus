@@ -30,6 +30,7 @@ interface TaskRepository : BaseRepository<Task> {
     fun overdueTasks() : Int
 
     //TODO integration test
+    @RestResource(exported = false)
     @EntityGraph(attributePaths = ["userAdded"])
     fun findAllByStatusAndDueDateBefore(taskStatus: TaskStatus, dueDate: LocalDate): List<Task>
 

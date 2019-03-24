@@ -49,7 +49,7 @@ class TaskJobTest {
 
     @Before
     fun setUp(){
-        whenever(taskRepository.findAllByStatus(any())).thenReturn(tasks)
+        whenever(taskRepository.findAllByStatusAndDueDateBefore(any(), any())).thenReturn(tasks)
 
         setUpContext()
     }
@@ -65,7 +65,7 @@ class TaskJobTest {
 
         //then
         verify(taskRepository, times(1)).overdueTasks()
-        verify(taskRepository, times(1)).findAllByStatus(any())
+        verify(taskRepository, times(1)).findAllByStatusAndDueDateBefore(any(), any())
         verify(context, times(1)).scheduler
         verify(scheduler, times(1)).rescheduleJob(any(), any())
         verify(jmsTemplate, times(1)).convertAndSend(anyString(), org.amshove.kluent.any(JmsMessage::class))
@@ -82,7 +82,7 @@ class TaskJobTest {
 
         //then
         verify(taskRepository, times(1)).overdueTasks()
-        verify(taskRepository, times(1)).findAllByStatus(any())
+        verify(taskRepository, times(1)).findAllByStatusAndDueDateBefore(any(), any())
         verify(context, times(1)).scheduler
         verify(scheduler, times(1)).rescheduleJob(any(), any())
         verify(jmsTemplate, times(0)).convertAndSend(anyString(), org.amshove.kluent.any(JmsMessage::class))

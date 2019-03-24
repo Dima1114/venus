@@ -141,10 +141,12 @@ class DrawnList extends React.Component {
     getItemCell(item, row, index, rowIndex) {
         switch (row.type) {
             case 'string':
-                return (<TableCell key={'cell_' + index + '_' + rowIndex}>{item[row.value]}</TableCell>);
+                return <TableCell key={'cell_' + index + '_' + rowIndex}>{item[row.value]}</TableCell>;
             case 'date':
-                return (<TableCell
-                    key={'cell_' + index + '_' + rowIndex}>{format(new Date(item[row.value]), row.format)}</TableCell>);
+                return <TableCell
+                    key={'cell_' + index + '_' + rowIndex}>{format(new Date(item[row.value]), row.format)}</TableCell>;
+            default :
+                return <TableCell key={'cell_' + index + '_' + rowIndex}>{item[row.value]}</TableCell>
         }
 
     }

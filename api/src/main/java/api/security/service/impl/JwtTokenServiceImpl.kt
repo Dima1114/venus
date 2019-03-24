@@ -7,16 +7,19 @@ import api.security.config.JwtSettings
 import api.security.exceptions.JwtAuthenticationException
 import api.security.model.JwtUserDetails
 import api.security.service.JwtTokenService
-import io.jsonwebtoken.*
-import org.apache.log4j.Logger
+import io.jsonwebtoken.ExpiredJwtException
+import io.jsonwebtoken.JwtException
+import io.jsonwebtoken.Jwts
+import io.jsonwebtoken.SignatureAlgorithm
+import mu.KLogging
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Component
-
-import java.util.Date
-import java.util.UUID
+import java.util.*
 
 @Component
 class JwtTokenServiceImpl(private val jwtSettings: JwtSettings, private val userRepository: UserRepository) : JwtTokenService {
+
+    companion object : KLogging()
 
     override fun updateRefreshToken(username: String, refreshToken: String) {
         val user: User = userRepository.findByUsername(username)
@@ -28,8 +31,7 @@ class JwtTokenServiceImpl(private val jwtSettings: JwtSettings, private val user
 
     override fun generateAccessToken(userDetails: UserDetails): String {
 
-        val now = Date()
-        val expiryDate = Date(now.time + jwtSettings.jwtExpirationInMs)
+        val expirationDate = Date( Date().time + jwtSettings.jwtExpirationInMs)
 
         val claims = Jwts.claims()
         claims["roles"] = userDetails.authorities.map{ it.toString() }
@@ -40,7 +42,7 @@ class JwtTokenServiceImpl(private val jwtSettings: JwtSettings, private val user
                 .setSubject(userDetails.username)
                 .setClaims(claims)
                 .setIssuedAt(Date())
-                .setExpiration(expiryDate)
+                .setExpiration(expirationDate)
                 .signWith(SignatureAlgorithm.HS512, jwtSettings.jwtSecret)
                 .compact()
     }
@@ -54,14 +56,13 @@ class JwtTokenServiceImpl(private val jwtSettings: JwtSettings, private val user
         claims["userId"] = (userDetails as JwtUserDetails).getId()
         claims["username"] = userDetails.username
 
-        val now = Date()
-        val expiryDate = Date(now.time + jwtSettings.jwtRefreshExpirationInMs)
+        val expirationDate = Date(Date().time + jwtSettings.jwtRefreshExpirationInMs)
 
         return Jwts.builder()
                 .setSubject(userDetails.username)
                 .setClaims(claims)
                 .setIssuedAt(Date())
-                .setExpiration(expiryDate)
+                .setExpiration(expirationDate)
                 .signWith(SignatureAlgorithm.HS512, jwtSettings.jwtSecret)
                 .compact()
     }
@@ -135,10 +136,22 @@ class JwtTokenServiceImpl(private val jwtSettings: JwtSettings, private val user
         return true
     }
 
-    companion object {
+    override fun generateRegistrationToken(username: String): String {
 
-        private val logger = Logger.getLogger(JwtTokenService::class.java)
+        val uid = UUID.randomUUID().toString()
+
+        val claims = Jwts.claims()
+        claims["uid"] = uid
+        claims["username"] = username
+
+        val expirationDate = Date(Date().time + jwtSettings.jwtRegistrationExpirationInMs)
+
+        return Jwts.builder()
+                .setSubject(username)
+                .setClaims(claims)
+                .setIssuedAt(Date())
+                .setExpiration(expirationDate)
+                .signWith(SignatureAlgorithm.HS512, jwtSettings.jwtSecret)
+                .compact()
     }
-
-
 }

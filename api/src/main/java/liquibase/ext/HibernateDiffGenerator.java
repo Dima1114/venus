@@ -1,4 +1,4 @@
-package api.liquibase.ext;
+package liquibase.ext;
 
 import liquibase.diff.DiffResult;
 import liquibase.diff.Difference;
@@ -6,8 +6,6 @@ import liquibase.diff.ObjectDifferences;
 import liquibase.diff.compare.CompareControl;
 import liquibase.diff.core.StandardDiffGenerator;
 import liquibase.exception.DatabaseException;
-import liquibase.logging.LogFactory;
-import liquibase.logging.Logger;
 import liquibase.snapshot.DatabaseSnapshot;
 import liquibase.structure.AbstractDatabaseObject;
 import liquibase.structure.DatabaseObject;
@@ -17,8 +15,6 @@ import liquibase.structure.core.UniqueConstraint;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 

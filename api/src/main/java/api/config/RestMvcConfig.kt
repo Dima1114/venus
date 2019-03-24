@@ -26,6 +26,7 @@ class RestMvcConfig(val context: ApplicationContext,
                     @Qualifier("mvcConversionService") conversionService: ObjectFactory<ConversionService>)
     : RepositoryRestMvcConfiguration(context, conversionService) {
 
+    //TODO what for?
     lateinit var beanLoader: ClassLoader
 
     override fun setBeanClassLoader(classLoader: ClassLoader) {

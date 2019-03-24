@@ -23,7 +23,7 @@ class JwtLoginProvider(private val userDetailsService: UserDetailsService,
         }
 
         if (!userDetails.isEnabled) {
-            throw BadCredentialsException("User is banned. You can`t login")
+            throw BadCredentialsException("User is disabled. You can`t login")
         }
 
         return UsernamePasswordAuthenticationToken(userDetails, null, userDetails.authorities)

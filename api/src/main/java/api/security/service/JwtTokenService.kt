@@ -18,4 +18,6 @@ interface JwtTokenService {
     fun getUserDetailsFromJWT(token: String): JwtUserDetails
 
     fun verifyToken(authToken: String): Boolean
+
+    fun generateRegistrationToken(username: String): String
 }

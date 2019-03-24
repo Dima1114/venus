@@ -3,7 +3,10 @@ package api.security.controller
 import api.entity.Role
 import api.security.model.JwtUserDetails
 import api.security.service.JwtTokenService
-import com.nhaarman.mockito_kotlin.*
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.times
+import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockito_kotlin.whenever
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -51,7 +54,6 @@ class LoginControllerTest {
         whenever(jwtTokenService.generateAccessToken(userDetails)).thenReturn("accessToken")
         whenever(jwtTokenService.generateRefreshToken(userDetails)).thenReturn("refreshToken")
         whenever(jwtTokenService.getExpTimeFromJWT("accessToken")).thenReturn(10000)
-        doNothing().`when`(jwtTokenService).updateRefreshToken("user", "refreshToken")
     }
 
     @Test

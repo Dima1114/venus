@@ -1,6 +1,6 @@
 package api.email
 
-import org.apache.log4j.Logger
+import mu.KLogging
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.stereotype.Service
@@ -8,18 +8,16 @@ import org.springframework.stereotype.Service
 @Service
 class EmailService(val javaMailSender: JavaMailSender) {
 
-    companion object {
-        private val logger = Logger.getLogger(EmailService::class.java)
-    }
+    companion object : KLogging()
 
     fun sendEmail(to: String, text: String, subject: String){
 
         val message = javaMailSender.createMimeMessage()
         MimeMessageHelper(message, true).apply {
-            setFrom("Venus")
+            setFrom("Venus", "Venus")
             setTo(to)
             setSubject(subject)
-            setText(text)
+            setText(text, true)
         }
 
         try {

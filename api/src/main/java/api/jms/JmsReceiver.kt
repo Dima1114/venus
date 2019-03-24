@@ -2,11 +2,13 @@ package api.jms
 
 import api.email.EmailService
 import mu.KLogging
+import org.springframework.context.annotation.Profile
 import org.springframework.jms.annotation.JmsListener
 import org.springframework.stereotype.Component
 import java.util.concurrent.atomic.AtomicInteger
 
 @Component
+@Profile("!test")
 class JmsReceiver(val emailService: EmailService) {
 
     companion object : KLogging()

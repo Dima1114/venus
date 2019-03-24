@@ -41,6 +41,7 @@ class JwtTokenServiceTest {
     fun setUp() {
         whenever(jwtSettings.jwtExpirationInMs).thenReturn(10000)
         whenever(jwtSettings.jwtRefreshExpirationInMs).thenReturn(20000)
+        whenever(jwtSettings.jwtRegistrationExpirationInMs).thenReturn(20000)
         whenever(jwtSettings.jwtSecret).thenReturn("secret")
 
         user.refreshToken = null
@@ -202,6 +203,17 @@ class JwtTokenServiceTest {
         details.getId() `should equal` userDetails.getId()
         details.username `should equal` userDetails.username
         details.authorities `should equal` userDetails.authorities
+
+    }
+
+    @Test
+    fun `should generate a valid registration token`() {
+
+        //when
+        val token = testSubject.generateRegistrationToken(userDetails.username!!)
+
+        //then
+        testSubject.verifyToken(token) `should be equal to` true
 
     }
 

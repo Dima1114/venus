@@ -17,5 +17,6 @@ class JwtSettingsTest : AbstractTestMvcIntegration() {
         testSubject.jwtSecret `should equal`  "security"
         testSubject.jwtExpirationInMs `should equal` 3600000
         testSubject.jwtRefreshExpirationInMs `should equal` 432000000
+        testSubject.jwtRegistrationExpirationInMs `should equal` 86400000
     }
 }

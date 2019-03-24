@@ -11,7 +11,7 @@ class DrawnButton extends Component {
         super(props);
 
         this.state = {
-            id: 'button-' + +Math.random().toString(36).substring(2, 15),
+            id: 'button-' + Math.random().toString(36).substring(2, 15),
         }
     }
 

@@ -11,7 +11,6 @@ import {Redirect} from "react-router-dom";
 import Error from "../error/Error";
 import Overlay from "../overlay/Overlay";
 import Wrapper from "../Wrapper";
-import {SimpleLink, Space} from "../../components/styledElements";
 
 class LoginComponent extends Component {
 
@@ -80,10 +79,6 @@ class LoginComponent extends Component {
                         </div>
                     </div>
                     <div style={{float: 'right', display: 'flex'}}>
-                        <SimpleLink to={'/registration'}>
-                            <DrawnButton>{'Sign Up'}</DrawnButton>
-                        </SimpleLink>
-                        <Space/>
                         <DrawnButton onClick={() => this.login()}>Sign In</DrawnButton>
                     </div>
                     {

@@ -12,4 +12,6 @@ class JwtSettings {
     val jwtExpirationInMs: Long = 0
     @Value("\${jwt.refresh.expirationInMs}")
     val jwtRefreshExpirationInMs: Long = 0
+    @Value("\${jwt.registration.expirationInMs}")
+    val jwtRegistrationExpirationInMs: Long = 0
 }

@@ -10,7 +10,7 @@ export function registration(username, password, email) {
         dispatch(registrationRequest());
         $.ajax({
             type: 'POST',
-            url: '/registration',
+            url: 'auth/registration',
             contentType: 'application/json',
             data: JSON.stringify({
                 username: username,

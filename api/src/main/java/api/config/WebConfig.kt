@@ -1,10 +1,9 @@
 package api.config
 
-import api.converter.LocalDateCustomConverter
 import org.springframework.context.annotation.Configuration
+import org.springframework.web.servlet.HandlerExceptionResolver
 import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
-import org.springframework.format.FormatterRegistry
 
 //@Configuration
 //class WebConfig : WebMvcConfigurer {
@@ -19,4 +18,7 @@ import org.springframework.format.FormatterRegistry
 //                .exposedHeaders("Location")
 //    }
 //
+//    override fun configureHandlerExceptionResolvers(resolvers: MutableList<HandlerExceptionResolver>) {
+//        super.configureHandlerExceptionResolvers(resolvers)
+//    }
 //}

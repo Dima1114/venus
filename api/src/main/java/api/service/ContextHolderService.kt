@@ -7,7 +7,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder
 
 fun getUserFromContext(): User? {
-    val auth = SecurityContextHolder.getContext()?.authentication ?: return null
+    val auth = SecurityContextHolder.getContext()
+            ?.authentication
+            ?.takeIf { it is UsernamePasswordAuthenticationToken }
+             ?: return null
 
     return auth.let { it as UsernamePasswordAuthenticationToken }
             .principal

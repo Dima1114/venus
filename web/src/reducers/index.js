@@ -1,5 +1,5 @@
 import {combineReducers} from 'redux'
-import {ADD_TODO, INIT_BASE_URL} from "../actions";
+import {INIT_BASE_URL} from "../actions";
 import {createReducer} from "./reducerUtils";
 import {authReducer as auth} from "./auth";
 import {coreReducer as core} from "./core";

@@ -1,6 +1,8 @@
 package api.entity
 
+import api.validation.Unique
 import com.fasterxml.jackson.annotation.JsonIgnore
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
 import javax.persistence.*
 
@@ -13,7 +15,12 @@ import javax.persistence.*
         AttributeOverride(name = "id", column = Column(name = "Usr_Id")),
         AttributeOverride(name = "dateAdded", column = Column(name = "Usr_Date_Added", columnDefinition = "TIMESTAMP")),
         AttributeOverride(name = "dateModified", column = Column(name = "Usr_Date_Modified", columnDefinition = "TIMESTAMP")))
+@Unique(fields = ["username", "email"] )
 class User : BaseEntity() {
+
+    companion object {
+        val encoder = BCryptPasswordEncoder()
+    }
 
     @Column(name = "Usr_Username")
     var username: String? = null
@@ -21,6 +28,9 @@ class User : BaseEntity() {
     @JsonIgnore
     @Column(name = "Usr_Password")
     var password: String? = null
+    set(value){
+        field = encoder.encode(value)
+    }
 
     @Column(name = "Usr_Email")
     var email: String? = null

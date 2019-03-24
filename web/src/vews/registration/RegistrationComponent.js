@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux'
 import './registration.css';
-import {register} from "../../actions/auth";
 import {validate} from "../../utils/validation";
 import {ReactComponent as RegistrationSvg} from "../../svg/registration.svg"
 import Vivus from "vivus";
@@ -11,7 +10,6 @@ import {Redirect} from "react-router-dom";
 import Error from "../error/Error";
 import Overlay from "../overlay/Overlay";
 import Wrapper from "../Wrapper";
-import {SimpleLink, Space} from "../../components/styledElements";
 import {bindActionCreators} from "redux";
 import {registration} from "../../actions/registration";
 
@@ -28,13 +26,12 @@ class RegistrationComponent extends Component {
     }
 
     componentDidMount() {
-        if (this.props.auth.isAuthenticating === false && this.props.auth.isAuthenticated === false) {
-            new Vivus('register-svg', {duration: 100}, () => {});
-        }
+        new Vivus('register-svg', {duration: 100}, () => {
+        });
     }
 
     singUp() {
-
+        this.props.registration(this.state.username, this.state.password, this.state.email)
     }
 
     renderForm() {
@@ -98,16 +95,11 @@ class RegistrationComponent extends Component {
                         </div>
                     </div>
                     <div className={'register-buttons-block'}>
-                        <SimpleLink to={'/login'}>
-                            <DrawnButton>{'Sign In'}</DrawnButton>
-                        </SimpleLink>
-                        <Space/>
                         <DrawnButton onClick={() => this.singUp()}>Sing Up</DrawnButton>
                     </div>
-                    {
-                        !!this.props.registrationData.globalError ?
-                            <Error id={'errors'} style={{clear: 'right'}} error={this.props.registrationData.globalError}/> : null
-                    }
+                    {!!this.props.registrationData.globalError ?
+                        <Error id={'errors'} style={{clear: 'right'}}
+                               error={this.props.registrationData.globalError}/> : null}
                 </div>
             </div>
         );

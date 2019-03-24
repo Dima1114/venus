@@ -50,7 +50,8 @@ class LoginController(private val jwtTokenService: JwtTokenService,
 
         return ResponseEntity.ok(
                 LoginResponse(
-                        accessToken, refreshToken,
+                        accessToken,
+                        refreshToken,
                         loginRequest.username,
                         jwtTokenService.getExpTimeFromJWT(accessToken)))
     }
