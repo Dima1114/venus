@@ -21,6 +21,7 @@ class JwtTokenServiceImpl(private val jwtSettings: JwtSettings, private val user
 
     companion object : KLogging()
 
+    //TODO create query to update only refresh token field and skip validation
     override fun updateRefreshToken(username: String, refreshToken: String) {
         val user: User = userRepository.findByUsername(username)
                 .orElseThrow { JwtAuthenticationException("User not found") }
