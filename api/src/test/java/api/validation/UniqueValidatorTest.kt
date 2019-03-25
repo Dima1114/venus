@@ -3,6 +3,7 @@ package api.validation
 import api.entity.TestEntity
 import api.integration.AbstractTestMvcIntegration
 import api.repository.TestEntityRepository
+import api.search.operator.SearchOperatorTest
 import org.junit.After
 import org.junit.Before
 import org.junit.FixMethodOrder
@@ -13,9 +14,12 @@ import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.ResultActions
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.transaction.PlatformTransactionManager
 import org.springframework.transaction.TransactionDefinition.PROPAGATION_REQUIRES_NEW
 import org.springframework.transaction.support.DefaultTransactionDefinition
+import java.time.LocalDate
 
 @FixMethodOrder(MethodSorters.JVM)
 class UniqueValidatorTest : AbstractTestMvcIntegration() {
@@ -28,7 +32,7 @@ class UniqueValidatorTest : AbstractTestMvcIntegration() {
     @Before
     fun setUp() {
         val status = transactionManager.getTransaction(DefaultTransactionDefinition(PROPAGATION_REQUIRES_NEW))
-        testEntityRepository.save(TestEntity(name = "test1"))
+        testEntityRepository.save(TestEntity(name = "test1", date = LocalDate.now(), float = 100F))
         transactionManager.commit(status)
     }
 
@@ -40,17 +44,33 @@ class UniqueValidatorTest : AbstractTestMvcIntegration() {
     }
 
     @Test
-    fun `should save entity`() {
+    fun `should fail to save entity because of field reject`() {
 
         //when
-//        val result = testEntityRepository.save(TestEntity(name = "test1"))
-//        performPost("/testEntities", """{"name": "test1"}""")
         val result = performPost("/testEntities", """{"name": "test1"}""")
 
         //then
         result.andDo(MockMvcResultHandlers.print())
-//        result.username `should equal` "test1"
-//        result.name `should equal` "test1"
+                .andExpect(status().isBadRequest)
+                .andExpect(jsonPath("$.errors[?(@.field == 'name')]").exists())
+                .andExpect(jsonPath("$.errors[?(@.defaultMessage)]").exists())
+                .andExpect(jsonPath("$.errors[?(@.entity == 'TestEntity')]").exists())
+
+    }
+
+    @Test
+    fun `should fail to save entity because of fields bunch reject`() {
+
+        //when
+        val result = performPost("/testEntities", """{"name": "test2", "date":"${LocalDate.now()}", "float":100}""")
+
+        //then
+        result.andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isBadRequest)
+                .andExpect(jsonPath("$.errors[?(@.field == 'float')]").exists())
+                .andExpect(jsonPath("$.errors[?(@.field == 'date')]").doesNotExist())
+                .andExpect(jsonPath("$.errors[?(@.defaultMessage)]").exists())
+                .andExpect(jsonPath("$.errors[?(@.entity == 'TestEntity')]").exists())
 
     }
 

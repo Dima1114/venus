@@ -10,6 +10,7 @@ import com.nhaarman.mockito_kotlin.whenever
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers.anyString
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
@@ -45,12 +46,12 @@ class RegistrationControllerTest {
         whenever(jwtTokenService.getUsernameFromJWT(any())).thenReturn("username")
         whenever(jwtTokenService.verifyToken(any())).thenReturn(true)
         whenever(userService.registerNewUser(any(), any(), any(), any())).thenReturn(User())
-        whenever(userService.completeRegistration(any())).thenReturn(User())
-        whenever(userService.findByUsername(any())).thenReturn(Optional.of(User()))
+        whenever(userService.saveUser(any())).thenReturn(User())
+        whenever(userService.findByUsername(any())).thenReturn(Optional.of(User().apply { refreshToken = "token" }))
     }
 
     @Test
-    fun `request should fail because of validation errors`(){
+    fun `request should fail because of validation errors`() {
 
         //when
         val result = performPostRequest("""{"username":"user","password":"qwerty","email":""}""")
@@ -63,7 +64,7 @@ class RegistrationControllerTest {
     }
 
     @Test
-    fun `request should create new user`(){
+    fun `request should create new user`() {
 
         //when
         val result = performPostRequest("""{"username":"user","password":"qwerty","email":"email@goofle.com"}""")
@@ -80,7 +81,7 @@ class RegistrationControllerTest {
     }
 
     @Test(expected = Exception::class)
-    fun `request should fail because user not found`(){
+    fun `request should fail because user not found`() {
 
         //given
         whenever(userService.findByUsername(any())).thenReturn(Optional.empty())
@@ -90,7 +91,22 @@ class RegistrationControllerTest {
     }
 
     @Test
-    fun `request should complete registration`(){
+    fun `request should fail because link already used`() {
+
+        //given
+        whenever(userService.findByUsername(any())).thenReturn(Optional.of(User().apply { refreshToken = "tokenUsed" }))
+
+        //when
+        val result = performGetRequest("token")
+
+        //then
+        result
+                .andExpect(status().isBadRequest)
+                .andExpect(jsonPath("$.message").exists())
+    }
+
+    @Test
+    fun `request should complete registration`() {
 
         //when
         val result = performGetRequest("token")
@@ -103,15 +119,15 @@ class RegistrationControllerTest {
         verify(jwtTokenService, times(1)).generateRefreshToken(any())
         verify(jwtTokenService, times(1)).getUsernameFromJWT(any())
         verify(userService, times(1)).findByUsername(any())
-        verify(userService, times(1)).completeRegistration(any())
+        verify(userService, times(1)).saveUser(any())
     }
 
-    private fun performPostRequest(body: String) : ResultActions =
+    private fun performPostRequest(body: String): ResultActions =
             mvc.perform(MockMvcRequestBuilders.post("/auth/registration")
                     .content(body)
                     .contentType(MediaType.APPLICATION_JSON))
 
-    private fun performGetRequest(token: String) : ResultActions =
+    private fun performGetRequest(token: String): ResultActions =
             mvc.perform(MockMvcRequestBuilders.get("/auth/registration?token=$token")
                     .contentType(MediaType.APPLICATION_JSON))
 }

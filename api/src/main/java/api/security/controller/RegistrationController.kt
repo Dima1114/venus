@@ -1,11 +1,14 @@
 package api.security.controller
 
 import api.handler.getErrors
+import api.security.exceptions.JwtAuthenticationException
+import api.security.model.ErrorResponse
 import api.security.model.JwtUserDetails
 import api.security.model.RegistrationRequest
 import api.security.model.RegistrationResponse
 import api.security.service.JwtTokenService
 import api.service.UserService
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.validation.Errors
@@ -44,10 +47,18 @@ class RegistrationController(val userService: UserService, val jwtTokenService: 
         val user = userService.findByUsername(username)
                 .orElseThrow { UsernameNotFoundException("username : $username does not exist") }
 
+        if (user.refreshToken != token) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(ErrorResponse(HttpStatus.BAD_REQUEST, "This link was already used. You can`t use it again"))
+        }
+
         val refreshToken = jwtTokenService.generateRefreshToken(JwtUserDetails.create(user))
 
-        user.refreshToken = refreshToken
-        userService.completeRegistration(user)
+        userService.saveUser(
+                user.apply {
+                    isEnabled = true
+                    this.refreshToken = refreshToken
+                })
 
         return ResponseEntity.ok(mapOf("refreshToken" to refreshToken))
     }

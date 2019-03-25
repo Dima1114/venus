@@ -11,7 +11,7 @@ import Error from "../error/Error";
 import Overlay from "../overlay/Overlay";
 import Wrapper from "../Wrapper";
 import {bindActionCreators} from "redux";
-import {registration} from "../../actions/registration";
+import {registration} from "../../actions/auth";
 
 class RegistrationComponent extends Component {
 
@@ -26,8 +26,7 @@ class RegistrationComponent extends Component {
     }
 
     componentDidMount() {
-        new Vivus('register-svg', {duration: 100}, () => {
-        });
+        new Vivus('register-svg', {duration: 100}, () => {});
     }
 
     singUp() {
@@ -35,7 +34,6 @@ class RegistrationComponent extends Component {
     }
 
     renderForm() {
-
         if (this.props.registrationData.isRegistered === true) {
             return <Redirect to={'/'}/>;
         }
@@ -111,7 +109,7 @@ class RegistrationComponent extends Component {
 }
 
 const mapStateToProps = state => ({
-    registrationData: state.registration
+    registrationData: !!state.auth ? state.auth.registration : {}
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -9,19 +9,26 @@ const color = muiTheme.palette.error.main;
 
 class Error extends React.Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            id: 'error-' + Math.random().toString(36).substring(2, 15),
+        }
+    }
+
     componentDidMount() {
-        new Vivus(this.props.id, {duration: 40}, () => {
-        });
+        new Vivus(this.state.id, {duration: 40}, () => {});
     }
 
     render() {
-        const {style, id, error} = this.props;
+        const {style, error} = this.props;
         return (
             <div className={'error-body'} style={{...style, position: 'relative', width: '100%', padding: '10px 10px'}}>
                 <Typing speed={10} hideCursor={true}>
                     <p style={{padding: '0 20px', fontWeight: 600, color: color}}>{error}</p>
                 </Typing>
-                {svg(id)}
+                {svg(this.state.id)}
             </div>
         )
     }

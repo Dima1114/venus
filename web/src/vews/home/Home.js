@@ -10,20 +10,25 @@ class Home extends React.Component {
                 <Typing speed={1} hideCursor={true}>
                     <h1>Welcome to TODO List application</h1>
                 </Typing>
-                {this.props.isRegistered === true ?
+                {this.props.isRegistered === true && this.props.auth.isAuthenticated === false &&
                     <div>
                         <p style={{fontSize: 30}}>Email with registration link was sent to your email '{this.props.registration.email}'</p>
                         <p style={{fontSize: 30}}>Please complete the registration within the next 24 hours</p>
-                    </div>
-                    : null}
+                    </div>}
+                {this.props.isRegistered === true && this.props.auth.isAuthenticated === true &&
+                <div>
+                    <p style={{fontSize: 30}}>Congratulations! You`he completed registration successfully</p>
+                    <p style={{fontSize: 30}}>Thank you for using our service</p>
+                </div>}
             </div>
         )
     }
 }
 
 const mapStateToProps = state => ({
-    isRegistered: !!state.registration ? state.registration.isRegistered : false,
-    registration: state.registration
+    auth: state.auth,
+    isRegistered: !!state.auth.registration ? state.auth.registration.isRegistered : false,
+    registration: state.auth.registration
 });
 
 const mapDispatchToProps = dispatch => ({});

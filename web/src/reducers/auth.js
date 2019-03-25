@@ -1,12 +1,16 @@
 import {createReducer} from "./reducerUtils";
 import jwtDecode from 'jwt-decode';
 import {
+    COMPLETE_REGISTRATION_FAIL,
+    COMPLETE_REGISTRATION_REQUEST,
+    COMPLETE_REGISTRATION_SUCCESS,
     LOGIN_FAIL,
     LOGIN_REQUEST,
     LOGIN_SUCCESS,
     LOGOUT_USER,
-    REFRESH_TOKEN_FAIL, REFRESH_TOKEN_REQUEST,
-    REFRESH_TOKEN_SUCCESS
+    REFRESH_TOKEN_FAIL,
+    REFRESH_TOKEN_REQUEST,
+    REFRESH_TOKEN_SUCCESS, REGISTRATION_FAIL, REGISTRATION_REQUEST, REGISTRATION_SUCCESS
 } from "../actions/auth";
 
 const initState = {
@@ -17,7 +21,8 @@ const initState = {
     username: null,
     expTime: null,
     errors: null,
-    globalError: null
+    globalError: null,
+    registration: {}
 };
 
 export const authReducer = createReducer(initState, {
@@ -75,6 +80,75 @@ export const authReducer = createReducer(initState, {
     },
     [LOGOUT_USER]: (state) => {
         return Object.assign({}, state, initState);
+    },
+
+    [REGISTRATION_REQUEST]: (state) => {
+        return {
+            ...state,
+            registration: {
+                isRegistering: true,
+                isRegistered: false
+            }
+        }
+    },
+
+    [REGISTRATION_SUCCESS]: (state, payload) => {
+        return {
+            ...state,
+            registration: {
+                username: payload.username,
+                email: payload.email,
+                isRegistering: false,
+                isRegistered: true
+            }
+        }
+    },
+
+    [REGISTRATION_FAIL]: (state, payload) => {
+        return {
+            ...state,
+            registration: {
+                errors: payload.errors,
+                globalError: payload.globalError,
+                isRegistering: false,
+                isRegistered: false
+            }
+        }
+    },
+
+    [COMPLETE_REGISTRATION_REQUEST]: (state) => {
+        return {
+            ...state,
+            isAuthenticating: true,
+            isAuthenticated: false,
+            registration: {
+                isRegistering: true,
+                isRegistered: false
+            }
+        }
+    },
+
+    [COMPLETE_REGISTRATION_SUCCESS]: (state, payload) => {
+        return {
+            ...state,
+            refreshToken: payload.refreshToken,
+            registration: {
+                isRegistering: false,
+                isRegistered: true
+            }
+        }
+    },
+
+    [COMPLETE_REGISTRATION_FAIL]: (state, payload) => {
+        return {
+            ...state,
+            registration: {
+                errors: payload.errors,
+                globalError: payload.globalError,
+                isRegistering: false,
+                isRegistered: false
+            }
+        }
     },
 
 

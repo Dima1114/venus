@@ -11,5 +11,7 @@ interface UserService {
 
     fun findByUsername(username: String) : Optional<User>
 
-    fun completeRegistration(user: User): User
+    fun saveNewPassword(username: String)
+
+    fun saveUser(user: User): User
 }

@@ -9,6 +9,8 @@ import DrawnList from "../../components/DrawnList";
 import Wrapper from "../Wrapper";
 import TaskForm from "./TaskForm";
 import {format} from 'date-fns/esm'
+import jwtDecode from 'jwt-decode';
+import Overlay from "../overlay/Overlay";
 
 const store = 'tasks';
 const entities = 'tasks';
@@ -50,6 +52,8 @@ class TodoList extends React.Component {
 
     }
 
+    getDefaultParams = () => ({...defaultParams, 'userAdded.id': jwtDecode(this.props.auth.accessToken).userId});
+
     completeAction(selected) {
         this.props.saveEntityList(store, 'tasks/setStatus',
             {id: selected, status: 'COMPLETED', dateComplete: format(new Date(), 'yyyy-MM-dd HH:mm:ss')});
@@ -74,8 +78,8 @@ class TodoList extends React.Component {
         ];
 
         return (
-            <div style={{width: '1000px'}}>
-                <ToDoFilter defaultParams={defaultParams}
+            !!this.props.auth ? <div style={{width: '1000px'}}>
+                <ToDoFilter defaultParams={this.getDefaultParams()}
                             storeName={store}
                             entities={entities}
                             title={'ToDo Filter'}
@@ -83,7 +87,7 @@ class TodoList extends React.Component {
                 <div>
                     <DrawnList storeName={store}
                                entities={entities}
-                               params={defaultParams}
+                               params={this.getDefaultParams()}
                                isSelected={item => item.status === 'COMPLETED'}
                                rows={rows}
                                toolBar
@@ -101,7 +105,7 @@ class TodoList extends React.Component {
                 {/*<DrawnButton id={'GET XSLS FILE'}*/}
                 {/*onClick={this.onclick.bind(this)}>GET XSLS FILE</DrawnButton>*/}
 
-            </div>
+            </div> : <Overlay/>
         )
     }
 
@@ -111,7 +115,7 @@ class TodoList extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    auth: state.authReducer,
+    auth: state.auth,
     baseUrl: state.initBaseUrl.baseUrl
 });
 

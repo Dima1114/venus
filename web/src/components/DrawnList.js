@@ -27,6 +27,7 @@ class DrawnList extends React.Component {
 
     componentWillMount() {
         if (!this.props.list) {
+            console.log(this.props.params);
             this.props.getEntityList(this.props.storeName, this.props.entities,
                 this.props.paramName || this.props.entities, this.props.params);
         }
@@ -35,15 +36,13 @@ class DrawnList extends React.Component {
 
     componentDidMount() {
         if (!!this.props.list) {
-            new Vivus(this.state.id, {type: 'sync', duration: 30}, () => {
-            });
+            new Vivus(this.state.id, {type: 'sync', duration: 30}, () => {});
         }
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (!!this.props.list && !prevProps.list) {
-            new Vivus(this.state.id, {type: 'sync', duration: 30}, () => {
-            });
+            new Vivus(this.state.id, {type: 'sync', duration: 30}, () => {});
         }
     }
 

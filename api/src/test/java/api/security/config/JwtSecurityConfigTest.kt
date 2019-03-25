@@ -1,6 +1,5 @@
 package api.security.config
 
-import api.security.JwtAuthenticationEntryPoint
 import api.security.authorize.JwtAuthenticationProvider
 import api.security.authorize.JwtAuthenticationTokenFilter
 import api.security.authorize.SkipPathAndMethodsRequestMatcher
@@ -30,9 +29,6 @@ class JwtSecurityConfigTest {
 
     @Mock
     lateinit var authenticationProvider: JwtAuthenticationProvider
-
-    @Mock
-    lateinit var entryPoint: JwtAuthenticationEntryPoint
 
     @Mock
     lateinit var userDetailsService: UserDetailsService

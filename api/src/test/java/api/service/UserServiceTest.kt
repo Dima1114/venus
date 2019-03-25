@@ -18,6 +18,7 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import org.springframework.jms.core.JmsTemplate
+import org.springframework.security.core.userdetails.UsernameNotFoundException
 import java.util.*
 
 @RunWith(MockitoJUnitRunner::class)
@@ -80,19 +81,46 @@ class UserServiceTest {
     }
 
     @Test
-    fun `should enable user`() {
+    fun `should save user`() {
 
         //given
-        val user = User().apply { isEnabled = false }
+        val user = User().apply { isEnabled = false; refreshToken = "token"}
         whenever(userRepository.save(org.amshove.kluent.any(User::class))).thenReturn(user)
 
-
         //when
-        val result = testSubject.completeRegistration(user)
+        val result = testSubject.saveUser(user)
 
         //then
-        result.isEnabled `should be equal to` true
-
+        result.isEnabled `should be equal to` false
+        result.refreshToken `should equal` "token"
         verify(userRepository, times(1)).save(org.amshove.kluent.any(User::class))
+    }
+
+
+    @Test
+    fun `should change user password`() {
+
+        //given
+        val user = User().apply { password = "password"; email = "email" }
+        val password = user.password
+        whenever(userRepository.findByUsername(anyString())).thenReturn(Optional.of(user))
+
+        //when
+        testSubject.saveNewPassword("user")
+
+        //then
+        user.password `should not equal` password
+
+        verify(jmsTemplate, times(1)).convertAndSend(anyString(), org.amshove.kluent.any(JmsMessage::class))
+    }
+
+    @Test(expected = UsernameNotFoundException::class)
+    fun `should throw exception because user does not exist`() {
+
+        //given
+        whenever(userRepository.findByUsername(anyString())).thenReturn(Optional.empty())
+
+        //when
+        testSubject.saveNewPassword("user")
     }
 }

@@ -122,3 +122,96 @@ export function logout() {
         type: LOGOUT_USER
     }
 }
+
+export const REGISTRATION_REQUEST = 'REGISTRATION_REQUEST';
+export const REGISTRATION_SUCCESS = 'REGISTRATION_SUCCESS';
+export const REGISTRATION_FAIL = 'REGISTRATION_FAIL';
+export const COMPLETE_REGISTRATION_REQUEST = 'COMPLETE_REGISTRATION_REQUEST';
+export const COMPLETE_REGISTRATION_SUCCESS = 'COMPLETE_REGISTRATION_SUCCESS';
+export const COMPLETE_REGISTRATION_FAIL = 'COMPLETE_REGISTRATION_FAIL';
+
+export function registration(username, password, email) {
+    return function (dispatch) {
+        dispatch(registrationRequest());
+        $.ajax({
+            type: 'POST',
+            url: '/auth/registration',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                username: username,
+                password: password,
+                email: email
+            })
+        }).then(response => {
+            dispatch(registrationSuccess(response))
+        }).catch(error => {
+            dispatch(registrationFail(error))
+        })
+    }
+}
+
+export function registrationRequest() {
+    return {
+        type: REGISTRATION_REQUEST
+    }
+}
+
+export function registrationSuccess(payload) {
+    return {
+        type: REGISTRATION_SUCCESS,
+        payload: {
+            email: payload.email,
+            username: payload.username,
+        }
+    }
+}
+
+export function registrationFail(payload) {
+    return {
+        type: REGISTRATION_FAIL,
+        payload: {
+            errors: payload.responseJSON.errors,
+            globalError: !payload.responseJSON.errors ? payload.responseJSON.message : null
+        }
+    }
+}
+
+export function completeRegistration(token) {
+    return function (dispatch) {
+        dispatch(completeRegistrationRequest());
+        $.ajax({
+            type: 'GET',
+            url: '/auth/registration?token=' + token,
+            contentType: 'application/json',
+        }).then(response => {
+            dispatch(completeRegistrationSuccess(response))
+        }).catch(error => {
+            dispatch(completeRegistrationFail(error))
+        })
+    }
+}
+
+export function completeRegistrationRequest() {
+    return {
+        type: COMPLETE_REGISTRATION_REQUEST
+    }
+}
+
+export function completeRegistrationSuccess(payload) {
+    return {
+        type: COMPLETE_REGISTRATION_SUCCESS,
+        payload: {
+            refreshToken: payload.refreshToken
+        }
+    }
+}
+
+export function completeRegistrationFail(payload) {
+    return {
+        type: COMPLETE_REGISTRATION_FAIL,
+        payload: {
+            errors: payload.responseJSON.errors,
+            globalError: !payload.responseJSON.errors ? payload.responseJSON.message : null
+        }
+    }
+}

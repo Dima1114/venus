@@ -6,6 +6,7 @@ import api.jms.JmsMessage
 import api.repository.UserRepository
 import api.service.UserService
 import org.springframework.jms.core.JmsTemplate
+import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -13,6 +14,8 @@ import java.util.*
 class UserServiceImpl(private val userRepository: UserRepository, private val jmsTemplate: JmsTemplate) : UserService {
 
     override fun dropRefreshToken(username: String): Int? = userRepository.dropRefreshToken(username)
+
+    override fun saveUser(user: User): User = userRepository.save(user)
 
     override fun findByUsername(username: String): Optional<User> = userRepository.findByUsername(username)
 
@@ -33,14 +36,26 @@ class UserServiceImpl(private val userRepository: UserRepository, private val jm
                 JmsMessage(email,
                         "You have been successfully signed up at Venus ToDoList service.<br>" +
                                 "To complete registration follow this link<br> " +
-                                "<a>localhost:3000/auth/registration?token=$token</a>",
+                                "<a href='http://localhost:3000/registration/complete?token=$token'>Click here to Complete Registration</a>",
                         "Registration"))
 
         return user
     }
 
-    override fun completeRegistration(user: User): User {
-        user.isEnabled = true
-        return userRepository.save(user)
+    override fun saveNewPassword(username: String) {
+
+        val user = findByUsername(username)
+                .orElseThrow { UsernameNotFoundException("username : $username does not exist") }
+
+        val password = UUID.randomUUID().toString().substring(0, 10)
+        user.password = password
+
+        userRepository.save(user)
+        jmsTemplate.convertAndSend("mailbox",
+                JmsMessage(user.email!!,
+                        "Your password has been changed.<br> New password: $password",
+                        "Change Password"))
     }
+
+
 }

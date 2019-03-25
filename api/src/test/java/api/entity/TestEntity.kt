@@ -7,7 +7,7 @@ import javax.persistence.Entity
 import javax.persistence.ManyToOne
 
 @Entity
-@Unique(fields = ["name"])
+@Unique(fields = ["name"], fieldsBunch = ["date", "float"], errorFields = ["float"])
 class TestEntity (
         val name: String? = null,
         val date: LocalDate? = null,

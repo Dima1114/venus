@@ -25,6 +25,7 @@ class DrawnButton extends Component {
             <div style={{position: 'relative', height: 48}}>
                 <ButtonSvg id={this.state.id}
                            style={{position: 'absolute'}}
+                           preserveAspectRatio={"none"}
                            width={"106%"}
                            height={"100%"}
                            viewBox={'0 0 100 48'}

@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import './login.css';
 import {login} from "../../actions/auth";
 import {validate} from "../../utils/validation";
-import loginSvg from "../../svg/login.svg";
+import {ReactComponent as LoginSvg} from "../../svg/login.svg"
 import Vivus from "vivus";
 import DrawnButton from "../../components/DrawnButton";
 import DrawnTextField from "../../components/DrawnTextField";
@@ -11,6 +11,9 @@ import {Redirect} from "react-router-dom";
 import Error from "../error/Error";
 import Overlay from "../overlay/Overlay";
 import Wrapper from "../Wrapper";
+import {Space} from "../../components/styledElements";
+import Link from '@material-ui/core/Link';
+import ForgotPassword from "./ForgotPassword";
 
 class LoginComponent extends Component {
 
@@ -18,6 +21,7 @@ class LoginComponent extends Component {
         super(props);
 
         this.state = {
+            forgotPassword: false,
             username: '',
             password: '',
         }
@@ -25,7 +29,7 @@ class LoginComponent extends Component {
 
     componentDidMount() {
         if (this.props.auth.isAuthenticating === false && this.props.auth.isAuthenticated === false) {
-            new Vivus('login-svg', {duration: 100, file: loginSvg}, () => {});
+            new Vivus('login-svg', {duration: 100}, () => {});
         }
     }
 
@@ -33,7 +37,6 @@ class LoginComponent extends Component {
         this.props.login(this.state.username, this.state.password);
     }
 
-    //TODO forgot password
     renderForm() {
 
         if (this.props.auth.isAuthenticated === true) {
@@ -51,7 +54,12 @@ class LoginComponent extends Component {
             <div className={'login-form-main'}>
                 <div style={{width: 582}}>
                     <div className={'login-form'}>
-                        <div id={'login-svg'}/>
+                        <LoginSvg id={'login-svg'}
+                                  width={'100%'}
+                                  height={'100%'}
+                                  style={{position: 'absolute', top: 0, left: 0}}
+                                  preserveAspectRatio={"none"}
+                        />
                         <div className={'form-body'}>
                             <div style={{marginTop: 100, marginLeft: 30}}>
                                 <DrawnTextField
@@ -79,15 +87,21 @@ class LoginComponent extends Component {
                         </div>
                     </div>
                     <div style={{float: 'right', display: 'flex'}}>
-                        <DrawnButton onClick={() => this.login()}>Sign In</DrawnButton>
+                        <Link
+                            component="button"
+                            variant="body2"
+                            onClick={() => this.setState({forgotPassword: true})}>
+                            Forgot password?
+                        </Link>
+                        <Space margin={50}/>
+                        <DrawnButton onClick={() => this.login()}>Submit</DrawnButton>
                     </div>
                     {
                         !!this.props.auth.globalError ?
                             <Error id={'errors'} style={{clear: 'right'}} error={this.props.auth.globalError}/> : null
                     }
                 </div>
-
-
+                <ForgotPassword open={this.state.forgotPassword} handleClose={() => this.setState({forgotPassword: false})}/>
             </div>
         )
             ;

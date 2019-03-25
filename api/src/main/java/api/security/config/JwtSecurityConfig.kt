@@ -1,6 +1,5 @@
 package api.security.config
 
-import api.security.JwtAuthenticationEntryPoint
 import api.security.authorize.JwtAuthenticationProvider
 import api.security.authorize.JwtAuthenticationTokenFilter
 import api.security.authorize.JwtSuccessHandler
@@ -25,7 +24,6 @@ import java.util.*
 @Configuration
 @EnableWebSecurity
 class JwtSecurityConfig(private val authenticationProvider: JwtAuthenticationProvider,
-                        private val entryPoint: JwtAuthenticationEntryPoint,
                         private val userDetailsService: UserDetailsService,
                         private val errorHandler: ErrorHandler) : WebSecurityConfigurerAdapter() {
 
@@ -49,7 +47,7 @@ class JwtSecurityConfig(private val authenticationProvider: JwtAuthenticationPro
     @Bean
     fun authenticationTokenFilter(): JwtAuthenticationTokenFilter {
 
-        val pathsToSkip = Arrays.asList(LOGIN_ENTRY_POINT, REGISTRATION_ENTRY_POINT)
+        val pathsToSkip = Arrays.asList(LOGIN_ENTRY_POINT, REGISTRATION_ENTRY_POINT, FORGOT_ENTRY_POINT)
         val methodsToSkip = listOf(HttpMethod.OPTIONS.name)
 
         val matcher = SkipPathAndMethodsRequestMatcher(pathsToSkip, methodsToSkip, ENTRY_POINT)
@@ -65,15 +63,13 @@ class JwtSecurityConfig(private val authenticationProvider: JwtAuthenticationPro
     override fun configure(http: HttpSecurity) {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers(TOKEN_ENTRY_POINT).permitAll()
-                .antMatchers(LOGIN_ENTRY_POINT).permitAll()
-                .antMatchers(REGISTRATION_ENTRY_POINT).permitAll()
+                .antMatchers(TOKEN_ENTRY_POINT, LOGIN_ENTRY_POINT, FORGOT_ENTRY_POINT, REGISTRATION_ENTRY_POINT).permitAll()
                 .and()
                 .authorizeRequests().anyRequest().permitAll()
                 .and()
                 .exceptionHandling()
                 .accessDeniedHandler(errorHandler)
-                .authenticationEntryPoint(entryPoint)
+                .authenticationEntryPoint(errorHandler)
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().cors()
@@ -88,7 +84,8 @@ class JwtSecurityConfig(private val authenticationProvider: JwtAuthenticationPro
 
         const val TOKEN_ENTRY_POINT = "/auth/token"
         const val LOGIN_ENTRY_POINT = "/auth/login"
-        const val REGISTRATION_ENTRY_POINT = "/auth/registration"
+        const val REGISTRATION_ENTRY_POINT = "/auth/forgot"
+        const val FORGOT_ENTRY_POINT = "/auth/registration"
         const val ENTRY_POINT = "/**"
         const val TOKEN_HEADER = "X-Auth"
     }

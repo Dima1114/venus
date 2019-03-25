@@ -12,6 +12,7 @@ import {bindActionCreators} from "redux";
 import {createEntity} from "../../actions/core";
 import {connect} from "react-redux";
 import {isEmpty} from "../../utils/validation";
+import {Space} from "../../components/styledElements";
 
 class TaskForm extends React.Component {
 
@@ -66,7 +67,7 @@ class TaskForm extends React.Component {
                                           label={'Task Type'}
                                           onChange={(value) => this.handleParams('type', value)}
                         />
-                        <span style={{marginRight: 20}}/>
+                        <Space/>
                         <DrawnDatePicker label={'Due Date'}
                                          value={this.state.task.dueDate || null}
                                          onChange={(value) => this.handleParams('dueDate', value)}
@@ -77,11 +78,11 @@ class TaskForm extends React.Component {
                     <DrawnButton onClick={() => this.props.handleClose()}>
                         Close
                     </DrawnButton>
-                    <span style={{marginRight: 20}}/>
+                    <Space/>
                     <DrawnButton onClick={() => this.handleSave()}>
                         Save
                     </DrawnButton>
-                    <span style={{marginRight: 20}}/>
+                    <Space/>
                 </DialogActions>
             </Dialog>
         )

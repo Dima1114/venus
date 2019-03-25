@@ -23,13 +23,13 @@ export const muiTheme = createMuiTheme({
         MuiButton: { // Name of the component ⚛️ / style sheet
             text: { // Name of the rule
                 color: 'black', // Some CSS
+                padding: '0 30px',
             },
             root: {
                 borderRadius: 3,
                 border: 0,
                 color: 'black',
                 height: 44,
-                padding: '0 30px',
             },
             label: {
                 width: '100%',

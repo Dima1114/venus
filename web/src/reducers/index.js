@@ -3,7 +3,7 @@ import {INIT_BASE_URL} from "../actions";
 import {createReducer} from "./reducerUtils";
 import {authReducer as auth} from "./auth";
 import {coreReducer as core} from "./core";
-import {registration} from "./registration";
+import {forgotReducer as forgotPassword} from "./forgotPassword";
 
 // function todoReducer(state = [], action) {
 //     switch (action.type) {
@@ -45,7 +45,7 @@ const initBaseUrl = createReducer({baseUrl: null}, {
 export default combineReducers({
     // todoReducer,
     auth,
-    registration,
     initBaseUrl,
-    core
+    core,
+    forgotPassword
 });

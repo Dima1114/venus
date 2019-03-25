@@ -14,6 +14,7 @@ import {SimpleLink, Space} from "../components/styledElements";
 import DrawnButton from "../components/DrawnButton";
 import Home from "../vews/home/Home";
 import RegistrationComponent from "../vews/registration/RegistrationComponent";
+import RegistrationLinkReceiver from "../vews/registration/RegistrationLinkReceiver";
 
 const baseUrl = 'http://localhost:3000';
 
@@ -39,11 +40,13 @@ class App extends Component {
     }
 
     setUp(props) {
+        $.ajaxSetup({
+            beforeSend: (xhr, options) => {
+                options.url = this.props.baseUrl + options.url;
+            }
+        });
         if (!!props.auth.accessToken) {
             $.ajaxSetup({
-                beforeSend: (xhr, options) => {
-                    options.url = this.props.baseUrl + options.url;
-                },
                 headers: {
                     "X-Auth": 'Bearer ' + props.auth.accessToken
                 }
@@ -75,7 +78,6 @@ class App extends Component {
 
     //TODO replace react img with something other
     //TODO add possibility to switch off vivus drawing
-    //TODO buttons 'Sign Up' & 'Sign In' don`t rerender
     render() {
         return (
             <div id={"wrapper"}>
@@ -107,6 +109,7 @@ class App extends Component {
                 <Switch>
                     <Route exact path={'/login'} component={LoginComponent}/>
                     <Route exact path={'/registration'} component={RegistrationComponent}/>
+                    <Route exact path={'/registration/complete'} component={RegistrationLinkReceiver}/>
                     <ProtectedRoute path={'/todo'} component={TodoList}/>
                     <Route path={'/'} component={Home}/>
                 </Switch>
