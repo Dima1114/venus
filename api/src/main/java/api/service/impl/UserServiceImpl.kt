@@ -13,7 +13,10 @@ import java.util.*
 @Service
 class UserServiceImpl(private val userRepository: UserRepository, private val jmsTemplate: JmsTemplate) : UserService {
 
-    override fun dropRefreshToken(username: String): Int? = userRepository.dropRefreshToken(username)
+    override fun dropRefreshToken(username: String): Int? = userRepository.updateRefreshToken(username, null)
+
+    override fun updateRefreshToken(username: String, refreshToken: String): Int? =
+            userRepository.updateRefreshToken(username, refreshToken)
 
     override fun saveUser(user: User): User = userRepository.save(user)
 

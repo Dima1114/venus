@@ -6,7 +6,6 @@ import org.springframework.security.core.userdetails.UserDetails
 
 interface JwtTokenService {
 
-    fun updateRefreshToken(username: String, refreshToken: String)
     fun generateAccessToken(userDetails: UserDetails): String
     fun generateRefreshToken(userDetails: UserDetails): String
     fun getUsernameFromJWT(token: String): String

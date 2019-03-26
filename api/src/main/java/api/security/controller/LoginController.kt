@@ -5,6 +5,7 @@ import api.security.model.ErrorResponse
 import api.security.model.LoginRequest
 import api.security.model.LoginResponse
 import api.security.service.JwtTokenService
+import api.service.UserService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.AuthenticationManager
@@ -22,6 +23,7 @@ import javax.validation.Valid
 @RestController
 @RequestMapping("/auth/login")
 class LoginController(private val jwtTokenService: JwtTokenService,
+                      private val userService: UserService,
                       private val authenticationManager: AuthenticationManager) {
 
     @PostMapping
@@ -46,7 +48,7 @@ class LoginController(private val jwtTokenService: JwtTokenService,
         val accessToken = jwtTokenService.generateAccessToken(authentication.principal as UserDetails)
         val refreshToken = jwtTokenService.generateRefreshToken(authentication.principal as UserDetails)
 
-        jwtTokenService.updateRefreshToken(loginRequest.username, refreshToken)
+        userService.updateRefreshToken(loginRequest.username, refreshToken)
 
         return ResponseEntity.ok(
                 LoginResponse(

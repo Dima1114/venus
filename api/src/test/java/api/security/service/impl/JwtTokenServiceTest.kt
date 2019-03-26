@@ -61,32 +61,6 @@ class JwtTokenServiceTest {
     }
 
     @Test
-    fun `update refresh token success`() {
-
-        //given
-        whenever(userRepository.findByUsername("user")).thenReturn(Optional.of(user))
-        whenever(userRepository.save(user)).thenReturn(User())
-        user.refreshToken `should be` null
-
-        //when
-        testSubject.updateRefreshToken("user", "token")
-
-        //then
-        user.refreshToken `should be` "token"
-        verify(userRepository, times(1)).save<User>(any())
-    }
-
-    @Test(expected = JwtAuthenticationException::class)
-    fun `update refresh token fail user not found`() {
-
-        //given
-        whenever(userRepository.findByUsername("user")).thenThrow(JwtAuthenticationException("User not found"))
-
-        //when
-        testSubject.updateRefreshToken("user", "token")
-    }
-
-    @Test
     fun `should fail verification cause token expired`() {
 
         //given

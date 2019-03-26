@@ -5,6 +5,7 @@ import api.security.model.JwtUserDetails
 import api.security.model.LoginResponse
 import api.security.service.JwtTokenService
 import api.security.service.extract
+import api.service.UserService
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -13,7 +14,9 @@ import javax.servlet.http.HttpServletRequest
 
 @RestController
 @RequestMapping("/auth/token")
-class RefreshTokenController(private val tokenService: JwtTokenService, private val userDetailsService: UserDetailsService) {
+class RefreshTokenController(private val tokenService: JwtTokenService,
+                             private val userDetailsService: UserDetailsService,
+                             private val userService: UserService) {
 
     @PostMapping
     fun refreshToken(request: HttpServletRequest): LoginResponse {
@@ -30,7 +33,7 @@ class RefreshTokenController(private val tokenService: JwtTokenService, private 
 
         refreshToken = tokenService.generateRefreshToken(userDetails)
         val accessToken = tokenService.generateAccessToken(userDetails)
-        tokenService.updateRefreshToken(username, refreshToken)
+        userService.updateRefreshToken(username, refreshToken)
 
         return LoginResponse(accessToken, refreshToken)
     }
