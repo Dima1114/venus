@@ -2,16 +2,16 @@ package api.service.impl
 
 import api.entity.Role
 import api.entity.User
-import api.jms.JmsMessage
+import api.jms.email.JmsMailboxSender
+import api.jms.email.JmsMailboxTemplate
 import api.repository.UserRepository
 import api.service.UserService
-import org.springframework.jms.core.JmsTemplate
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class UserServiceImpl(private val userRepository: UserRepository, private val jmsTemplate: JmsTemplate) : UserService {
+class UserServiceImpl(private val userRepository: UserRepository, private val jmsMailboxSender: JmsMailboxSender) : UserService {
 
     override fun dropRefreshToken(username: String): Int? = userRepository.dropRefreshToken(username)
 
@@ -32,12 +32,7 @@ class UserServiceImpl(private val userRepository: UserRepository, private val jm
         }
 
         userRepository.save(user)
-        jmsTemplate.convertAndSend("mailbox",
-                JmsMessage(email,
-                        "You have been successfully signed up at Venus ToDoList service.<br>" +
-                                "To complete registration follow this link<br> " +
-                                "<a href='http://localhost:3000/registration/complete?token=$token'>Click here to Complete Registration</a>",
-                        "Registration"))
+        jmsMailboxSender.sendMessage(JmsMailboxTemplate.NEW_USER, user)
 
         return user
     }
@@ -51,10 +46,7 @@ class UserServiceImpl(private val userRepository: UserRepository, private val jm
         user.password = password
 
         userRepository.save(user)
-        jmsTemplate.convertAndSend("mailbox",
-                JmsMessage(user.email!!,
-                        "Your password has been changed.<br> New password: $password",
-                        "Change Password"))
+        jmsMailboxSender.sendMessage(JmsMailboxTemplate.PASSWORD_CHANGED, user, password)
     }
 
 
