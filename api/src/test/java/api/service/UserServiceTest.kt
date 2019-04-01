@@ -4,10 +4,7 @@ import api.entity.User
 import api.jms.JmsMessage
 import api.repository.UserRepository
 import api.service.impl.UserServiceImpl
-import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.times
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.whenever
+import com.nhaarman.mockito_kotlin.*
 import org.amshove.kluent.`should be equal to`
 import org.amshove.kluent.`should equal`
 import org.amshove.kluent.`should not equal`
@@ -36,13 +33,26 @@ class UserServiceTest {
     fun `should call repository to delete token`() {
 
         //given
-        whenever(userRepository.dropRefreshToken(any())).thenReturn(1)
+        whenever(userRepository.updateRefreshToken(any(), anyOrNull())).thenReturn(1)
 
         //when
         testSubject.dropRefreshToken("user")
 
         //then
-        verify(userRepository, times(1)).dropRefreshToken(any())
+        verify(userRepository, times(1)).updateRefreshToken(any(), anyOrNull())
+    }
+
+    @Test
+    fun `should call repository to update token`() {
+
+        //given
+        whenever(userRepository.updateRefreshToken(any(), any())).thenReturn(1)
+
+        //when
+        testSubject.updateRefreshToken("user", "token")
+
+        //then
+        verify(userRepository, times(1)).updateRefreshToken(any(), any())
     }
 
     @Test

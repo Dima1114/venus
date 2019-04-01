@@ -17,18 +17,9 @@ import org.springframework.stereotype.Component
 import java.util.*
 
 @Component
-class JwtTokenServiceImpl(private val jwtSettings: JwtSettings, private val userRepository: UserRepository) : JwtTokenService {
+class JwtTokenServiceImpl(private val jwtSettings: JwtSettings) : JwtTokenService {
 
     companion object : KLogging()
-
-    //TODO create query to update only refresh token field and skip validation
-    override fun updateRefreshToken(username: String, refreshToken: String) {
-        val user: User = userRepository.findByUsername(username)
-                .orElseThrow { JwtAuthenticationException("User not found") }
-
-        user.refreshToken = refreshToken
-        userRepository.save(user)
-    }
 
     override fun generateAccessToken(userDetails: UserDetails): String {
 

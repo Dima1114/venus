@@ -2,6 +2,7 @@ package api.security.controller
 
 import api.security.model.JwtUserDetails
 import api.security.service.JwtTokenService
+import api.service.UserService
 import com.nhaarman.mockito_kotlin.doNothing
 import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
@@ -9,6 +10,7 @@ import com.nhaarman.mockito_kotlin.whenever
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers.anyString
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
@@ -30,6 +32,8 @@ class RefreshTokenControllerTest {
     @Mock
     lateinit var tokenService: JwtTokenService
     @Mock
+    lateinit var userService: UserService
+    @Mock
     lateinit var userDetailsService: UserDetailsService
 
     lateinit var mvc: MockMvc
@@ -42,7 +46,7 @@ class RefreshTokenControllerTest {
         whenever(tokenService.getUsernameFromJWT(token)).thenReturn(username)
         whenever(tokenService.generateAccessToken(userDetails)).thenReturn("accessToken")
         whenever(tokenService.generateRefreshToken(userDetails)).thenReturn(token)
-        doNothing().whenever(tokenService).updateRefreshToken("user", token)
+        whenever(userService.updateRefreshToken(anyString(), anyString())).thenReturn(1)
     }
 
     companion object {
@@ -65,7 +69,7 @@ class RefreshTokenControllerTest {
         val result =  performRefresh()
 
         //then
-        verify(tokenService, times(1)).updateRefreshToken("user", token)
+        verify(userService, times(1)).updateRefreshToken(anyString(), anyString())
         result
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk)

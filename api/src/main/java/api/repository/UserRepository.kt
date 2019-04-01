@@ -19,6 +19,6 @@ interface UserRepository : BaseRepository<User> {
     @Modifying
     @RestResource(exported = false)
     @Transactional
-    @Query("update User u set u.refreshToken = null where u.username =:username")
-    fun dropRefreshToken(@Param("username") username: String): Int?
+    @Query("update User u set u.refreshToken = :token where u.username =:username")
+    fun updateRefreshToken(@Param("username") username: String, @Param("token") refreshToken: String?): Int?
 }

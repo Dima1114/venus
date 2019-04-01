@@ -7,6 +7,8 @@ interface UserService {
 
     fun dropRefreshToken(username: String): Int?
 
+    fun updateRefreshToken(username: String, refreshToken: String): Int?
+
     fun registerNewUser(username: String, password: String, email: String, token: String) : User
 
     fun findByUsername(username: String) : Optional<User>

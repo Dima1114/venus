@@ -3,6 +3,7 @@ package api.security.controller
 import api.entity.Role
 import api.security.model.JwtUserDetails
 import api.security.service.JwtTokenService
+import api.service.UserService
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
@@ -10,6 +11,7 @@ import com.nhaarman.mockito_kotlin.whenever
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers.anyString
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
@@ -32,7 +34,8 @@ class LoginControllerTest {
 
     @Mock
     lateinit var jwtTokenService: JwtTokenService
-
+    @Mock
+    lateinit var userService: UserService
     @Mock
     lateinit var authenticationManager: AuthenticationManager
 
@@ -54,6 +57,7 @@ class LoginControllerTest {
         whenever(jwtTokenService.generateAccessToken(userDetails)).thenReturn("accessToken")
         whenever(jwtTokenService.generateRefreshToken(userDetails)).thenReturn("refreshToken")
         whenever(jwtTokenService.getExpTimeFromJWT("accessToken")).thenReturn(10000)
+        whenever(userService.updateRefreshToken(anyString(), anyString())).thenReturn(1)
     }
 
     @Test
@@ -66,7 +70,7 @@ class LoginControllerTest {
         val result = performLoginRequest()
 
         //then
-        verify(jwtTokenService, times(1)).updateRefreshToken("user", "refreshToken")
+        verify(userService, times(1)).updateRefreshToken("user", "refreshToken")
         result
                 .andExpect(status().isOk)
                 .andExpect(jsonPath("$.accessToken").value("accessToken"))
